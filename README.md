@@ -1,0 +1,2 @@
+# QuickSniper
+Quick Snip Application
