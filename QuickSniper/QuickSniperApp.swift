@@ -6,12 +6,16 @@
 //
 
 import SwiftUI
+import AppKit
 
 @main
 struct QuickSniperApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            EmptyView()
+                .onAppear {
+                    _ = SidePanelController()
+                }
         }
     }
 }
