@@ -22,6 +22,12 @@ struct QuickSniperApp: App {
         KeyboardShortcuts.onKeyUp(for: .toggleQuickSniper) {            
             PanelController.shared.toggle()
         }
+        
+        NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { event in
+            if event.keyCode == 53 { // Esc
+                PanelController.shared.hidePanel()
+            }
+        }
     }
 
     var body: some Scene {

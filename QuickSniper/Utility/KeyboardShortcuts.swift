@@ -11,3 +11,7 @@ import KeyboardShortcuts
 extension KeyboardShortcuts.Name {
     static let toggleQuickSniper = Self("toggleQuickSniper")       
 }
+
+extension KeyboardShortcuts {
+    
+}

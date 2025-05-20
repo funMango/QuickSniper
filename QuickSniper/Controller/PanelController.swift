@@ -9,7 +9,7 @@ import SwiftUI
 import AppKit
 import KeyboardShortcuts
 
-class PanelController: NSWindowController {
+class PanelController: NSWindowController, NSWindowDelegate {
     static let shared = PanelController()
     private var isPanelVisible = false
 
@@ -37,7 +37,7 @@ class PanelController: NSWindowController {
             backing: .buffered,
             defer: false
         )
-
+                
         panel.styleMask.insert(.nonactivatingPanel)
         panel.level = .statusBar
         panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
@@ -46,11 +46,14 @@ class PanelController: NSWindowController {
         panel.hasShadow = true
         panel.isReleasedWhenClosed = false
         panel.hidesOnDeactivate = false
-
-        // 컨텐츠 뷰 설정
         panel.contentView = hosting
-
+                
         super.init(window: panel)
+        panel.delegate = self
+    }
+    
+    func windowDidResignKey(_ notification: Notification) {
+        hidePanel() // 포커스 잃으면 닫기
     }
 
     required init?(coder: NSCoder) {
@@ -94,7 +97,7 @@ class PanelController: NSWindowController {
         isPanelVisible = true
     }
 
-    private func hidePanel() {
+    func hidePanel() {
         guard let window = self.window, isPanelVisible else { return }
         let screen = NSScreen.main!.frame
 
@@ -121,4 +124,12 @@ class PanelController: NSWindowController {
 class SniperPanel: NSPanel {
     override var canBecomeKey: Bool { true }
     override var canBecomeMain: Bool { true }
+
+    override func keyDown(with event: NSEvent) {
+        if event.keyCode == 53 { // Esc 키
+            PanelController.shared.hidePanel()
+        } else {
+            super.keyDown(with: event)
+        }
+    }
 }
