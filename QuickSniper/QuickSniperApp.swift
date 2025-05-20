@@ -20,14 +20,14 @@ struct QuickSniperApp: App {
         }
 
         KeyboardShortcuts.onKeyUp(for: .toggleQuickSniper) {            
-            SidePanelController.shared.toggle()
+            PanelController.shared.toggle()
         }
     }
 
     var body: some Scene {
         MenuBarExtra("QuickSniper", systemImage: "bolt.circle.fill") {
             Button("패널 토글") {
-                SidePanelController.shared.toggle()
+                PanelController.shared.toggle()
             }
 
             Button("단축키 설정") {

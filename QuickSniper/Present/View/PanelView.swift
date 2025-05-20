@@ -13,7 +13,7 @@ struct Snippet: Identifiable {
     let body: String
 }
 
-struct SidePanelView: View {
+struct PanelView: View {
     let snippets: [Snippet] = [
         .init(title: "일본 한국예약 리터치 안내", body: """
             はい！6月1日15:00でリタッチ予約を確定いたします！
@@ -81,5 +81,5 @@ struct SidePanelView: View {
 }
 
 #Preview {
-    SidePanelView()
+    PanelView()
 }
