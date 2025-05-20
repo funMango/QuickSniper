@@ -7,32 +7,35 @@
 
 import SwiftUI
 import AppKit
+import KeyboardShortcuts
 
 class SidePanelController: NSWindowController {
-    private var monitorTimer: Timer?
+    static let shared = SidePanelController()
     private var isPanelVisible = false
 
     init() {
         let screen = NSScreen.main!.frame
+        let panelWidth: CGFloat = screen.width
+        let panelHeight: CGFloat = 180
 
         let initialFrame = NSRect(
-            x: screen.maxX,  // 👉 오른쪽 바깥
-            y: screen.minY,
-            width: 280,
-            height: screen.height
+            x: 0,
+            y: 0,
+            width: panelWidth,
+            height: panelHeight
         )
 
         let panel = SniperPanel(
             contentRect: initialFrame,
-            styleMask: NSWindow.StyleMask([.nonactivatingPanel, .borderless]),
+            styleMask: [.nonactivatingPanel, .borderless],
             backing: .buffered,
             defer: false
         )
 
-        panel.styleMask.insert(NSWindow.StyleMask.nonactivatingPanel)
-        panel.level = NSWindow.Level.statusBar
-        panel.collectionBehavior = NSWindow.CollectionBehavior([.canJoinAllSpaces, .fullScreenAuxiliary])
-        panel.backgroundColor = NSColor.clear
+        panel.styleMask.insert(.nonactivatingPanel)
+        panel.level = .statusBar
+        panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
+        panel.backgroundColor = .clear
         panel.isOpaque = false
         panel.hasShadow = true
         panel.isReleasedWhenClosed = false
@@ -42,74 +45,36 @@ class SidePanelController: NSWindowController {
         panel.contentView = hosting
 
         super.init(window: panel)
-        startMonitoringCursor()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    private func startMonitoringCursor() {
-        monitorTimer = Timer.scheduledTimer(withTimeInterval: 1.0 / 30.0, repeats: true) { _ in
-            guard let screen = NSScreen.main else { return }
-            let location = NSEvent.mouseLocation
-            let windowFrame = self.window?.frame ?? .zero
-            let isMouseInsidePanel = windowFrame.contains(location)
-            let isAtScreenEdge = location.x >= screen.frame.maxX - 2 // 딱 끝에 닿았을 때만
-
-            if !self.isPanelVisible && isAtScreenEdge {
-                self.showPanel()
-            } else if self.isPanelVisible && !isMouseInsidePanel && !isAtScreenEdge {
-                self.hidePanel()
-            }
-        }
+    func toggle() {
+        isPanelVisible ? hidePanel() : showPanel()
     }
-    
+
     private func showPanel() {
         guard let window = self.window, !isPanelVisible else { return }
-
         let screen = NSScreen.main!.frame
-        var targetFrame = window.frame
-        targetFrame.origin.x = screen.width - targetFrame.width
-        targetFrame.origin.y = 0
-        targetFrame.size.height = screen.height
-        
-        window.setIsVisible(true)
-        window.animator().setFrame(targetFrame, display: true)
-        window.makeKeyAndOrderFront(nil)
 
+        let targetFrame = NSRect(
+            x: (screen.width - window.frame.width) / 2,
+            y: 0,
+            width: window.frame.width,
+            height: window.frame.height
+        )
+
+        window.setFrame(targetFrame, display: true)
+        window.makeKeyAndOrderFront(nil)
         isPanelVisible = true
     }
 
     private func hidePanel() {
         guard let window = self.window, isPanelVisible else { return }
-
-        let screen = NSScreen.main!.frame
-        var hiddenFrame = window.frame
-        hiddenFrame.origin.x = screen.width  // 화면 바깥쪽으로 밀기
-
-        // 부드럽게 사라지게 하고 잠시 뒤에 완전히 닫기
-        NSAnimationContext.runAnimationGroup({ context in
-            context.duration = 0.25
-            window.animator().setFrame(hiddenFrame, display: true)
-        }) {
-            window.orderOut(nil)
-        }
-
+        window.orderOut(nil)
         isPanelVisible = false
-    }
-
-    private func slideIn() {
-        guard let window = self.window else { return }
-
-        let screen = NSScreen.main!.frame
-        var targetFrame = window.frame
-        targetFrame.origin.x = screen.width - targetFrame.width
-        targetFrame.origin.y = 0
-        targetFrame.size.height = screen.height
-
-        window.setFrame(targetFrame, display: true, animate: true)
-        window.makeKeyAndOrderFront(nil)
     }
 }
 
