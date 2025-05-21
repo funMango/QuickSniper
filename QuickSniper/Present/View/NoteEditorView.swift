@@ -24,7 +24,7 @@ struct NoteEditorView: View {
                 Button {
                     
                 } label: {
-                    Text("Save")
+                    Text("save")
                 }
                 
                 Button {
