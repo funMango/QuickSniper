@@ -7,12 +7,6 @@
 
 import SwiftUI
 
-struct Snippet: Identifiable {
-    let id = UUID()
-    let title: String
-    let body: String
-}
-
 struct PanelView: View {
     let snippets: [Snippet] = [
         .init(title: "일본 한국예약 리터치 안내", body: """
@@ -55,24 +49,46 @@ struct PanelView: View {
     ]
 
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: true) {
-            HStack(alignment: .top, spacing: 12) {
-                ForEach(snippets) { snippet in
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(snippet.title)
-                            .font(.headline)
-                        Text(snippet.body)
-                            .font(.caption)
-                            .foregroundColor(.gray)
-                            .lineLimit(5)
-                    }
-                    .padding()
-                    .frame(width: 240, alignment: .leading)
-                    .background(.regularMaterial)
-                    .cornerRadius(8)
+        VStack(alignment: .leading, spacing: 8) {
+            // 상단 추가 버튼
+            HStack {
+                Button(action: {
+                    print("추가 버튼 눌림")
+                }) {
+                    Label("추가", systemImage: "plus")
+                        .labelStyle(TitleOnlyLabelStyle())
+                        .font(.headline)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .cornerRadius(6)
                 }
+
+                Spacer()
             }
-            .padding()
+            .padding(.horizontal)
+            .padding(.top, 8)
+
+            // 카드 스크롤 뷰
+            ScrollView(.horizontal, showsIndicators: true) {
+                HStack(alignment: .top, spacing: 12) {
+                    ForEach(snippets) { snippet in
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(snippet.title)
+                                .font(.headline)
+                            Text(snippet.body)
+                                .font(.caption)
+                                .foregroundColor(.gray)
+                                .lineLimit(5)
+                        }
+                        .padding()
+                        .frame(width: 240, alignment: .topLeading) // 높이 생략
+                        .background(.regularMaterial)
+                        .cornerRadius(8)
+                    }
+                }
+                .padding()
+                .padding(.bottom)
+            }
         }
         .background(
             VisualEffectView(material: .hudWindow, blendingMode: .behindWindow)
