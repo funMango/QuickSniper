@@ -28,6 +28,10 @@ struct QuickSniperApp: App {
                 PanelController.shared.hidePanel()
             }
         }
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            PanelController.shared.toggle()
+        }
     }
 
     var body: some Scene {

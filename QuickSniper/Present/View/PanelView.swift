@@ -53,20 +53,24 @@ struct PanelView: View {
             // 상단 추가 버튼
             HStack {
                 Button(action: {
+                    print("닫힘 버튼 눌림")
+                }) {
+                    PanelCircleButton(systemName: "xmark")
+                }
+                .buttonStyle(PlainButtonStyle())
+                
+                
+                Button(action: {
                     print("추가 버튼 눌림")
                 }) {
-                    Label("추가", systemImage: "plus")
-                        .labelStyle(TitleOnlyLabelStyle())
-                        .font(.headline)
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 6)
-                        .cornerRadius(6)
+                    PanelCircleButton(systemName: "plus")
                 }
+                .buttonStyle(PlainButtonStyle())
 
                 Spacer()
             }
             .padding(.horizontal)
-            .padding(.top, 8)
+            .padding(.top, 14)
 
             // 카드 스크롤 뷰
             ScrollView(.horizontal, showsIndicators: true) {
