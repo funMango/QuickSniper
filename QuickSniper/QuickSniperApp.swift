@@ -8,36 +8,25 @@
 import SwiftUI
 import AppKit
 import KeyboardShortcuts
+import Resolver
 
 @main
 struct QuickSniperApp: App {
     @StateObject private var settingsWindowController = SettingsWindowController()
+    private let container:  ControllerContainer
+    
 
     init() {
-        if KeyboardShortcuts.getShortcut(for: .toggleQuickSniper) == nil {
-            let shortcut = KeyboardShortcuts.Shortcut(.k, modifiers: [.option])
-            KeyboardShortcuts.setShortcut(shortcut, for: .toggleQuickSniper)
-        }
-
-        KeyboardShortcuts.onKeyUp(for: .toggleQuickSniper) {            
-            PanelController.shared.toggle()
-        }
+        self.container = Resolver.resolve(ControllerContainer.self)
         
-        NSEvent.addGlobalMonitorForEvents(matching: .keyDown) { event in
-            if event.keyCode == 53 { // Esc
-                PanelController.shared.hidePanel()
-            }
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            PanelController.shared.toggle()
-        }
+        configureKeyboardShortcuts()
+        runInitialLaunchActions()
     }
 
     var body: some Scene {
         MenuBarExtra("QuickSniper", systemImage: "bolt.circle.fill") {
             Button("패널 토글") {
-                PanelController.shared.toggle()
+                container.panelController.toggle()
             }
 
             Button("단축키 설정") {
@@ -51,5 +40,22 @@ struct QuickSniperApp: App {
             }
         }
         .menuBarExtraStyle(.window)
+    }
+    
+    private func configureKeyboardShortcuts() {
+        if KeyboardShortcuts.getShortcut(for: .toggleQuickSniper) == nil {
+            let shortcut = KeyboardShortcuts.Shortcut(.k, modifiers: [.option])
+            KeyboardShortcuts.setShortcut(shortcut, for: .toggleQuickSniper)
+        }
+
+        KeyboardShortcuts.onKeyUp(for: .toggleQuickSniper) {
+            container.panelController.toggle()
+        }
+    }
+    
+    private func runInitialLaunchActions() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            container.panelController.toggle()
+        }
     }
 }

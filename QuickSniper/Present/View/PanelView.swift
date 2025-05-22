@@ -7,10 +7,11 @@
 
 import AppKit
 import SwiftUI
+import Resolver
 
 struct PanelView: View {    
-    private let controller = NoteEditorWindowController()
-
+    @Injected var container: ControllerContainer
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             // 상단 추가 버튼
@@ -22,9 +23,8 @@ struct PanelView: View {
                 }
                 .buttonStyle(PlainButtonStyle())
                 
-                
                 Button(action: {
-                    controller.show()
+                    container.noteEditorController.show()
                 }) {
                     PanelCircleButton(systemName: "plus")
                 }
@@ -46,8 +46,8 @@ struct PanelView: View {
                                 .lineLimit(5)
                         }
                         .padding()
-                        .frame(width: 240, alignment: .topLeading) // 높이 생략
-                        .background(.regularMaterial)
+                        .frame(width: 240, alignment: .topLeading)
+                        .background(.thickMaterial)
                         .cornerRadius(8)
                     }
                 }
@@ -56,8 +56,8 @@ struct PanelView: View {
             }
         }
         .background(
-            VisualEffectView(material: .hudWindow, blendingMode: .behindWindow)
-        )       
+            .ultraThinMaterial
+        )
     }
 }
 

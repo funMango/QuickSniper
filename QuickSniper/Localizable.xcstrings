@@ -35,6 +35,9 @@
         }
       }
     },
+    "QuickSniper" : {
+
+    },
     "save" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -51,6 +54,18 @@
           }
         }
       }
+    },
+    "Snippet" : {
+
+    },
+    "단축키 설정" : {
+
+    },
+    "종료" : {
+
+    },
+    "패널 토글" : {
+
     }
   },
   "version" : "1.0"

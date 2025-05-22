@@ -40,7 +40,7 @@ struct MultiLineTextFieldView: View {
                 VisualEffectView(material: .hudWindow, blendingMode: .behindWindow)
                     .overlay(
                         Color.black.opacity(0.2) // ← 불투명도 조절 (0.0~1.0)
-                    )
+                    )                
             )
                 
                             

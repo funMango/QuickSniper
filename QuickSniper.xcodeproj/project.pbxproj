@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5AE362462DDF43440022BBFC /* Resolver in Frameworks */ = {isa = PBXBuildFile; productRef = 5AE362452DDF43440022BBFC /* Resolver */; };
 		5AF0FFC82DDC014100906A61 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 5AF0FFC72DDC014100906A61 /* KeyboardShortcuts */; };
 /* End PBXBuildFile section */
 
@@ -56,6 +57,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5AE362462DDF43440022BBFC /* Resolver in Frameworks */,
 				5AF0FFC82DDC014100906A61 /* KeyboardShortcuts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -126,6 +128,7 @@
 			name = QuickSniper;
 			packageProductDependencies = (
 				5AF0FFC72DDC014100906A61 /* KeyboardShortcuts */,
+				5AE362452DDF43440022BBFC /* Resolver */,
 			);
 			productName = QuickSniper;
 			productReference = 5A8891162DDB5214002C6D4A /* QuickSniper.app */;
@@ -212,6 +215,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				5A745E982DDC009100BB80BE /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
+				5AE362442DDF43440022BBFC /* XCRemoteSwiftPackageReference "Resolver" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5A8891172DDB5214002C6D4A /* Products */;
@@ -579,9 +583,22 @@
 				minimumVersion = 2.3.0;
 			};
 		};
+		5AE362442DDF43440022BBFC /* XCRemoteSwiftPackageReference "Resolver" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hmlongco/Resolver";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.5.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		5AE362452DDF43440022BBFC /* Resolver */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 5AE362442DDF43440022BBFC /* XCRemoteSwiftPackageReference "Resolver" */;
+			productName = Resolver;
+		};
 		5AF0FFC72DDC014100906A61 /* KeyboardShortcuts */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 5A745E982DDC009100BB80BE /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;

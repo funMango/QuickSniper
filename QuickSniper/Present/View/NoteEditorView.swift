@@ -59,8 +59,7 @@ struct NoteEditorView: View {
                         .overlay(
                             Color.black.opacity(0.2) // ← 불투명도 조절 (0.0~1.0)
                                 .cornerRadius(10)
-                        )
-                    
+                        )                    
             )
         }
         .padding()

@@ -1,9 +1,22 @@
+//
+//  ControllerContainer.swift
+//  QuickSniper
+//
+//  Created by 이민호 on 5/22/25.
+//
+
 import AppKit
 import SwiftUI
+import Combine
 
-class NoteEditorWindowController: NSObject, NSWindowDelegate {
+class NoteEditorController: NSObject, NSWindowDelegate {
     private var window: NSWindow?
-
+    private var subject: PassthroughSubject<ControllerMessage, Never>
+    
+    init(subject: PassthroughSubject<ControllerMessage, Never>) {
+        self.subject = subject
+    }
+    
     func show() {
         if window == nil {
             let hosting = NSHostingView(rootView: NoteEditorView())
@@ -26,6 +39,6 @@ class NoteEditorWindowController: NSObject, NSWindowDelegate {
     }
 
     func windowWillClose(_ notification: Notification) {        
-        PanelController.shared.toggle()
+        subject.send(.togglePanel)
     }
 }

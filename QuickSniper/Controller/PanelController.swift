@@ -7,53 +7,26 @@
 
 import SwiftUI
 import AppKit
-import KeyboardShortcuts
+import Combine
 
 class PanelController: NSWindowController, NSWindowDelegate {
-    static let shared = PanelController()
     private var isPanelVisible = false
+    private var subject: PassthroughSubject<ControllerMessage, Never>
+    private var cancellables = Set<AnyCancellable>()
 
-    init() {
-        let screen = NSScreen.main!.frame
-        let panelWidth: CGFloat = screen.width
-
-        // 먼저 HostingView를 만든다
-        let hosting = NSHostingView(rootView: PanelView())
-
-        // fittingSize를 사용하여 SwiftUI 뷰의 실제 높이를 계산
+    init(subject: PassthroughSubject<ControllerMessage, Never>) {
+        self.subject = subject
+        
+        let hosting = PanelController.makeHostingView()
         let contentHeight = hosting.fittingSize.height
+        let initialFrame = PanelController.makeInitialFrame(height: contentHeight)
 
-        // 초기 프레임 설정 (뷰 높이에 맞게 자동 계산)
-        let initialFrame = NSRect(
-            x: 0,
-            y: 0,
-            width: panelWidth,
-            height: contentHeight
-        )
-
-        let panel = SniperPanel(
-            contentRect: initialFrame,
-            styleMask: [.nonactivatingPanel, .borderless],
-            backing: .buffered,
-            defer: false
-        )
-                
-        panel.styleMask.insert(.nonactivatingPanel)
-        panel.level = .statusBar
-        panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
-        panel.backgroundColor = .clear
-        panel.isOpaque = false
-        panel.hasShadow = true
-        panel.isReleasedWhenClosed = false
-        panel.hidesOnDeactivate = false
-        panel.contentView = hosting
-                
+        let panel = PanelController.makePanel(with: hosting, frame: initialFrame)
         super.init(window: panel)
+
         panel.delegate = self
-    }
-    
-    func windowDidResignKey(_ notification: Notification) {
-        hidePanel() // 포커스 잃으면 닫기
+        configurePanel(panel)
+        setupBindings()
     }
 
     required init?(coder: NSCoder) {
@@ -68,7 +41,6 @@ class PanelController: NSWindowController, NSWindowDelegate {
         guard let window = self.window, !isPanelVisible else { return }
         let screen = NSScreen.main!.frame
 
-        // 최종 위치
         let targetFrame = NSRect(
             x: (screen.width - window.frame.width) / 2,
             y: 0,
@@ -76,7 +48,6 @@ class PanelController: NSWindowController, NSWindowDelegate {
             height: window.frame.height
         )
 
-        // 시작 위치 (아래쪽)
         let startFrame = NSRect(
             x: targetFrame.origin.x,
             y: -window.frame.height,
@@ -87,7 +58,6 @@ class PanelController: NSWindowController, NSWindowDelegate {
         window.setFrame(startFrame, display: false)
         window.makeKeyAndOrderFront(nil)
 
-        // 애니메이션 적용
         NSAnimationContext.runAnimationGroup { context in
             context.duration = 0.25
             context.timingFunction = .init(name: .easeOut)
@@ -101,7 +71,6 @@ class PanelController: NSWindowController, NSWindowDelegate {
         guard let window = self.window, isPanelVisible else { return }
         let screen = NSScreen.main!.frame
 
-        // 최종 사라질 위치 (아래로)
         let hideFrame = NSRect(
             x: (screen.width - window.frame.width) / 2,
             y: -window.frame.height,
@@ -119,6 +88,58 @@ class PanelController: NSWindowController, NSWindowDelegate {
 
         isPanelVisible = false
     }
+
+    func windowDidResignKey(_ notification: Notification) {
+        hidePanel()
+    }
+
+    // MARK: - 구성 요소 메서드
+
+    private static func makeHostingView() -> NSHostingView<PanelView> {
+        return NSHostingView(rootView: PanelView())
+    }
+
+    private static func makeInitialFrame(height: CGFloat) -> NSRect {
+        let screen = NSScreen.main!.frame
+        return NSRect(x: 0, y: 0, width: screen.width, height: height)
+    }
+
+    private static func makePanel(
+        with hosting: NSHostingView<PanelView>,
+        frame: NSRect
+    ) -> SniperPanel {
+        let panel: SniperPanel = SniperPanel(
+            contentRect: frame,
+            styleMask: [.nonactivatingPanel, .borderless],
+            backing: .buffered,
+            defer: false
+        )
+
+        panel.contentView = hosting
+        return panel
+    }
+
+    private func configurePanel(_ panel: SniperPanel) {
+        panel.styleMask.insert(.nonactivatingPanel)
+        panel.level = .statusBar
+        panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
+        panel.backgroundColor = .clear
+        panel.isOpaque = false
+        panel.hasShadow = true
+        panel.isReleasedWhenClosed = false
+        panel.hidesOnDeactivate = false
+    }
+    
+    private func setupBindings() {
+        subject
+            .sink { [weak self] message in
+                switch message {
+                case .togglePanel:
+                    self?.toggle()                     
+                }
+            }
+            .store(in: &cancellables)
+    }
 }
 
 class SniperPanel: NSPanel {
@@ -126,8 +147,8 @@ class SniperPanel: NSPanel {
     override var canBecomeMain: Bool { true }
 
     override func keyDown(with event: NSEvent) {
-        if event.keyCode == 53 { // Esc 키
-            PanelController.shared.hidePanel()
+        if event.keyCode == 53 { // ESC
+            (self.delegate as? PanelController)?.hidePanel()
         } else {
             super.keyDown(with: event)
         }
