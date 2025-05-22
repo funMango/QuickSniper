@@ -61,19 +61,6 @@ struct PanelView: View {
     }
 }
 
-extension PanelView {
-    func showNoteEditorWindow() {
-        let window = NSWindow(
-            contentRect: NSRect(x: 0, y: 0, width: 600, height: 700),
-            styleMask: [.titled, .closable, .miniaturizable],
-            backing: .buffered, defer: false)
-        window.center()
-        window.contentView = NSHostingView(rootView: NoteEditorView())
-        window.makeKeyAndOrderFront(nil)
-        NSApp.activate(ignoringOtherApps: true)
-    }
-}
-
 #Preview {
     PanelView()
 }

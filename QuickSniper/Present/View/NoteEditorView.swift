@@ -24,14 +24,7 @@ struct NoteEditorView: View {
                 Button {
                     
                 } label: {
-                    Text("save")
-                }
-                
-                Button {
-                    
-                } label: {
-                    Image(systemName: "xmark")
-                        
+                    Text(String(localized: "save"))
                 }
             }
             .padding(.bottom, 10)
@@ -41,7 +34,7 @@ struct NoteEditorView: View {
                     Spacer()
                     MultiLineTextFieldView(
                         text: $title,
-                        placeholder: "제목을 입력하세요",
+                        placeholder: String(localized: "inputTitle"),
                         type: .singleLine
                     )
                     .padding(.bottom, 7)
@@ -54,7 +47,7 @@ struct NoteEditorView: View {
                                                                     
                 MultiLineTextFieldView(
                     text: $bodyText,
-                    placeholder: "내용을 입력하세요",
+                    placeholder: String(localized: "inputContent"),
                     type: .multiLine
                 )
                 .padding(.horizontal)
