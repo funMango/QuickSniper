@@ -9,15 +9,25 @@ import SwiftUI
 import AppKit
 import KeyboardShortcuts
 import Resolver
+import SwiftData
 
 @main
 struct QuickSniperApp: App {
     @StateObject private var settingsWindowController = SettingsWindowController()
-    private let container:  ControllerContainer
+    private let controllerContainer:  ControllerContainer
+    private let modelContainer: ModelContainer
+    private let modelContext: ModelContext
+    private let viewModelContainer: ViewModelContainer
     
-
     init() {
-        self.container = Resolver.resolve(ControllerContainer.self)
+        if let (modelContainer, modelContext, viewModelContainer) = QuickSniperApp.configureDependencies() {
+            self.modelContainer = modelContainer
+            self.modelContext = modelContext
+            self.viewModelContainer = viewModelContainer
+            self.controllerContainer = Resolver.resolve(ControllerContainer.self)
+        } else {
+            fatalError("❌ 의존성 구성 실패")
+        }
         
         configureKeyboardShortcuts()
         runInitialLaunchActions()
@@ -26,7 +36,7 @@ struct QuickSniperApp: App {
     var body: some Scene {
         MenuBarExtra("QuickSniper", systemImage: "bolt.circle.fill") {
             Button("패널 토글") {
-                container.panelController.toggle()
+                controllerContainer.panelController.toggle()
             }
 
             Button("단축키 설정") {
@@ -49,13 +59,33 @@ struct QuickSniperApp: App {
         }
 
         KeyboardShortcuts.onKeyUp(for: .toggleQuickSniper) {
-            container.panelController.toggle()
+            controllerContainer.panelController.toggle()
         }
     }
     
     private func runInitialLaunchActions() {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            container.panelController.toggle()
+            controllerContainer.panelController.toggle()
+        }
+    }
+    
+    private static func configureDependencies() -> (
+        modelContainer: ModelContainer,
+        modelContext: ModelContext,
+        viewModelContainer: ViewModelContainer
+    )? {
+        do {
+            let container = try ModelContainer(for: Snippet.self)
+            let context = container.mainContext
+            let viewModelContainer = ViewModelContainer(modelContext: context)
+
+            Resolver.register { context }.scope(.application)
+            Resolver.register { viewModelContainer }.scope(.application)
+
+            return (container, context, viewModelContainer)
+        } catch {
+            print("❌ ModelContainer 생성 실패: \(error)")
+            return nil
         }
     }
 }

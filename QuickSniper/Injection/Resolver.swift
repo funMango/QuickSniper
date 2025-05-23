@@ -7,11 +7,13 @@
 
 import Foundation
 import Resolver
-
+import SwiftData
 
 extension Resolver: @retroactive ResolverRegistering {
     public static func registerAllServices() {
         register { ControllerContainer() }
-            .scope(.application)
+            .scope(.application)                
     }
 }
+
+
