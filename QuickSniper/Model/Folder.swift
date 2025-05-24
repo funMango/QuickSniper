@@ -13,17 +13,14 @@ final class Folder {
     var id: String
     var name: String
     var order: Int
-    @Relationship var snippets: [Snippet]
     
     init(
         id: String = UUID().uuidString,
         name: String,
-        order: Int,
-        snippets: [Snippet] = []
+        order: Int        
     ) {
         self.id = id
         self.name = name
         self.order = order
-        self.snippets = snippets
     }
 }
