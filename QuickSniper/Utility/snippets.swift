@@ -10,7 +10,7 @@ import Foundation
 struct SnippetStore {
     static let shared = SnippetStore()
     let snippets: [Snippet] = [
-        .init(title: "일본 한국예약 리터치 안내", body: """
+        .init(folderId: "#1212", title: "일본 한국예약 리터치 안내", body: """
             はい！6月1日15:00でリタッチ予約を確定いたします！
 
             下記リタッチ予約の案内文をお送りいたします☺️
@@ -33,8 +33,8 @@ struct SnippetStore {
             *予約者以外は同伴出入り不可
             *アイライン • 涙袋の所要時間:各項目当たり最大1時間
         """, order: 1),
-        .init(title: "교착 상태 4조건", body: "1. 상호배제 2. 점유와 대기 3. 비선점 4. 환형 대기\n이 조건이 모두 만족될 때 교착상태가 발생한다.", order: 2),
-        .init(title: "패스키 흐름", body: "패스키는 사용자 단말에 비공개키를 저장하고, 공개키는 서버에 등록한다. WebAuthn은 이를 기반으로 인증 흐름을 수행한다...", order: 3),
-        .init(title: "Fork vs Exec", body: "fork는 부모를 복사하고 exec은 새로운 프로그램을 덮어씌운다. 시스템 콜과 메모리 모델에서 차이가 있으며...", order: 4)
+        .init(folderId: "#1212", title: "교착 상태 4조건", body: "1. 상호배제 2. 점유와 대기 3. 비선점 4. 환형 대기\n이 조건이 모두 만족될 때 교착상태가 발생한다.", order: 2),
+        .init(folderId: "#1212", title: "패스키 흐름", body: "패스키는 사용자 단말에 비공개키를 저장하고, 공개키는 서버에 등록한다. WebAuthn은 이를 기반으로 인증 흐름을 수행한다...", order: 3),
+        .init(folderId: "#1212", title: "Fork vs Exec", body: "fork는 부모를 복사하고 exec은 새로운 프로그램을 덮어씌운다. 시스템 콜과 메모리 모델에서 차이가 있으며...", order: 4)
     ].sorted { $0.order < $1.order }
 }

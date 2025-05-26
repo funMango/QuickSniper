@@ -6,11 +6,13 @@
 //
 
 import SwiftUI
+import Resolver
 
 struct NoteEditorView: View {
+    @ObservedObject var viewModel: NoteEditorViewModel
     @State private var title: String = ""
     @State private var bodyText: String = ""
-
+        
     var body: some View {
         VStack {
             // 상단 바
@@ -22,7 +24,13 @@ struct NoteEditorView: View {
                 Spacer()
                 
                 Button {
-                    
+                    viewModel.hide()
+                } label: {
+                    Text(String(localized: "cancel"))
+                }
+                
+                Button {
+                    viewModel.hide()
                 } label: {
                     Text(String(localized: "save"))
                 }
@@ -33,7 +41,7 @@ struct NoteEditorView: View {
                 VStack(alignment: .leading) {
                     Spacer()
                     MultiLineTextFieldView(
-                        text: $title,
+                        text: $viewModel.title,
                         placeholder: String(localized: "inputTitle"),
                         type: .singleLine
                     )
@@ -46,7 +54,7 @@ struct NoteEditorView: View {
                 .padding(.horizontal)
                                                                     
                 MultiLineTextFieldView(
-                    text: $bodyText,
+                    text: $viewModel.content,
                     placeholder: String(localized: "inputContent"),
                     type: .multiLine
                 )
@@ -71,5 +79,6 @@ struct NoteEditorView: View {
 }
 
 #Preview {
-    NoteEditorView()
+    @Injected var viewModelContainer: ViewModelContainer
+    NoteEditorView(viewModel: viewModelContainer.noteEditorViewModel)
 }

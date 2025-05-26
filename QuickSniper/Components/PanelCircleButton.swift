@@ -13,9 +13,12 @@ struct PanelCircleButton: View {
     var body: some View {
         Image(systemName: systemName)
             .font(.headline)
-            .foregroundColor(.primary)
+            .foregroundColor(.mainText)
             .frame(width: 30, height: 30)
-            .background(.regularMaterial)
-            .clipShape(Circle())
+            .background(Color(.background))
     }
+}
+
+#Preview {
+    PanelCircleButton(systemName: "plus")
 }
