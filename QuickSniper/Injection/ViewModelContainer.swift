@@ -10,6 +10,7 @@ import SwiftData
 
 final class ViewModelContainer {
     private let modelContext: ModelContext
+    lazy var noteEditorViewModel = NoteEditorViewModel()
     
     init(modelContext: ModelContext) {
         self.modelContext = modelContext

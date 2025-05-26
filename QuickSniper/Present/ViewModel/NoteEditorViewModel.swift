@@ -6,10 +6,16 @@
 //
 
 import Foundation
+import Resolver
 
 class NoteEditorViewModel: ObservableObject {
+    @Injected var container: ControllerContainer
     @Published var title: String = ""
     @Published var content: String = ""
+    
+    func hide() {
+        container.noteEditorController.hide()
+    }
     
     
 }
