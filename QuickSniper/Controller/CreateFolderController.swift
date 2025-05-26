@@ -1,0 +1,38 @@
+//
+//  CreateFolderController.swift
+//  QuickSniper
+//
+//  Created by 이민호 on 5/26/25.
+//
+
+import AppKit
+import SwiftUI
+import Combine
+import Resolver
+
+final class CreateFolderController {
+    @Injected var viewModelContainer: ViewModelContainer
+    private let subject: PassthroughSubject<ControllerMessage, Never>
+    private var windowController: BaseWindowController<CreateFolderView>?
+
+    init(subject: PassthroughSubject<ControllerMessage, Never>) {
+        self.subject = subject
+    }
+
+    func show() {
+        Resolver.resolve(ControllerContainer.self).panelController.hidePanel()
+        
+        if windowController == nil {
+            windowController = BaseWindowController(size: CGSize(width: 600, height: 500)) {
+                CreateFolderView(viewModel: self.viewModelContainer.createFolderViewModel)
+            }
+        }
+        windowController?.show()
+    }
+    
+    func hide() {
+        windowController?.close()
+        windowController = nil
+        subject.send(.togglePanel)
+    }
+}

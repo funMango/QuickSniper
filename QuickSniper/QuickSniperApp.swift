@@ -75,10 +75,10 @@ struct QuickSniperApp: App {
         viewModelContainer: ViewModelContainer
     )? {
         do {
-            let container = try ModelContainer(for: Snippet.self)
+            let container = try ModelContainer(for: Folder.self, Snippet.self)
             let context = container.mainContext
             let viewModelContainer = ViewModelContainer(modelContext: context)
-
+            
             Resolver.register { context }.scope(.application)
             Resolver.register { viewModelContainer }.scope(.application)
 

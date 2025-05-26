@@ -12,15 +12,18 @@ import SwiftData
 final class Folder {
     var id: String
     var name: String
+    var type: FolderType
     var order: Int
     
     init(
         id: String = UUID().uuidString,
         name: String,
-        order: Int        
+        type: FolderType,
+        order: Int
     ) {
         self.id = id
         self.name = name
+        self.type = type
         self.order = order
     }
 }

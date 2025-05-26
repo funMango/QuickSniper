@@ -12,6 +12,7 @@ protocol FolderRepository {
     func save(_ folder: Folder) throws
     func delete(_ folder: Folder) throws
     func update(_ folder: Folder) throws
+    func fetchAll() throws -> [Folder]
 }
 
 final class DefaultFolderRepository: FolderRepository {
@@ -33,6 +34,11 @@ final class DefaultFolderRepository: FolderRepository {
 
     func update(_ folder: Folder) throws {
         try context.save()
+    }
+    
+    func fetchAll() throws -> [Folder] {
+        let descriptor = FetchDescriptor<Folder>(sortBy: [SortDescriptor(\.order)])
+        return try context.fetch(descriptor)
     }
 }
 

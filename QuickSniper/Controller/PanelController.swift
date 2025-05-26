@@ -8,6 +8,8 @@
 import SwiftUI
 import AppKit
 import Combine
+import Resolver
+import SwiftData
 
 class PanelController: NSWindowController, NSWindowDelegate {
     private var isPanelVisible = false
@@ -57,6 +59,7 @@ class PanelController: NSWindowController, NSWindowDelegate {
 
         window.setFrame(startFrame, display: false)
         window.makeKeyAndOrderFront(nil)
+        NSApp.activate(ignoringOtherApps: true)
 
         NSAnimationContext.runAnimationGroup { context in
             context.duration = 0.25
@@ -95,8 +98,10 @@ class PanelController: NSWindowController, NSWindowDelegate {
 
     // MARK: - 구성 요소 메서드
 
-    private static func makeHostingView() -> NSHostingView<PanelView> {
-        return NSHostingView(rootView: PanelView())
+    private static func makeHostingView() -> NSHostingView<some View> {
+        let modelContext = Resolver.resolve(ModelContext.self)
+        let view = PanelView().environment(\.modelContext, modelContext)
+        return NSHostingView(rootView: view)
     }
 
     private static func makeInitialFrame(height: CGFloat) -> NSRect {
@@ -105,7 +110,7 @@ class PanelController: NSWindowController, NSWindowDelegate {
     }
 
     private static func makePanel(
-        with hosting: NSHostingView<PanelView>,
+        with hosting: NSHostingView<some View>,
         frame: NSRect
     ) -> SniperPanel {
         let panel: SniperPanel = SniperPanel(
@@ -135,7 +140,7 @@ class PanelController: NSWindowController, NSWindowDelegate {
             .sink { [weak self] message in
                 switch message {
                 case .togglePanel:
-                    self?.toggle()                     
+                    self?.toggle()
                 }
             }
             .store(in: &cancellables)

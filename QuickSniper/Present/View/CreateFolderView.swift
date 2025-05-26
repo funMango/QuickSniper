@@ -6,10 +6,10 @@
 //
 
 import SwiftUI
+import Resolver
 
 struct CreateFolderView: View {
-    @State var folderName: String = ""
-    @State var selectedFolderType: FolderType = .snippet
+    @ObservedObject var viewModel: CreateFolderViewModel
     
     var body: some View {
         VStack(spacing: 20) {
@@ -18,7 +18,7 @@ struct CreateFolderView: View {
                 
                 Spacer()
                 
-                TextField("폴더 이름을 입력해주세요", text: $folderName)
+                TextField("폴더 이름을 입력해주세요", text: $viewModel.folderName)
             }
             
             HStack {
@@ -29,13 +29,13 @@ struct CreateFolderView: View {
                 Menu {
                     ForEach(FolderType.allCases, id: \.self) { type in
                         Button {
-                            selectedFolderType = type
+                            viewModel.folderType = type
                         } label: {
                             Text(type.rawValue)
                         }
                     }
                 } label: {
-                    Text(selectedFolderType.rawValue)
+                    Text(viewModel.folderType.rawValue)
                 }
             }
             
@@ -44,13 +44,13 @@ struct CreateFolderView: View {
                 
                 HStack {
                     Button {
-                        
+                        viewModel.hide()
                     } label: {
                         Text("취소")
                     }
                     
                     Button {
-                        
+                        viewModel.createFolder()
                     } label: {
                         Text("확인")
                     }
@@ -59,8 +59,10 @@ struct CreateFolderView: View {
         }
         .padding()
         .frame(width: 400, height: 250)
+        .background(Color.background)
     }
 }
 #Preview {
-    CreateFolderView()
+    @Injected var viewModelcontainer: ViewModelContainer
+    CreateFolderView(viewModel: viewModelcontainer.createFolderViewModel)
 }

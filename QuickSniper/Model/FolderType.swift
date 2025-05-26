@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum FolderType: String, CaseIterable, Identifiable {
+enum FolderType: String, CaseIterable, Identifiable, Codable {
     case snippet = "Snippet"
     case quickLink = "Quick Link"
     

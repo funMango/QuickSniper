@@ -6,11 +6,10 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct FolderView: View {
-    let folders: [String]
-    @Binding var selectedFolder: String?
-    
+    @Query var folders: [Folder]
     
     var body: some View {
         HStack {
@@ -18,9 +17,9 @@ struct FolderView: View {
                 HStack(spacing: 20) {
                     ForEach(folders, id: \.self) { folder in
                         HoverButton(
-                            onTap: { selectedFolder = folder },
-                            title: folder,
-                            isSelected: selectedFolder == folder
+                            onTap: {},
+                            title: folder.name,
+                            isSelected: true
                         )
                     }                                        
                 }
@@ -33,10 +32,5 @@ struct FolderView: View {
 }
 
 #Preview {
-    @Previewable @State var selectedFolder: String? = "Documents"
-    
-    return FolderView(
-        folders: ["Documents", "Downloads", "Pictures", "Music", "Videos"],
-        selectedFolder: $selectedFolder        
-    )
+    FolderView()
 }

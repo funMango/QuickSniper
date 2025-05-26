@@ -42,6 +42,7 @@ class BaseWindowController<Content: View>: NSObject, NSWindowDelegate {
             panel.hasShadow = true
             panel.isReleasedWhenClosed = false
             panel.hidesOnDeactivate = false
+            panel.isMovableByWindowBackground = true
             panel.level = .normal
             panel.center()
 

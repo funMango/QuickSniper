@@ -16,6 +16,4 @@ class NoteEditorViewModel: ObservableObject {
     func hide() {
         container.noteEditorController.hide()
     }
-    
-    
 }

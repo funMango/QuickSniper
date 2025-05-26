@@ -11,30 +11,14 @@ import Resolver
 
 struct PanelView: View {    
     @Injected var container: ControllerContainer
-    @State private var selectedFolder: String? = "Documents"
+    @State private var selectedFolder: String = "Documents"
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            // 상단 추가 버튼
-            HStack {
-                FolderView(
-                    folders: ["Documents", "Downloads", "Pictures", "Music", "Videos"],
-                    selectedFolder: $selectedFolder
-                )
-                
-                HoverIconButton(onTap: {}, systemName: "plus")
-                
-                Spacer()
-                
-                HoverIconButton(
-                    onTap: { print("닫힘 버튼 눌림") },
-                    systemName: "xmark",
-                    size: 14
-                )
-            }
-            .padding(.horizontal)
-            .padding(.top, 14)
-            .padding(.bottom, 5)
+            PanelHeaderView()
+                .padding(.horizontal)
+                .padding(.top, 14)
+                .padding(.bottom, 5)
             
             Divider()
                 .padding(.horizontal)
