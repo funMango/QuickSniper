@@ -8,12 +8,13 @@
 import Foundation
 import Combine
 
-enum ControllerMessage {
-    case togglePanel
-}
-
 final class ControllerContainer {
-    private let subject = PassthroughSubject<ControllerMessage, Never>()
+    private let subject: PassthroughSubject<ControllerMessage, Never>
+    
+    init(subject: PassthroughSubject<ControllerMessage, Never>) {
+        self.subject = subject
+    }
+    
     lazy var panelController = PanelController(subject: subject)
     lazy var noteEditorController = NoteEditorController(subject: subject)
     lazy var createFolderController = CreateFolderController(subject: subject)

@@ -7,16 +7,24 @@
 
 import Foundation
 import SwiftData
+import Combine
 
 final class ViewModelContainer {
     private let modelContext: ModelContext
+    private let controllerSubject : PassthroughSubject<ControllerMessage, Never>
     private lazy var folderRepository = DefaultFolderRepository(context: modelContext)
     private lazy var folderUseCase = DefaultFolderUseCase(repository: folderRepository)
-        
-    lazy var noteEditorViewModel = NoteEditorViewModel()
-    lazy var createFolderViewModel = CreateFolderViewModel(useCase: folderUseCase)
-                
-    init(modelContext: ModelContext) {
+    
+    init(modelContext: ModelContext, controllerSubject: PassthroughSubject<ControllerMessage, Never>) {
         self.modelContext = modelContext
+        self.controllerSubject = controllerSubject
     }
+                
+    lazy var noteEditorViewModel = NoteEditorViewModel(
+        subject: controllerSubject
+    )
+    lazy var createFolderViewModel = CreateFolderViewModel(
+        useCase: folderUseCase,
+        subject: controllerSubject
+    )
 }

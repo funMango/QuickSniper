@@ -6,14 +6,24 @@
 //
 
 import Foundation
-import Resolver
+import Combine
 
 class NoteEditorViewModel: ObservableObject {
-    @Injected var container: ControllerContainer
     @Published var title: String = ""
     @Published var content: String = ""
+    private var subject: PassthroughSubject<ControllerMessage, Never>
+    
+    init(
+        title: String = "",
+        content: String = "",
+        subject: PassthroughSubject<ControllerMessage, Never>
+    ) {
+        self.title = title
+        self.content = content
+        self.subject = subject
+    }
     
     func hide() {
-        container.noteEditorController.hide()
+        subject.send(.hideNoteEditorView)
     }
 }

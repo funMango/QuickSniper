@@ -14,9 +14,11 @@ final class NoteEditorController {
     @Injected var viewModelContainer: ViewModelContainer
     private let subject: PassthroughSubject<ControllerMessage, Never>
     private var windowController: BaseWindowController<NoteEditorView>?
+    private var cancellables = Set<AnyCancellable>()
 
     init(subject: PassthroughSubject<ControllerMessage, Never>) {
         self.subject = subject
+        setupBindings()
     }
 
     func show() {
@@ -30,9 +32,19 @@ final class NoteEditorController {
         windowController?.show()
     }
     
-    func hide() {
+    private func hide() {
         windowController?.close()
         windowController = nil
         subject.send(.togglePanel)
+    }
+    
+    private func setupBindings() {
+        subject
+            .sink { [weak self] message in
+                if message == .hideNoteEditorView {
+                    self?.hide()
+                }
+            }
+            .store(in: &cancellables)
     }
 }

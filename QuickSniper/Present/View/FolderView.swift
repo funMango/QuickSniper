@@ -10,24 +10,32 @@ import SwiftData
 
 struct FolderView: View {
     @Query var folders: [Folder]
-    
+    @State private var selectedFolder: Folder?
+
     var body: some View {
         HStack {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 20) {
                     ForEach(folders, id: \.self) { folder in
                         HoverButton(
-                            onTap: {},
+                            onTap: {
+                                selectedFolder = folder
+                            },
                             title: folder.name,
-                            isSelected: true
+                            isSelected: selectedFolder == folder
                         )
-                    }                                        
+                    }
                 }
             }
         }
         .fixedSize()
         .frame(height: 40)
         .background(Color.background)
+        .onAppear {
+            if selectedFolder == nil {
+                selectedFolder = folders.first
+            }
+        }
     }
 }
 

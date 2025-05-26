@@ -138,8 +138,7 @@ class PanelController: NSWindowController, NSWindowDelegate {
     private func setupBindings() {
         subject
             .sink { [weak self] message in
-                switch message {
-                case .togglePanel:
+                if message == .togglePanel {
                     self?.toggle()
                 }
             }

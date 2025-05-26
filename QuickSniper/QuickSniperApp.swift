@@ -10,6 +10,7 @@ import AppKit
 import KeyboardShortcuts
 import Resolver
 import SwiftData
+import Combine
 
 @main
 struct QuickSniperApp: App {
@@ -77,8 +78,16 @@ struct QuickSniperApp: App {
         do {
             let container = try ModelContainer(for: Folder.self, Snippet.self)
             let context = container.mainContext
-            let viewModelContainer = ViewModelContainer(modelContext: context)
+            let controllerSubject = PassthroughSubject<ControllerMessage, Never>()
             
+            let viewModelContainer = ViewModelContainer(
+                modelContext: context,
+                controllerSubject: controllerSubject
+            )
+            
+            let controllerConntainer = ControllerContainer(subject: controllerSubject)
+                
+            Resolver.register { controllerConntainer }.scope(.application)
             Resolver.register { context }.scope(.application)
             Resolver.register { viewModelContainer }.scope(.application)
 
