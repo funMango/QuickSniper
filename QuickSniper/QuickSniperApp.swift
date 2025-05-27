@@ -79,10 +79,12 @@ struct QuickSniperApp: App {
             let container = try ModelContainer(for: Folder.self, Snippet.self)
             let context = container.mainContext
             let controllerSubject = PassthroughSubject<ControllerMessage, Never>()
+            let folderSubject = CurrentValueSubject<Folder?, Never>(nil)
             
             let viewModelContainer = ViewModelContainer(
                 modelContext: context,
-                controllerSubject: controllerSubject
+                controllerSubject: controllerSubject,
+                folderSubject: folderSubject
             )
             
             let controllerConntainer = ControllerContainer(subject: controllerSubject)

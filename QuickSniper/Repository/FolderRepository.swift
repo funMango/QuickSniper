@@ -30,6 +30,7 @@ final class DefaultFolderRepository: FolderRepository {
     func delete(_ folder: Folder) throws {
         context.delete(folder)
         try context.save()
+        print("폴더제거: \(folder.name)")
     }
 
     func update(_ folder: Folder) throws {

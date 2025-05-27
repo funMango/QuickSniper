@@ -7,22 +7,23 @@
 
 import SwiftUI
 import SwiftData
+import Resolver
 
 struct FolderView: View {
     @Query var folders: [Folder]
     @State private var selectedFolder: Folder?
+    @Injected var viewModelContainer: ViewModelContainer
 
     var body: some View {
         HStack {
             ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 20) {
+                HStack(spacing: 10) {
                     ForEach(folders, id: \.self) { folder in
-                        HoverButton(
-                            onTap: {
-                                selectedFolder = folder
-                            },
+                        FolderButtonView(
+                            viewModel: viewModelContainer.folderButtonViewModel,
                             title: folder.name,
-                            isSelected: selectedFolder == folder
+                            isSelected: selectedFolder == folder,
+                            folder: folder
                         )
                     }
                 }

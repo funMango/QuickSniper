@@ -25,7 +25,7 @@ final class CreateFolderController {
         Resolver.resolve(ControllerContainer.self).panelController.hidePanel()
         
         if windowController == nil {
-            windowController = BaseWindowController(size: CGSize(width: 600, height: 500)) {
+            windowController = BaseWindowController(size: CGSize(width: 600, height: 500)) {                
                 CreateFolderView(viewModel: self.viewModelContainer.createFolderViewModel)
             }
         }

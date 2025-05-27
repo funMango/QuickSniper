@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 
 @Model
-final class Folder {
+final class Folder: Equatable{
     var id: String
     var name: String
     var type: FolderType

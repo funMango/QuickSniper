@@ -18,6 +18,23 @@
         }
       }
     },
+    "deleteFolder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Folder"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "폴더 삭제"
+          }
+        }
+      }
+    },
     "inputContent" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -54,6 +71,23 @@
     },
     "QuickSniper" : {
 
+    },
+    "renameFolder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rename Folder"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "폴더 이름 수정"
+          }
+        }
+      }
     },
     "save" : {
       "extractionState" : "manual",
