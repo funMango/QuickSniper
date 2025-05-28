@@ -12,9 +12,11 @@ import Resolver
 import SwiftData
 
 class PanelController: NSWindowController, NSWindowDelegate {
+    private var allowAutoHide: Bool = true
     private var isPanelVisible = false
     private var subject: PassthroughSubject<ControllerMessage, Never>
     private var cancellables = Set<AnyCancellable>()
+    
 
     init(subject: PassthroughSubject<ControllerMessage, Never>) {
         self.subject = subject
@@ -68,9 +70,11 @@ class PanelController: NSWindowController, NSWindowDelegate {
         }
 
         isPanelVisible = true
+        allowAutoHide = true
     }
 
     func hidePanel() {
+        print("hidePanel 실행")
         guard let window = self.window, isPanelVisible else { return }
         let screen = NSScreen.main!.frame
 
@@ -93,7 +97,10 @@ class PanelController: NSWindowController, NSWindowDelegate {
     }
 
     func windowDidResignKey(_ notification: Notification) {
-        hidePanel()
+        print("windowDidResignKey 작동")
+        if allowAutoHide {
+            hidePanel()
+        }
     }
 
     // MARK: - 구성 요소 메서드
@@ -138,8 +145,14 @@ class PanelController: NSWindowController, NSWindowDelegate {
     private func setupBindings() {
         subject
             .sink { [weak self] message in
-                if message == .togglePanel {
+                switch message {
+                case .togglePanel:
                     self?.toggle()
+                case .pauseAutoHidePanel:
+                    self?.allowAutoHide = false
+                    print("allowAutoHide: \(String(describing: self?.allowAutoHide))")
+                default:
+                    break
                 }
             }
             .store(in: &cancellables)

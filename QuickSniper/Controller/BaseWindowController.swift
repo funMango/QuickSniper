@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AppKit
+import Combine
 
 // MARK: - 입력 가능하고 타이틀바 제거된 Panel
 class InputPanel: NSPanel {
@@ -19,13 +20,23 @@ class BaseWindowController<Content: View>: NSObject, NSWindowDelegate {
     private var window: NSWindow?
     private let content: () -> Content
     private let size: CGSize
+    private let subject: PassthroughSubject<ControllerMessage, Never>
+    private var cancellables = Set<AnyCancellable>()
 
-    init(size: CGSize, @ViewBuilder content: @escaping () -> Content) {
+    init(
+        size: CGSize,
+        subject: PassthroughSubject<ControllerMessage, Never>,
+        @ViewBuilder content: @escaping () -> Content,
+    ) {
         self.size = size
         self.content = content
+        self.subject = subject
     }
 
-    func show() {
+    func show() {        
+        subject.send(.pauseAutoHidePanel)
+        
+        
         if window == nil {
             let hostingView = NSHostingView(rootView: content())
 
@@ -48,8 +59,8 @@ class BaseWindowController<Content: View>: NSObject, NSWindowDelegate {
 
             self.window = panel
         }
-
-        window?.makeKeyAndOrderFront(nil)
+                
+        self.window?.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
     }
     

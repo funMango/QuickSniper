@@ -9,6 +9,7 @@ import Foundation
 
 enum ControllerMessage {
     case togglePanel
+    case pauseAutoHidePanel
     case hideCreateFolderView
     case hideNoteEditorView
 }

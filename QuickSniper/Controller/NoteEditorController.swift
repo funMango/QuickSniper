@@ -21,11 +21,12 @@ final class NoteEditorController {
         setupBindings()
     }
 
-    func show() {
-        Resolver.resolve(ControllerContainer.self).panelController.hidePanel()
-        
+    func show() {        
         if windowController == nil {
-            windowController = BaseWindowController(size: CGSize(width: 600, height: 500)) {
+            windowController = BaseWindowController(
+                size: CGSize(width: 600, height: 500),
+                subject: subject
+            ) {
                 NoteEditorView(viewModel: self.viewModelContainer.noteEditorViewModel)
             }
         }
