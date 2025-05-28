@@ -12,4 +12,5 @@ enum ControllerMessage {
     case pauseAutoHidePanel
     case hideCreateFolderView
     case hideNoteEditorView
+    case focusPanel
 }

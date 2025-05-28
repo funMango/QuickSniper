@@ -10,42 +10,24 @@ import SwiftUI
 import Combine
 import Resolver
 
-final class NoteEditorController {
+final class NoteEditorController: ViewWindowControllable {
     @Injected var viewModelContainer: ViewModelContainer
-    private let subject: PassthroughSubject<ControllerMessage, Never>
-    private var windowController: BaseWindowController<NoteEditorView>?
-    private var cancellables = Set<AnyCancellable>()
+
+    let subject: PassthroughSubject<ControllerMessage, Never>
+    let hideMessage: ControllerMessage = .hideNoteEditorView
+    var windowController: BaseWindowController<NoteEditorView>?
+    var cancellables = Set<AnyCancellable>()
 
     init(subject: PassthroughSubject<ControllerMessage, Never>) {
         self.subject = subject
         setupBindings()
     }
 
-    func show() {        
-        if windowController == nil {
-            windowController = BaseWindowController(
-                size: CGSize(width: 600, height: 500),
-                subject: subject
-            ) {
-                NoteEditorView(viewModel: self.viewModelContainer.noteEditorViewModel)
-            }
-        }
-        windowController?.show()
+    func makeView() -> NoteEditorView {
+        NoteEditorView(viewModel: viewModelContainer.noteEditorViewModel)
     }
-    
-    private func hide() {
-        windowController?.close()
-        windowController = nil
-        subject.send(.togglePanel)
-    }
-    
-    private func setupBindings() {
-        subject
-            .sink { [weak self] message in
-                if message == .hideNoteEditorView {
-                    self?.hide()
-                }
-            }
-            .store(in: &cancellables)
+
+    func show() {
+        makeWindowController()
     }
 }

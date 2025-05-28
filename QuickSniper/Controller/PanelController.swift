@@ -74,7 +74,6 @@ class PanelController: NSWindowController, NSWindowDelegate {
     }
 
     func hidePanel() {
-        print("hidePanel 실행")
         guard let window = self.window, isPanelVisible else { return }
         let screen = NSScreen.main!.frame
 
@@ -97,7 +96,6 @@ class PanelController: NSWindowController, NSWindowDelegate {
     }
 
     func windowDidResignKey(_ notification: Notification) {
-        print("windowDidResignKey 작동")
         if allowAutoHide {
             hidePanel()
         }
@@ -133,7 +131,7 @@ class PanelController: NSWindowController, NSWindowDelegate {
 
     private func configurePanel(_ panel: SniperPanel) {
         panel.styleMask.insert(.nonactivatingPanel)
-        panel.level = .statusBar
+        panel.level = .floating
         panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
         panel.backgroundColor = .clear
         panel.isOpaque = false
@@ -150,7 +148,8 @@ class PanelController: NSWindowController, NSWindowDelegate {
                     self?.toggle()
                 case .pauseAutoHidePanel:
                     self?.allowAutoHide = false
-                    print("allowAutoHide: \(String(describing: self?.allowAutoHide))")
+                case .focusPanel:
+                    self?.window?.makeKeyAndOrderFront(nil)
                 default:
                     break
                 }

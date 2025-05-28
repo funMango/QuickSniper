@@ -33,7 +33,7 @@ class BaseWindowController<Content: View>: NSObject, NSWindowDelegate {
         self.subject = subject
     }
 
-    func show() {        
+    func show() {
         subject.send(.pauseAutoHidePanel)
         
         
@@ -54,7 +54,7 @@ class BaseWindowController<Content: View>: NSObject, NSWindowDelegate {
             panel.isReleasedWhenClosed = false
             panel.hidesOnDeactivate = false
             panel.isMovableByWindowBackground = true
-            panel.level = .normal
+            panel.level = .floating
             panel.center()
 
             self.window = panel
