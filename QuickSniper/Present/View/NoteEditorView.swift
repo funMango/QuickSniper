@@ -10,8 +10,6 @@ import Resolver
 
 struct NoteEditorView: View {
     @ObservedObject var viewModel: NoteEditorViewModel
-    @State private var title: String = ""
-    @State private var bodyText: String = ""
     var width: CGFloat, height: CGFloat
         
     var body: some View {
@@ -31,7 +29,7 @@ struct NoteEditorView: View {
                 }
                 
                 Button {
-                    viewModel.hide()
+                    viewModel.save()
                 } label: {
                     Text(String(localized: "save"))
                 }

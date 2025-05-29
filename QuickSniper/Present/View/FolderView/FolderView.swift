@@ -10,9 +10,9 @@ import SwiftData
 import Resolver
 
 struct FolderView: View {
-    @Query var folders: [Folder]
-    @State private var selectedFolder: Folder?
     @Injected var viewModelContainer: ViewModelContainer
+    @ObservedObject var viewModel: FolderViewModel
+    @Query var folders: [Folder]
 
     var body: some View {
         HStack {
@@ -22,9 +22,9 @@ struct FolderView: View {
                         FolderButtonView(
                             viewModel: viewModelContainer.folderButtonViewModel,
                             title: folder.name,
-                            isSelected: selectedFolder == folder,
+                            isSelected: viewModel.selectedFolder == folder,
                             folder: folder,
-                            onTap: { selectedFolder = folder }
+                            onTap: { viewModel.selectedFolder = folder }
                         )
                     }
                 }
@@ -32,15 +32,11 @@ struct FolderView: View {
         }
         .fixedSize()
         .frame(height: 40)
-        .background(Color.background)
-        .onAppear {
-            if selectedFolder == nil {
-                selectedFolder = folders.first
-            }
-        }
+        .background(Color.background)        
     }
 }
 
 #Preview {
-    FolderView()
+    @Injected var viewModelContainer: ViewModelContainer
+    FolderView(viewModel: viewModelContainer.folderViewModel)
 }

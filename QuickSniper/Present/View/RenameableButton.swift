@@ -47,7 +47,7 @@ struct RenameableButton: View {
                     }
             } else {
                 Button(action: {
-                    onTap()
+                    viewModel.selectFolder()
                 }) {
                     Text(viewModel.folder.name)
                         .lineLimit(1)

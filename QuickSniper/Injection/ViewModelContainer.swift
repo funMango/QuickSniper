@@ -15,27 +15,34 @@ final class ViewModelContainer {
     private let controllerSubject: PassthroughSubject<ControllerMessage, Never>
     private let folderSubject: CurrentValueSubject<Folder?, Never>
     private let folderEditSubject: PassthroughSubject<Folder, Never>
+    private let selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     private let geometrySubject: CurrentValueSubject<CGRect, Never>
     
     private lazy var folderRepository = DefaultFolderRepository(context: modelContext)
+    private lazy var snippetRepository = DefaultSnippetRepository(context: modelContext)
     private lazy var folderUseCase = DefaultFolderUseCase(repository: folderRepository)
+    private lazy var snippetUseCase = DefaultSnippetUseCase(repository: snippetRepository)
     
     init(
         modelContext: ModelContext,
         controllerSubject: PassthroughSubject<ControllerMessage, Never>,
         folderSubject: CurrentValueSubject<Folder?, Never>,
         folderEditSubject:PassthroughSubject<Folder, Never>,
+        selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
         geometrySubject: CurrentValueSubject<CGRect, Never>
     ){
         self.modelContext = modelContext
         self.controllerSubject = controllerSubject
         self.folderSubject = folderSubject
         self.folderEditSubject = folderEditSubject
+        self.selectedFolderSubject = selectedFolderSubject
         self.geometrySubject = geometrySubject
     }
                 
     lazy var noteEditorViewModel = NoteEditorViewModel(
-        subject: controllerSubject
+        subject: controllerSubject,
+        selectedFolderSubject: selectedFolderSubject,
+        useCase: snippetUseCase
     )
     
     lazy var createFolderViewModel = CreateFolderViewModel(
@@ -58,11 +65,17 @@ final class ViewModelContainer {
         folderEditSubject: folderEditSubject
     )
     
+    lazy var folderViewModel = FolderViewModel(
+        useCase: folderUseCase,
+        selectedFolderSubject: selectedFolderSubject
+    )
+    
     func getRenameableButtonViewModel(folder: Folder) ->  RenameableButtonViewModel{
         return RenameableButtonViewModel(
             folder: folder,
             folderUseCase: folderUseCase,
-            folderEditSubject: folderEditSubject
+            folderEditSubject: folderEditSubject,
+            selectedFolderSubject: selectedFolderSubject
         )
     }
 }

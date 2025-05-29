@@ -9,13 +9,13 @@ import SwiftUI
 import Resolver
 
 struct PanelHeaderView: View {
-    @State private var selectedFolder: String = "Documents"
     @Injected var controllerContainer: ControllerContainer
-    
-    
+    @Injected var viewModelContainer: ViewModelContainer
+    @State private var selectedFolder: String = "Documents"
+            
     var body: some View {
         HStack {
-            FolderView()
+            FolderView(viewModel: viewModelContainer.folderViewModel)
                                         
             HoverIconButton(
                 onTap: {
@@ -27,7 +27,9 @@ struct PanelHeaderView: View {
             Spacer()
             
             HoverIconButton(
-                onTap: { print("닫힘 버튼 눌림") },
+                onTap: {
+                    print("닫힘 버튼 눌림")
+                },
                 systemName: "xmark",
                 size: 14
             )

@@ -11,6 +11,7 @@ protocol FolderUseCase {
     func createFolder(name: String, type: FolderType) throws
     func updateFolder(_ folder: Folder) throws
     func deleteFolder(_ folder: Folder) throws
+    func getFirstFolder() throws -> Folder? 
 }
 
 final class DefaultFolderUseCase: FolderUseCase {
@@ -38,10 +39,12 @@ final class DefaultFolderUseCase: FolderUseCase {
         try repository.delete(folder)
     }
     
+    func getFirstFolder() throws -> Folder? {
+        return try repository.fetchAll().first
+    }
+            
     private func getOrder() throws -> Int {
-        do {
-            return try repository.fetchAll().count
-        }
+        return try repository.fetchAll().count
     }
     
     private func getFolder(name: String, type: FolderType, order: Int) -> Folder {

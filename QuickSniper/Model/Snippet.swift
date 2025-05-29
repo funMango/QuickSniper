@@ -23,4 +23,8 @@ class Snippet {
         self.body = body
         self.order = order
     }
+    
+    func setFolderId(_ folderId: String) {
+        self.folderId = folderId
+    }
 }

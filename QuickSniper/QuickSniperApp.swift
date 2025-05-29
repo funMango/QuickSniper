@@ -82,6 +82,7 @@ struct QuickSniperApp: App {
             let controllerSubject = PassthroughSubject<ControllerMessage, Never>()
             let folderSubject = CurrentValueSubject<Folder?, Never>(nil)
             let folderEditSubject = PassthroughSubject<Folder, Never>()
+            let selectedFolderSubject = CurrentValueSubject<Folder?, Never>(nil)
             let geometrySubject = CurrentValueSubject<CGRect, Never>(.zero)
             
             let viewModelContainer = ViewModelContainer(
@@ -89,6 +90,7 @@ struct QuickSniperApp: App {
                 controllerSubject: controllerSubject,
                 folderSubject: folderSubject,
                 folderEditSubject: folderEditSubject,
+                selectedFolderSubject: selectedFolderSubject,
                 geometrySubject: geometrySubject
             )
             

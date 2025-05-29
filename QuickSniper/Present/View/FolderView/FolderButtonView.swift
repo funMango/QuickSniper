@@ -41,7 +41,7 @@ struct FolderButtonView: View {
     var body: some View {
         HStack(spacing: 10) {
             RenameableButton(
-                viewModel: viewModelContainer.getRenameableButtonViewModel(folder: folder),                
+                viewModel: viewModelContainer.getRenameableButtonViewModel(folder: folder),
                 isSelected: isSelected,
                 title: title,
                 onTap: onTap

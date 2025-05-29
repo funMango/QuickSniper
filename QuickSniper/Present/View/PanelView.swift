@@ -24,40 +24,7 @@ struct PanelView: View {
                 .padding(.horizontal)
 
             // 카드 스크롤 뷰
-            ScrollView(.horizontal, showsIndicators: true) {
-                HStack(alignment: .top, spacing: 12) {
-                    ForEach(SnippetStore.shared.snippets) { snippet in
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(snippet.title)
-                                .font(.title3)
-                                .foregroundStyle(.mainText)
-                                .padding(.bottom, 7)
-                            Text(snippet.body)                                
-                                .foregroundColor(.subText)
-                        }
-                        .padding()
-                        .frame(width: 240, height: 150, alignment: .topLeading)
-                        .background(.subBackground)
-                    }
-                    .padding(.trailing, 10)
-                    
-                    VStack() {
-                        Spacer()
-                        HoverIconButton(
-                            onTap: {container.noteEditorController.show()},
-                            systemName: "plus",
-                            size: 30
-                        )
-                        Spacer()
-                    }                    
-                    
-                }
-                .frame(maxHeight: 150)
-                .padding()
-                .padding(.bottom)
-            }
-            
-            
+            SnippetScrollView()
         }
         .background(
             Color(.background)
