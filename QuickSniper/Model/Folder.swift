@@ -26,4 +26,8 @@ final class Folder: Equatable{
         self.type = type
         self.order = order
     }
+    
+    func changeName(_ name: String) {
+        self.name = name
+    }
 }

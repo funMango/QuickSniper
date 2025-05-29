@@ -30,21 +30,21 @@ struct RenameableButton: View {
     var body: some View {
         Group {
             if viewModel.isRenaming {
-                TextField("", text: $viewModel.buttonText){
-                    
-                }
-                .textFieldStyle(.roundedBorder)
-                .focused($isTextFieldFocused)
-                .frame(width: 100)
-                .onAppear {
-                    DispatchQueue.main.async { isTextFieldFocused = true }
-                }
-                .onSubmit {
-                    viewModel.cancelRenaming()
-                }
-                .onExitCommand {                    
-                    viewModel.cancelRenaming()
-                }
+                TextField("", text: $viewModel.buttonText)
+                    .textFieldStyle(.roundedBorder)
+                    .focused($isTextFieldFocused)
+                    .frame(width: 100)
+                    .onAppear {
+                        DispatchQueue.main.async { isTextFieldFocused = true }
+                    }
+                    .onSubmit {
+                        viewModel.updateFolderName()
+                        viewModel.cancelRenaming()
+                    }
+                    .onExitCommand {
+                        viewModel.updateFolderName()
+                        viewModel.cancelRenaming()
+                    }
             } else {
                 Button(action: {
                     onTap()
@@ -58,13 +58,8 @@ struct RenameableButton: View {
                 .buttonStyle(PlainButtonStyle())
             }
         }
-//        .onChange(of: $viewModel.isRenaming) {
-//            
-//        }
     }
 }
-
-
 
 //#Preview {
 //    RenameableButton(isRenaming: .constant(false))

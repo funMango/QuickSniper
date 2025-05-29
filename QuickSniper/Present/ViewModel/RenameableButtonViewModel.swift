@@ -34,6 +34,15 @@ final class RenameableButtonViewModel: ObservableObject {
         self.isRenaming = false
     }
     
+    func updateFolderName() {
+        folder.changeName(buttonText)
+        do {
+            try folderUseCase.updateFolder(folder)
+        } catch {
+            print("[ERROR]: folder name update error: \(error)")
+        }
+    }
+    
     private func setupBindings() {
         folderEditSubject
             .sink { [weak self] folder in
@@ -46,6 +55,5 @@ final class RenameableButtonViewModel: ObservableObject {
     
     private func isSameFolder(_ target: Folder) -> Bool {
         return target.id == folder.id
-    }
-    
+    }    
 }
