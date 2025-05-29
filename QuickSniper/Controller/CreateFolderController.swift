@@ -17,6 +17,8 @@ final class CreateFolderController: ViewWindowControllable {
     let hideMessage: ControllerMessage = .hideCreateFolderView
     var windowController: BaseWindowController<CreateFolderView>?
     var cancellables = Set<AnyCancellable>()
+    private var width: CGFloat = 400, height: CGFloat =  250
+                
 
     init(subject: PassthroughSubject<ControllerMessage, Never>) {
         self.subject = subject
@@ -24,10 +26,14 @@ final class CreateFolderController: ViewWindowControllable {
     }
 
     func makeView() -> CreateFolderView {
-        CreateFolderView(viewModel: viewModelContainer.createFolderViewModel)
+        CreateFolderView(
+            viewModel: viewModelContainer.createFolderViewModel,
+            width: width,
+            height: height
+        )
     }
 
     func show() {
-        makeWindowController()
+        makeWindowController(size: CGSize(width: width, height: height))
     }
 }

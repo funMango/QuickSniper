@@ -12,6 +12,7 @@ struct NoteEditorView: View {
     @ObservedObject var viewModel: NoteEditorViewModel
     @State private var title: String = ""
     @State private var bodyText: String = ""
+    var width: CGFloat, height: CGFloat
         
     var body: some View {
         VStack {
@@ -74,11 +75,15 @@ struct NoteEditorView: View {
         .background(
             VisualEffectView(material: .hudWindow, blendingMode: .behindWindow)
         )
-        .frame(width: 600, height: 700)
+        .frame(width: width, height: height)
     }
 }
 
 #Preview {
     @Injected var viewModelContainer: ViewModelContainer
-    NoteEditorView(viewModel: viewModelContainer.noteEditorViewModel)
+    NoteEditorView(
+        viewModel: viewModelContainer.noteEditorViewModel,
+        width: 450,
+        height: 600
+    )
 }

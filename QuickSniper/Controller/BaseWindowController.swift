@@ -22,20 +22,22 @@ class BaseWindowController<Content: View>: NSObject, NSWindowDelegate {
     private let size: CGSize
     private let subject: PassthroughSubject<ControllerMessage, Never>
     private var cancellables = Set<AnyCancellable>()
+    private var origin: CGPoint? = nil
 
     init(
         size: CGSize,
         subject: PassthroughSubject<ControllerMessage, Never>,
+        origin: CGPoint? = nil,
         @ViewBuilder content: @escaping () -> Content,
     ) {
         self.size = size
+        self.origin = origin
         self.content = content
         self.subject = subject
     }
 
     func show() {
         subject.send(.pauseAutoHidePanel)
-        
         
         if window == nil {
             let hostingView = NSHostingView(rootView: content())
@@ -55,13 +57,24 @@ class BaseWindowController<Content: View>: NSObject, NSWindowDelegate {
             panel.hidesOnDeactivate = false
             panel.isMovableByWindowBackground = true
             panel.level = .floating
-            panel.center()
-
+                        
+            if let origin = origin {                
+                panel.setFrameOrigin(getCalculatedOrigin(origin: origin))
+            } else {
+                panel.center()
+            }
+                        
             self.window = panel
         }
                 
         self.window?.makeKeyAndOrderFront(nil)
         NSApp.activate(ignoringOtherApps: true)
+    }
+    
+    private func getCalculatedOrigin(origin: CGPoint) -> NSPoint {
+        let realY = origin.y + size.height + 32.0 / 2
+        let realX = origin.x + 55.5 / 2
+        return NSPoint(x: realX, y: realY)
     }
     
     func close() {

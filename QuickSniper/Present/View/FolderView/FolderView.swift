@@ -23,7 +23,8 @@ struct FolderView: View {
                             viewModel: viewModelContainer.folderButtonViewModel,
                             title: folder.name,
                             isSelected: selectedFolder == folder,
-                            folder: folder
+                            folder: folder,
+                            onTap: { selectedFolder = folder }
                         )
                     }
                 }

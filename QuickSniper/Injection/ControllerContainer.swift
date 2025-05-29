@@ -9,13 +9,19 @@ import Foundation
 import Combine
 
 final class ControllerContainer {
-    private let subject: PassthroughSubject<ControllerMessage, Never>
+    private let controllSubject: PassthroughSubject<ControllerMessage, Never>
+    private let geometrySubject: CurrentValueSubject<CGRect, Never>
+    // var editFolderController: EditFolderController?
     
-    init(subject: PassthroughSubject<ControllerMessage, Never>) {
-        self.subject = subject
+    init(
+        controllSubject: PassthroughSubject<ControllerMessage, Never>,
+        geometrySubject: CurrentValueSubject<CGRect, Never>
+    ) {
+        self.controllSubject = controllSubject
+        self.geometrySubject = geometrySubject        
     }
     
-    lazy var panelController = PanelController(subject: subject)
-    lazy var noteEditorController = NoteEditorController(subject: subject)
-    lazy var createFolderController = CreateFolderController(subject: subject)
+    lazy var panelController = PanelController(subject: controllSubject)
+    lazy var noteEditorController = NoteEditorController(subject: controllSubject)
+    lazy var createFolderController = CreateFolderController(subject: controllSubject)
 }

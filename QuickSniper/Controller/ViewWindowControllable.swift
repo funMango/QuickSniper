@@ -20,11 +20,12 @@ protocol ViewWindowControllable: AnyObject {
 }
 
 extension ViewWindowControllable {
-    func makeWindowController() {
+    func makeWindowController(origin: CGPoint? = nil, size: CGSize) {
         if windowController == nil {
             windowController = BaseWindowController(
-                size: CGSize(width: 600, height: 500),
+                size: size,
                 subject: subject,
+                origin: origin,
                 content: makeView
             )
         }

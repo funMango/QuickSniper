@@ -10,7 +10,9 @@ import Resolver
 
 struct CreateFolderView: View {
     @ObservedObject var viewModel: CreateFolderViewModel
-    
+    var width: CGFloat
+    var height: CGFloat
+            
     var body: some View {
         VStack(spacing: 20) {
             HStack {
@@ -58,11 +60,15 @@ struct CreateFolderView: View {
             }
         }
         .padding()
-        .frame(width: 400, height: 250)
+        .frame(width: width, height: height)
         .background(Color.background)
     }
 }
 #Preview {
     @Injected var viewModelcontainer: ViewModelContainer
-    CreateFolderView(viewModel: viewModelcontainer.createFolderViewModel)
+    CreateFolderView(
+        viewModel: viewModelcontainer.createFolderViewModel,
+        width: 400,
+        height: 250
+    )
 }
