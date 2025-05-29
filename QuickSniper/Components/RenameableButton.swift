@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct RenameableButton: View {
-    @ObservedObject var viewModel: RenameableButtonViewModel
+    @StateObject var viewModel: RenameableButtonViewModel
     @FocusState private var isTextFieldFocused: Bool
-    @State private var isRenaming = false
     
     var isSelected: Bool
     var title: String
@@ -22,7 +21,7 @@ struct RenameableButton: View {
         title: String,
         onTap: @escaping () -> Void
     ) {
-        self.viewModel = viewModel
+        _viewModel = StateObject(wrappedValue: viewModel)
         self.isSelected = isSelected
         self.title = title
         self.onTap = onTap
@@ -31,8 +30,8 @@ struct RenameableButton: View {
     var body: some View {
         Group {
             if viewModel.isRenaming {
-                TextField("", text: $viewModel.buttonText) {
-                    viewModel.toggleRenaming()
+                TextField("", text: $viewModel.buttonText){
+                    
                 }
                 .textFieldStyle(.roundedBorder)
                 .focused($isTextFieldFocused)
@@ -41,10 +40,10 @@ struct RenameableButton: View {
                     DispatchQueue.main.async { isTextFieldFocused = true }
                 }
                 .onSubmit {
-                    viewModel.toggleRenaming()
+                    viewModel.cancelRenaming()
                 }
-                .onExitCommand {
-                    viewModel.toggleRenaming()
+                .onExitCommand {                    
+                    viewModel.cancelRenaming()
                 }
             } else {
                 Button(action: {
@@ -59,8 +58,13 @@ struct RenameableButton: View {
                 .buttonStyle(PlainButtonStyle())
             }
         }
+//        .onChange(of: $viewModel.isRenaming) {
+//            
+//        }
     }
 }
+
+
 
 //#Preview {
 //    RenameableButton(isRenaming: .constant(false))

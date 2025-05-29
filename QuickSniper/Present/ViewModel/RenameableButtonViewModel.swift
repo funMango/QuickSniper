@@ -14,14 +14,14 @@ final class RenameableButtonViewModel: ObservableObject {
     @Published var isRenaming: Bool = false
         
     private var folderUseCase: FolderUseCase
-    private var folderEditSubject: CurrentValueSubject<Folder?, Never>
+    private var folderEditSubject: PassthroughSubject<Folder, Never>
     private var cancellables = Set<AnyCancellable>()
     var folder: Folder
     
     init(
         folder: Folder,
         folderUseCase: FolderUseCase,
-        folderEditSubject: CurrentValueSubject<Folder?, Never>
+        folderEditSubject: PassthroughSubject<Folder, Never>
     ) {
         self.folder = folder
         self.buttonText = folder.name
@@ -30,16 +30,14 @@ final class RenameableButtonViewModel: ObservableObject {
         setupBindings()
     }
     
-    func toggleRenaming() {
-        self.isRenaming.toggle()
+    func cancelRenaming() {
+        self.isRenaming = false
     }
     
     private func setupBindings() {
         folderEditSubject
             .sink { [weak self] folder in
-                guard let folder = folder else { return }
-                
-                if self?.isSameFolder(folder) == true {
+                if self?.isSameFolder(folder) == true {                    
                     self?.isRenaming = true
                 }
             }

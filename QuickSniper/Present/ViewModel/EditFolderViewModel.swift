@@ -10,14 +10,14 @@ import Combine
 
 class EditFolderViewModel: ObservableObject {
     private var folderSubject: CurrentValueSubject<Folder?, Never>
-    private var folderEditSubject: CurrentValueSubject<Folder?, Never>
+    private var folderEditSubject: PassthroughSubject<Folder, Never>
     private var cancellables = Set<AnyCancellable>()
     private var folder: Folder?
     
     
     init(
         folderSubject: CurrentValueSubject<Folder?, Never>,
-        folderEditSubject: CurrentValueSubject<Folder?, Never>
+        folderEditSubject: PassthroughSubject<Folder, Never>
     ) {
         self.folderSubject = folderSubject
         self.folderEditSubject = folderEditSubject

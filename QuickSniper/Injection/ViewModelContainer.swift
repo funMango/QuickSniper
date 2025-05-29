@@ -14,7 +14,7 @@ final class ViewModelContainer {
     
     private let controllerSubject: PassthroughSubject<ControllerMessage, Never>
     private let folderSubject: CurrentValueSubject<Folder?, Never>
-    private let folderEditSubject: CurrentValueSubject<Folder?, Never>
+    private let folderEditSubject: PassthroughSubject<Folder, Never>
     private let geometrySubject: CurrentValueSubject<CGRect, Never>
     
     private lazy var folderRepository = DefaultFolderRepository(context: modelContext)
@@ -24,7 +24,7 @@ final class ViewModelContainer {
         modelContext: ModelContext,
         controllerSubject: PassthroughSubject<ControllerMessage, Never>,
         folderSubject: CurrentValueSubject<Folder?, Never>,
-        folderEditSubject:CurrentValueSubject<Folder?, Never>,
+        folderEditSubject:PassthroughSubject<Folder, Never>,
         geometrySubject: CurrentValueSubject<CGRect, Never>
     ){
         self.modelContext = modelContext
