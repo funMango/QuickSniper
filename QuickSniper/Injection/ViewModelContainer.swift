@@ -70,6 +70,10 @@ final class ViewModelContainer {
         selectedFolderSubject: selectedFolderSubject
     )
     
+    lazy var snippetScrollViewModel = SnippetScrollViewModel(
+        selectedFolderSubject: selectedFolderSubject
+    )
+    
     func getRenameableButtonViewModel(folder: Folder) ->  RenameableButtonViewModel{
         return RenameableButtonViewModel(
             folder: folder,

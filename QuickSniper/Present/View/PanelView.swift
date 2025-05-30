@@ -10,7 +10,8 @@ import SwiftUI
 import Resolver
 
 struct PanelView: View {    
-    @Injected var container: ControllerContainer
+    @Injected var controllerContainer: ControllerContainer
+    @Injected var viewModelContainer: ViewModelContainer
     @State private var selectedFolder: String = "Documents"
     
     var body: some View {
@@ -24,7 +25,9 @@ struct PanelView: View {
                 .padding(.horizontal)
 
             // 카드 스크롤 뷰
-            SnippetScrollView()
+            SnippetScrollView(
+                viewModel: viewModelContainer.snippetScrollViewModel
+            )
         }
         .background(
             Color(.background)

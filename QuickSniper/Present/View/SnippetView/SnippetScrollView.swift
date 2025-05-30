@@ -7,14 +7,21 @@
 
 import SwiftUI
 import Resolver
+import SwiftData
 
 struct SnippetScrollView: View {
     @Injected var container: ControllerContainer
+    @StateObject var viewModel: SnippetScrollViewModel
+    @Query var snippets: [Snippet]
+    
+    init(viewModel: SnippetScrollViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: true) {
-            HStack(alignment: .top, spacing: 12) {
-                ForEach(SnippetStore.shared.snippets) { snippet in
+            HStack(alignment: .top, spacing: 12) {                                                  
+                ForEach(viewModel.snippets, id: \.id) { snippet in
                     VStack(alignment: .leading, spacing: 4) {
                         Text(snippet.title)
                             .font(.title3)
@@ -28,7 +35,7 @@ struct SnippetScrollView: View {
                     .background(.subBackground)
                 }
                 .padding(.trailing, 10)
-                
+                                                              
                 VStack() {
                     Spacer()
                     HoverIconButton(
@@ -40,13 +47,24 @@ struct SnippetScrollView: View {
                 }
                 
             }
-            .frame(maxHeight: 150)
+            .frame(height: 150)
             .padding()
             .padding(.bottom)
+        }
+        .onAppear() {
+            DispatchQueue.main.async {
+                viewModel.getSnippets(snippets)
+            }
+        }
+        .onChange(of: snippets) {oldSnippets, newSnippets in
+            DispatchQueue.main.async {
+                viewModel.getSnippets(newSnippets)
+            }
         }
     }
 }
 
 #Preview {
-    SnippetScrollView()
+    @Injected var viewModelContainer: ViewModelContainer
+    SnippetScrollView(viewModel: viewModelContainer.snippetScrollViewModel)
 }

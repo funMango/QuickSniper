@@ -28,7 +28,9 @@ final class FolderViewModel: ObservableObject {
         do {
             let folder = try useCase.getFirstFolder()
             self.selectedFolder = folder
-            selectedFolderSubject.send(folder)
+            DispatchQueue.main.async { [weak self] in
+                self?.selectedFolderSubject.send(folder)
+            }
         } catch {
             print("[ERROR]: FolderViewModel - setSelectedFolder: \(error)")
         }
