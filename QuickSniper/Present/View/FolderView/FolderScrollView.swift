@@ -9,7 +9,7 @@ import SwiftUI
 import SwiftData
 import Resolver
 
-struct FolderView: View {
+struct FolderScrollView: View {
     @Injected var viewModelContainer: ViewModelContainer
     @ObservedObject var viewModel: FolderViewModel
     @Query var folders: [Folder]
@@ -19,7 +19,7 @@ struct FolderView: View {
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 10) {
                     ForEach(folders, id: \.self) { folder in
-                        FolderButtonView(
+                        FolderButtonBackgroundView(
                             viewModel: viewModelContainer.folderButtonViewModel,
                             title: folder.name,
                             isSelected: viewModel.selectedFolder == folder,
@@ -32,11 +32,11 @@ struct FolderView: View {
         }
         .fixedSize()
         .frame(height: 40)
-        .background(Color.background)        
+        .background(Color.clear)                    
     }
 }
 
 #Preview {
     @Injected var viewModelContainer: ViewModelContainer
-    FolderView(viewModel: viewModelContainer.folderViewModel)
+    FolderScrollView(viewModel: viewModelContainer.folderViewModel)
 }

@@ -20,39 +20,31 @@ struct MultiLineTextFieldView: View {
     @FocusState private var isFocused: Bool
 
     var body: some View {
-        ZStack(alignment: .topLeading) {
-            TextEditor(text: Binding(
-                get: { text },
-                set: { newValue in
-                    if type == .singleLine {
-                        text = newValue.replacingOccurrences(of: "\n", with: "")
-                    } else {
-                        text = newValue
-                    }
+        TextEditor(text: Binding(
+            get: { text },
+            set: { newValue in
+                if type == .singleLine {
+                    text = newValue.replacingOccurrences(of: "\n", with: "")
+                } else {
+                    text = newValue
                 }
-            ))
-            .padding(.leading, -5)
-            .foregroundColor(.white)
-            .font(.body)
-            .scrollContentBackground(.hidden)
-            .focused($isFocused)
-            .background(
-                VisualEffectView(material: .hudWindow, blendingMode: .behindWindow)
-                    .overlay(
-                        Color.black.opacity(0.2) // ← 불투명도 조절 (0.0~1.0)
-                    )                
-            )
-                
-                            
+            }
+        ))
+        .foregroundColor(.mainText)
+        .font(.body)
+        .scrollContentBackground(.hidden)
+        .focused($isFocused)
+        .background(Color.clear)
+        .overlay(alignment: .topLeading) {
             if text.isEmpty && !isFocused {
                 Text(placeholder)
-                    .foregroundColor(.white)
-                    .font(.body)
+                    .foregroundColor(.mainText)
+                    .font(.body)                    
+                    .padding(.leading, 4)
                     .allowsHitTesting(false)
             }
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)        
-    }        
+    }
 }
 
 #Preview {

@@ -15,7 +15,7 @@ struct PanelHeaderView: View {
             
     var body: some View {
         HStack {
-            FolderView(viewModel: viewModelContainer.folderViewModel)
+            FolderScrollView(viewModel: viewModelContainer.folderViewModel)
                                         
             HoverIconButton(
                 onTap: {
@@ -34,7 +34,9 @@ struct PanelHeaderView: View {
                 size: 14
             )
         }
-        .background(Color.background)
+        .background(
+            VisualEffectView.panel
+        )
     }
 }
 

@@ -15,7 +15,7 @@ final class NoteEditorController: ViewWindowControllable {
 
     let subject: PassthroughSubject<ControllerMessage, Never>
     let hideMessage: ControllerMessage = .hideNoteEditorView
-    var windowController: BaseWindowController<NoteEditorView>?
+    var windowController: BaseWindowController<SnippetEditorView>?
     var cancellables = Set<AnyCancellable>()
     var width: CGFloat = 450, height: CGFloat = 600
 
@@ -24,8 +24,8 @@ final class NoteEditorController: ViewWindowControllable {
         setupBindings()
     }
 
-    func makeView() -> NoteEditorView {
-        NoteEditorView(
+    func makeView() -> SnippetEditorView {
+        SnippetEditorView(
             viewModel: viewModelContainer.noteEditorViewModel,
             width: width,
             height: height

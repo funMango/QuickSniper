@@ -32,7 +32,10 @@ struct SnippetScrollView: View {
                     }
                     .padding()
                     .frame(width: 240, height: 150, alignment: .topLeading)
-                    .background(.subBackground)
+                    .background(VisualEffectView.panelWithOverlay)
+                    .cornerRadius(10)
+                        
+                    
                 }
                 .padding(.trailing, 10)
                                                               

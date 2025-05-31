@@ -16,9 +16,17 @@ struct HoverIconButton: View {
         Button(action: onTap) {
             Image(systemName: systemName)
                 .font(.system(size: size, weight: .medium))
-                .foregroundColor(isHovered ? Color.point : Color.subText)
-                .frame(width: 32, height: 32)
-                .background(Color.background)
+                .foregroundColor(Color.subText)
+                .frame(width: size + 10, height: size + 10)
+                .background {
+                    if isHovered {
+                        Circle()
+                            .fill(Color.buttonHover)
+                            .animation(.easeInOut(duration: 0.2), value: isHovered)
+                    } else {
+                        Color.clear
+                    }
+                }
         }
         .buttonStyle(PlainButtonStyle())
         .onHover { hovering in

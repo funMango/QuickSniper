@@ -28,10 +28,12 @@ struct PanelView: View {
             SnippetScrollView(
                 viewModel: viewModelContainer.snippetScrollViewModel
             )
-        }
+        }        
         .background(
-            Color(.background)
+            VisualEffectView.panel
         )
+        .cornerRadius(10)
+        .clipped()
     }
 }
 

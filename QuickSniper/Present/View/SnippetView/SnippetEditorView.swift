@@ -8,33 +8,23 @@
 import SwiftUI
 import Resolver
 
-struct NoteEditorView: View {
+struct SnippetEditorView: View {
     @ObservedObject var viewModel: NoteEditorViewModel
     var width: CGFloat, height: CGFloat
         
     var body: some View {
         VStack {
             // 상단 바
-            HStack {
-                Text("Snippet")
-                    .font(.title2).bold()
-                    .foregroundStyle(.white)
-                
-                Spacer()
-                
-                Button {
-                    viewModel.hide()
-                } label: {
-                    Text(String(localized: "cancel"))
-                }
-                
-                Button {
-                    viewModel.save()
-                } label: {
-                    Text(String(localized: "save"))
-                }
-            }
-            .padding(.bottom, 10)
+//            HStack {
+//                Text("Snippet")
+//                    .font(.title2).bold()
+//                    .foregroundStyle(.mainText)
+//                
+//                Spacer()
+//                
+//                
+//            }
+            
             
             VStack {
                 VStack(alignment: .leading) {
@@ -60,26 +50,37 @@ struct NoteEditorView: View {
                 .padding(.horizontal)
                 
             }
-            .background(
-                VisualEffectView(material: .hudWindow, blendingMode: .behindWindow)
-                        .cornerRadius(20)
-                        .overlay(
-                            Color.black.opacity(0.2) // ← 불투명도 조절 (0.0~1.0)
-                                .cornerRadius(10)
-                        )                    
-            )
+            .background(VisualEffectView.panelWithOverlay)
+            .padding(.bottom, 10)
+            
+            HStack{
+                Spacer()
+                
+                Button {
+                    viewModel.hide()
+                } label: {
+                    ReturnButtonStyle(type: .cancel)
+                }
+                .buttonStyle(.plain)
+                
+                Button {
+                    viewModel.save()
+                } label: {
+                    ReturnButtonStyle(type: .save)
+                }
+                .buttonStyle(.plain)
+            }
         }
         .padding()
-        .background(
-            VisualEffectView(material: .hudWindow, blendingMode: .behindWindow)
-        )
+        .background(VisualEffectView.panel)
         .frame(width: width, height: height)
+        .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     }
 }
 
 #Preview {
     @Injected var viewModelContainer: ViewModelContainer
-    NoteEditorView(
+    SnippetEditorView(
         viewModel: viewModelContainer.noteEditorViewModel,
         width: 450,
         height: 600

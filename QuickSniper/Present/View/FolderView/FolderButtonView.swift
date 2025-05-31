@@ -1,100 +1,63 @@
 //
-//  HoverButton.swift
+//  RenamingButton.swift
 //  QuickSniper
 //
-//  Created by 이민호 on 5/24/25.
+//  Created by 이민호 on 5/29/25.
 //
 
 import SwiftUI
-import Resolver
 
 struct FolderButtonView: View {
-    @Injected var controllerContainer: ControllerContainer
-    @Injected var viewModelContainer: ViewModelContainer
-    @ObservedObject private var viewModel: FolderButtonViewModel
-    @State private var isHovered = false
-    @State private var globalFrame: CGRect = .zero
-    @State private var isRenaming = false
-    private var folder: Folder
+    @StateObject var viewModel: RenameableButtonViewModel
+    @FocusState private var isTextFieldFocused: Bool
     
-    private var isSelected: Bool
-    private var title: String
-    private let onTap: () -> Void
-        
-    private let minWidth: CGFloat = 100
-    private let maxWidth: CGFloat = 200
-        
+    var isSelected: Bool
+    var title: String
+    
     init(
-        viewModel: FolderButtonViewModel,
+        viewModel: RenameableButtonViewModel,
+        isSelected: Bool,
         title: String,
-        isSelected: Bool = false,
-        folder: Folder,
-        onTap: @escaping () -> Void
     ) {
-        self.viewModel = viewModel
-        self.title = title
+        _viewModel = StateObject(wrappedValue: viewModel)
         self.isSelected = isSelected
-        self.folder = folder
-        self.onTap = onTap
+        self.title = title        
     }
-    
+        
     var body: some View {
-        HStack(spacing: 10) {
-            RenameableButton(
-                viewModel: viewModelContainer.getRenameableButtonViewModel(folder: folder),
-                isSelected: isSelected,
-                title: title,
-                onTap: onTap
-            )
-        }
-        .padding(.horizontal, 8)
-        .background(isHovered ? Color.cardHover : Color.background)
-        .onHover { hovering in
-            withAnimation(.easeInOut(duration: 0.2)) {
-                isHovered = hovering
-                viewModel.setFolder(hovering ? folder : nil)                
+        Group {
+            if viewModel.isRenaming {
+                TextField("", text: $viewModel.buttonText)
+                    .textFieldStyle(.roundedBorder)
+                    .focused($isTextFieldFocused)
+                    .frame(width: 100)
+                    .onAppear {
+                        DispatchQueue.main.async { isTextFieldFocused = true }
+                    }
+                    .onSubmit {
+                        viewModel.updateFolderName()
+                        viewModel.cancelRenaming()
+                    }
+                    .onExitCommand {
+                        viewModel.updateFolderName()
+                        viewModel.cancelRenaming()
+                    }
+            } else {
+                Button(action: {
+                    viewModel.selectFolder()
+                }) {
+                    Text(viewModel.folder.name)
+                        .lineLimit(1)
+                        .padding(.vertical, 8)
+                        .foregroundColor(Color.subText)
+                        .contentShape(Rectangle()) // Text만큼만 클릭되는 현상 방지
+                }
+                .buttonStyle(PlainButtonStyle())
             }
         }
-        .contextMenu{
-            FolderOptionView()
-        }        
     }
 }
 
-struct SampleButtonView: View {
-    private var isSelected: Bool
-    private var title: String
-    private let onTap: () -> Void
-    
-    init(isSelected: Bool, title: String, onTap: @escaping () -> Void) {
-        self.isSelected = isSelected
-        self.title = title
-        self.onTap = onTap
-    }
-    
-    var body: some View {
-        Button {
-            onTap()
-        } label: {
-            Text(title)
-                .lineLimit(1)
-                .padding(.vertical, 8)
-                .foregroundColor(isSelected ? Color.point : Color.subText)
-        }
-        .buttonStyle(PlainButtonStyle())
-    }
-}
-
-
-#Preview {
-    @Injected var viewModelContainer: ViewModelContainer
-    
-    FolderButtonView(
-        viewModel: viewModelContainer.folderButtonViewModel,
-        title: "Folder1",
-        isSelected: false,
-        folder: Folder(name: "", type: .quickLink, order: 1),
-        onTap: {}
-    )
-    .frame(width: 200, height: 50)
-}
+//#Preview {
+//    RenameableButton(isRenaming: .constant(false))
+//}
