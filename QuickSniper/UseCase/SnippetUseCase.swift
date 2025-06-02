@@ -35,7 +35,7 @@ final class DefaultSnippetUseCase: SnippetUseCase {
         }
     }
     
-    func updateFolder(_ snippet: Snippet) throws {
+    func updateFolder(_ snippet: Snippet) throws {        
         try repository.update(snippet)
     }
 

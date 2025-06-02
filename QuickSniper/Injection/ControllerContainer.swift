@@ -39,12 +39,14 @@ extension ControllerContainer {
                 switch message {
                 case .openSnippetEditorWith(let snippet):
                     snippetEditorControllerInit(snippet)
+                    DispatchQueue.main.async { [weak self] in
+                        self?.controllSubject.send(.showSnippetEditorWith(snippet))
+                    }
                 case .openSnippetEditor:
                     snippetEditorControllerInit()
-                case .snippetEditorControllerInitWith(let snippet):
-                    controllSubject.send(.showSnippetEditorWith(snippet))
-                case .snippetEditorControllerInit:
-                    controllSubject.send(.showSnipperEditor)
+                    DispatchQueue.main.async { [weak self] in
+                        self?.controllSubject.send(.showSnipperEditor)
+                    }
                 default:
                     break
                 }
@@ -55,15 +57,6 @@ extension ControllerContainer {
     private func snippetEditorControllerInit(_ snippet: Snippet? = nil) {
         self.snippetEditorController = SnippetEditorController(
             subject: controllSubject
-        )
-        
-        DispatchQueue.main.async { [weak self] in
-            guard let self else { return }
-            if let snippet = snippet {
-                self.controllSubject.send(.snippetEditorControllerInitWith(snippet))
-            } else {
-                self.controllSubject.send(.snippetEditorControllerInit)
-            }
-        }
+        )        
     }
 }

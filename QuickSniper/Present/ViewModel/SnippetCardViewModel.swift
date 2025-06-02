@@ -24,8 +24,7 @@ final class SnippetCardViewModel: ObservableObject {
         self.snippetSubject = snippetSubject
     }
     
-    func openSnippetEditor() {
-        print("SnippetCardViewModel애서 openSnippetEditorWith(snippet) 송신")
+    func openSnippetEditor() {        
         controllSubject.send(.openSnippetEditorWith(snippet))
     }
 }

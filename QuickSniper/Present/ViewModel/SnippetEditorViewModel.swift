@@ -43,29 +43,46 @@ class SnippetEditorViewModel: ObservableObject {
             return
         }
         
-        useCase.createSnippet(
-            folderId: selectedFolder.id,
-            title: title,
-            body: content
-        )
-        
+        if let snippet = snippet  {
+            do {
+                try useCase.updateFolder(getUpdateSnippet(from: snippet))
+            } catch {
+                print()
+            }
+        } else {
+            useCase.createSnippet(
+                folderId: selectedFolder.id,
+                title: title,
+                body: content
+            )
+        }
+        resetSnippet()
         hide()
     }
     
-    func hide() {        
+    private func getUpdateSnippet(from snippet: Snippet) -> Snippet {
+        return Snippet(
+            id: snippet.id,
+            folderId: snippet.folderId,
+            title: title,
+            body: content,
+            order: snippet.order
+        )
+    }
+    
+    func hide() {
         controllSubject.send(.hideSnippetEditorView)        
     }
     
     private func resetSnippet() {
         self.title = ""
         self.content = ""
+        self.snippet = nil
     }
     
     private func setupInitialSnippet() {
-        print("snippet Editor ViewModel 초기화")
-        
         if let snippet = snippet {
-            print("snippet is not nil")
+            self.snippet = snippet
             self.title = snippet.title
             self.content = snippet.body
         }

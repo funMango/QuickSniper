@@ -26,8 +26,7 @@ final class SnippetEditorController: ViewWindowControllable {
     ) {
         self.subject = subject
         setupBindings()
-        controllMessageBindings()
-        print("SnippetEditorController init 완료")
+        controllMessageBindings()        
     }
 
     func makeView() -> SnippetEditorView {
@@ -49,7 +48,7 @@ final class SnippetEditorController: ViewWindowControllable {
                 
                 switch message {
                 case .showSnippetEditorWith(let snippet):
-                    self.snippet = snippet                    
+                    self.snippet = snippet
                     show()
                     self.snippet = nil
                 case .showSnipperEditor:

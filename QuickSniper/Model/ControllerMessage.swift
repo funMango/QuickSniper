@@ -16,9 +16,7 @@ enum ControllerMessage: Equatable {
     case focusPanel
     
     case openSnippetEditorWith(Snippet)
-    case snippetEditorControllerInitWith(Snippet)
-    case openSnippetEditor
-    case snippetEditorControllerInit
+    case openSnippetEditor    
     case showSnippetEditorWith(Snippet)
     case showSnipperEditor
 }

@@ -34,7 +34,20 @@ final class DefaultSnippetRepository: SnippetRepository {
         print("스니펫 제거: \(snippet.title)")
     }
 
-    func update(_  snippet: Snippet) throws {
+    func update(_ snippet: Snippet) throws {
+        guard let existing = try fetchAll().first(where: { $0.id == snippet.id }) else {
+            throw NSError(
+                domain: "SnippetRepository",
+                code: 404,
+                userInfo: [NSLocalizedDescriptionKey: "Snippet not found"]
+            )
+        }
+                
+        existing.title = snippet.title
+        existing.body = snippet.body
+        existing.order = snippet.order
+        existing.folderId = snippet.folderId
+
         try context.save()
     }
     
