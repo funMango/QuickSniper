@@ -9,23 +9,17 @@ import SwiftUI
 import Resolver
 
 struct SnippetEditorView: View {
-    @ObservedObject var viewModel: NoteEditorViewModel
+    @StateObject var viewModel: SnippetEditorViewModel
     var width: CGFloat, height: CGFloat
+    
+    init(viewModel: SnippetEditorViewModel, width: CGFloat, height: CGFloat) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+        self.width = width
+        self.height = height
+    }
         
     var body: some View {
         VStack {
-            // 상단 바
-//            HStack {
-//                Text("Snippet")
-//                    .font(.title2).bold()
-//                    .foregroundStyle(.mainText)
-//                
-//                Spacer()
-//                
-//                
-//            }
-            
-            
             VStack {
                 VStack(alignment: .leading) {
                     Spacer()
@@ -81,7 +75,7 @@ struct SnippetEditorView: View {
 #Preview {
     @Injected var viewModelContainer: ViewModelContainer
     SnippetEditorView(
-        viewModel: viewModelContainer.noteEditorViewModel,
+        viewModel: viewModelContainer.snippetEditorViewModel,
         width: 450,
         height: 600
     )

@@ -17,6 +17,7 @@ final class ViewModelContainer {
     private let folderEditSubject: PassthroughSubject<Folder, Never>
     private let selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     private let geometrySubject: CurrentValueSubject<CGRect, Never>
+    private let snippetSubject: PassthroughSubject<Snippet?, Never>
     
     private lazy var folderRepository = DefaultFolderRepository(context: modelContext)
     private lazy var snippetRepository = DefaultSnippetRepository(context: modelContext)
@@ -29,7 +30,8 @@ final class ViewModelContainer {
         folderSubject: CurrentValueSubject<Folder?, Never>,
         folderEditSubject:PassthroughSubject<Folder, Never>,
         selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
-        geometrySubject: CurrentValueSubject<CGRect, Never>
+        geometrySubject: CurrentValueSubject<CGRect, Never>,
+        snippetSubject: PassthroughSubject<Snippet?, Never>
     ){
         self.modelContext = modelContext
         self.controllerSubject = controllerSubject
@@ -37,9 +39,10 @@ final class ViewModelContainer {
         self.folderEditSubject = folderEditSubject
         self.selectedFolderSubject = selectedFolderSubject
         self.geometrySubject = geometrySubject
+        self.snippetSubject = snippetSubject
     }
                 
-    lazy var noteEditorViewModel = NoteEditorViewModel(
+    lazy var snippetEditorViewModel = SnippetEditorViewModel(
         subject: controllerSubject,
         selectedFolderSubject: selectedFolderSubject,
         useCase: snippetUseCase
@@ -73,6 +76,28 @@ final class ViewModelContainer {
     lazy var snippetScrollViewModel = SnippetScrollViewModel(
         selectedFolderSubject: selectedFolderSubject
     )
+    
+    lazy var snippetPlusButtonViewModel = SnippetPlusButtonViewModel(
+        controllSubject: controllerSubject,
+        snippetSubject: snippetSubject
+    )
+    
+    func getSnippetEditorViewModel(snippet: Snippet? = nil) -> SnippetEditorViewModel{
+        return SnippetEditorViewModel(
+            subject: controllerSubject,
+            selectedFolderSubject: selectedFolderSubject,
+            useCase: snippetUseCase,
+            snippet: snippet
+        )
+    }
+    
+    func getSnippetCardViewModel(snippet: Snippet) -> SnippetCardViewModel{
+        return SnippetCardViewModel(
+            snippet: snippet,
+            controllSubject: controllerSubject,
+            snippetSubject: snippetSubject
+        )
+    }
     
     func getRenameableButtonViewModel(folder: Folder) ->  RenameableButtonViewModel{
         return RenameableButtonViewModel(

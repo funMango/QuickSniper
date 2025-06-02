@@ -11,6 +11,7 @@ import SwiftData
 
 struct SnippetScrollView: View {
     @Injected var container: ControllerContainer
+    @Injected var viewModelContainer: ViewModelContainer
     @StateObject var viewModel: SnippetScrollViewModel
     @Query var snippets: [Snippet]
     
@@ -22,27 +23,20 @@ struct SnippetScrollView: View {
         ScrollView(.horizontal, showsIndicators: true) {
             HStack(alignment: .top, spacing: 12) {                                                  
                 ForEach(viewModel.snippets, id: \.id) { snippet in
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(snippet.title)
-                            .font(.title3)
-                            .foregroundStyle(.mainText)
-                            .padding(.bottom, 7)
-                        Text(snippet.body)
-                            .foregroundColor(.subText)
-                    }
+                    SnippetCardView(
+                        viewModel: viewModelContainer.getSnippetCardViewModel(snippet: snippet)
+                    )
                     .padding()
                     .frame(width: 240, height: 150, alignment: .topLeading)
                     .background(VisualEffectView.panelWithOverlay)
                     .cornerRadius(10)
-                        
-                    
                 }
                 .padding(.trailing, 10)
                                                               
                 VStack() {
-                    Spacer()
-                    HoverIconButton(
-                        onTap: {container.noteEditorController.show()},
+                    Spacer()                    
+                    SnippetPlusButtonView(
+                        viewModel: viewModelContainer.snippetPlusButtonViewModel,
                         systemName: "plus",
                         size: 30
                     )

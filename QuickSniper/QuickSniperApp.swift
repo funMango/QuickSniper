@@ -84,6 +84,7 @@ struct QuickSniperApp: App {
             let folderEditSubject = PassthroughSubject<Folder, Never>()
             let selectedFolderSubject = CurrentValueSubject<Folder?, Never>(nil)
             let geometrySubject = CurrentValueSubject<CGRect, Never>(.zero)
+            let snippetSubject = PassthroughSubject<Snippet?, Never>()
             
             let viewModelContainer = ViewModelContainer(
                 modelContext: context,
@@ -91,12 +92,14 @@ struct QuickSniperApp: App {
                 folderSubject: folderSubject,
                 folderEditSubject: folderEditSubject,
                 selectedFolderSubject: selectedFolderSubject,
-                geometrySubject: geometrySubject
+                geometrySubject: geometrySubject,
+                snippetSubject: snippetSubject
             )
             
             let controllerConntainer = ControllerContainer(
                 controllSubject: controllerSubject,
-                geometrySubject: geometrySubject
+                geometrySubject: geometrySubject,
+                snippetSubject: snippetSubject
             )
                 
             Resolver.register { controllerConntainer }.scope(.application)
