@@ -82,7 +82,6 @@ class SnippetEditorViewModel: ObservableObject {
     
     private func setupInitialSnippet() {
         if let snippet = snippet {
-            self.snippet = snippet
             self.title = snippet.title
             self.content = snippet.body
         }

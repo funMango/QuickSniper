@@ -13,6 +13,7 @@ protocol SnippetRepository {
     func delete(_ folsnippetder: Snippet) throws
     func update(_ snippet: Snippet) throws
     func fetchAll() throws -> [Snippet]
+    func fetchByFolderId(_ folderId: String) throws -> [Snippet]
 }
 
 final class DefaultSnippetRepository: SnippetRepository {
@@ -53,6 +54,14 @@ final class DefaultSnippetRepository: SnippetRepository {
     
     func fetchAll() throws -> [Snippet] {
         let descriptor = FetchDescriptor<Snippet>(sortBy: [SortDescriptor(\.order)])
+        return try context.fetch(descriptor)
+    }
+    
+    func fetchByFolderId(_ folderId: String) throws -> [Snippet] {
+        let descriptor = FetchDescriptor<Snippet>(
+            predicate: #Predicate { $0.folderId == folderId },
+            sortBy: [SortDescriptor(\.order)]
+        )
         return try context.fetch(descriptor)
     }
 }

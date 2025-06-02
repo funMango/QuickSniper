@@ -22,7 +22,7 @@ final class DefaultSnippetUseCase: SnippetUseCase {
     
     func createSnippet(folderId: String, title: String, body: String) {
         do {
-            let order = try repository.fetchAll().count
+            let order = try repository.fetchByFolderId(folderId).count
             let snippet = Snippet(
                 folderId: folderId,
                 title: title,
@@ -35,7 +35,7 @@ final class DefaultSnippetUseCase: SnippetUseCase {
         }
     }
     
-    func updateFolder(_ snippet: Snippet) throws {        
+    func updateFolder(_ snippet: Snippet) throws {
         try repository.update(snippet)
     }
 
