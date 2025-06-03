@@ -8,14 +8,14 @@
 import SwiftUI
 import Resolver
 
-struct DeleteFolderView: View {
-    @ObservedObject var viewModel: DeleteFolderViewModel
+struct FolderDeleteButtonView: View {
+    @ObservedObject var viewModel: FolderDeleteButtonViewModel
             
     var body: some View {
         Button {            
             viewModel.deleteFolder()
         } label: {
-            FolderMenuItem(
+            OptionButtonStyle(
                 systemName: "trash",
                 title: "deleteFolder"
             )
@@ -26,5 +26,5 @@ struct DeleteFolderView: View {
 
 #Preview {
     @Injected var viewModelContainer: ViewModelContainer
-    DeleteFolderView(viewModel: viewModelContainer.deleteFolderViewModel)
+    FolderDeleteButtonView(viewModel: viewModelContainer.folderDeleteButtonViewModel)
 }

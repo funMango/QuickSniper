@@ -18,8 +18,8 @@ struct FolderOptionView: View {
                 viewModel: viewModelContainer.editFolderViewModel
             )
             
-            DeleteFolderView(
-                viewModel: viewModelContainer.deleteFolderViewModel
+            FolderDeleteButtonView(
+                viewModel: viewModelContainer.folderDeleteButtonViewModel
             )
         }
     }

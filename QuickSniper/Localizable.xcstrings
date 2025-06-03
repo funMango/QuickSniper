@@ -38,6 +38,17 @@
         }
       }
     },
+    "deleteSnippet" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "스니펫 삭제"
+          }
+        }
+      }
+    },
     "inputContent" : {
       "extractionState" : "manual",
       "localizations" : {

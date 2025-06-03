@@ -9,16 +9,12 @@ import Foundation
 import Combine
 
 final class SnippetPlusButtonViewModel: ObservableObject {
-    private var controllSubject: PassthroughSubject<ControllerMessage, Never>
-    private var snippetSubject: PassthroughSubject<Snippet?, Never>
-    private var cancellables = Set<AnyCancellable>()
+    private var controllSubject: PassthroughSubject<ControllerMessage, Never>    
     
     init(
         controllSubject: PassthroughSubject<ControllerMessage, Never>,
-        snippetSubject: PassthroughSubject<Snippet?, Never>
     ) {
         self.controllSubject = controllSubject
-        self.snippetSubject = snippetSubject
     }
     
     func openSnippetEditor() {

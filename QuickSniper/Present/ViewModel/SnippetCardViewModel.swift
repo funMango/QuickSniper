@@ -11,13 +11,13 @@ import Combine
 final class SnippetCardViewModel: ObservableObject {
     @Published var snippet: Snippet
     private let controllSubject: PassthroughSubject<ControllerMessage, Never>
-    private let snippetSubject: PassthroughSubject<Snippet?, Never>
+    private let snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
     private var cancellables = Set<AnyCancellable>()
         
     init(
         snippet: Snippet,
         controllSubject: PassthroughSubject<ControllerMessage, Never>,
-        snippetSubject: PassthroughSubject<Snippet?, Never>
+        snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
     ) {
         self.snippet = snippet
         self.controllSubject = controllSubject
@@ -26,5 +26,9 @@ final class SnippetCardViewModel: ObservableObject {
     
     func openSnippetEditor() {        
         controllSubject.send(.openSnippetEditorWith(snippet))
+    }
+    
+    func sendSelectedSnippet() {
+        snippetSubject.send(.snippetHovering(snippet))
     }
 }

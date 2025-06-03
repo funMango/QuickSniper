@@ -45,7 +45,7 @@ class SnippetEditorViewModel: ObservableObject {
         
         if let snippet = snippet  {
             do {
-                try useCase.updateFolder(getUpdateSnippet(from: snippet))
+                try useCase.updateSnippet(getUpdateSnippet(from: snippet))
             } catch {
                 print()
             }

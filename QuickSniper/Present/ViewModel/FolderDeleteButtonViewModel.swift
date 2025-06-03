@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-final class DeleteFolderViewModel: ObservableObject {
+final class FolderDeleteButtonViewModel: ObservableObject {
     private var folderSubject: CurrentValueSubject<Folder?, Never>
     private var folderUseCase: FolderUseCase
     private var cancellables = Set<AnyCancellable>()

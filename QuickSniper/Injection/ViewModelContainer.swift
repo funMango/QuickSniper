@@ -17,15 +17,15 @@ final class ViewModelContainer {
     private let folderEditSubject: PassthroughSubject<Folder, Never>
     private let selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     private let geometrySubject: CurrentValueSubject<CGRect, Never>
-    private let snippetSubject: PassthroughSubject<Snippet?, Never>
+    private let snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
+    
+    private var snippetCardViewModelCache: [String: SnippetCardViewModel] = [:]
     
     private lazy var folderRepository = DefaultFolderRepository(context: modelContext)
     private lazy var snippetRepository = DefaultSnippetRepository(context: modelContext)
     private lazy var folderUseCase = DefaultFolderUseCase(repository: folderRepository)
     private lazy var snippetUseCase = DefaultSnippetUseCase(repository: snippetRepository)
-    
-    private var snippetCardViewModelCache: [String: SnippetCardViewModel] = [:]
-    
+            
     init(
         modelContext: ModelContext,
         controllerSubject: PassthroughSubject<ControllerMessage, Never>,
@@ -33,7 +33,7 @@ final class ViewModelContainer {
         folderEditSubject:PassthroughSubject<Folder, Never>,
         selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
         geometrySubject: CurrentValueSubject<CGRect, Never>,
-        snippetSubject: PassthroughSubject<Snippet?, Never>
+        snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
     ){
         self.modelContext = modelContext
         self.controllerSubject = controllerSubject
@@ -60,7 +60,7 @@ final class ViewModelContainer {
         geometrySubject: geometrySubject
     )
     
-    lazy var deleteFolderViewModel = DeleteFolderViewModel(
+    lazy var folderDeleteButtonViewModel = FolderDeleteButtonViewModel(
         folderSubject: folderSubject,
         folderUseCase: folderUseCase,
     )
@@ -80,10 +80,14 @@ final class ViewModelContainer {
     )
     
     lazy var snippetPlusButtonViewModel = SnippetPlusButtonViewModel(
-        controllSubject: controllerSubject,
-        snippetSubject: snippetSubject
+        controllSubject: controllerSubject        
     )
     
+    lazy var snippetDeleteButtonViewModel = SnippetDeleteButtonViewModel(
+        snippetUseCase: snippetUseCase,
+        snippetSubject: snippetSubject
+    )
+        
     func getSnippetEditorViewModel(snippet: Snippet? = nil) -> SnippetEditorViewModel{
         return SnippetEditorViewModel(
             subject: controllerSubject,

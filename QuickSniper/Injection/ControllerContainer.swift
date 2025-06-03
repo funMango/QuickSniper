@@ -10,19 +10,16 @@ import Combine
 
 final class ControllerContainer {
     private let controllSubject: PassthroughSubject<ControllerMessage, Never>
-    private let geometrySubject: CurrentValueSubject<CGRect, Never>
-    private let snippetSubject: PassthroughSubject<Snippet?, Never>
+    private let geometrySubject: CurrentValueSubject<CGRect, Never>    
     private var snippetEditorController: SnippetEditorController?
     private var cancellables = Set<AnyCancellable>()
                 
     init(
         controllSubject: PassthroughSubject<ControllerMessage, Never>,
         geometrySubject: CurrentValueSubject<CGRect, Never>,
-        snippetSubject: PassthroughSubject<Snippet?, Never>
     ) {
         self.controllSubject = controllSubject
         self.geometrySubject = geometrySubject
-        self.snippetSubject = snippetSubject
         controllMesaageBindings()
     }
     
@@ -59,6 +56,6 @@ extension ControllerContainer {
             self.snippetEditorController = SnippetEditorController(
                 subject: controllSubject
             )
-        }                
+        }
     }
 }

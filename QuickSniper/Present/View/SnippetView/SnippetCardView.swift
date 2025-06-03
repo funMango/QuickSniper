@@ -32,6 +32,14 @@ struct SnippetCardView: View {
             .background(VisualEffectView.panelWithOverlay)
             .cornerRadius(10)
         }
+        .onHover { hovering in
+            if hovering {                
+                viewModel.sendSelectedSnippet()
+            }
+        }
+        .contextMenu{
+            SnippetOptionMenuView()
+        }
         .buttonStyle(.plain)
         .background(Color.clear)
     }

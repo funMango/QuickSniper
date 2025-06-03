@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct FolderMenuItem: View {
+struct OptionButtonStyle: View {
     var systemName: String
     var title: String.LocalizationValue
     
