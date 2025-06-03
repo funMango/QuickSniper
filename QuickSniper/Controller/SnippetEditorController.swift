@@ -18,9 +18,9 @@ final class SnippetEditorController: ViewWindowControllable {
     var windowController: BaseWindowController<SnippetEditorView>?
     var cancellables = Set<AnyCancellable>()
     var width: CGFloat = 450, height: CGFloat = 600
+    var isVisible: Bool = false
     private var snippet: Snippet?
     
-
     init(
         subject: PassthroughSubject<ControllerMessage, Never>
     ) {
@@ -37,7 +37,7 @@ final class SnippetEditorController: ViewWindowControllable {
         )
     }
 
-    func show() {
+    func show() {                
         makeWindowController(size: CGSize(width: width, height: height))
     }
     

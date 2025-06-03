@@ -55,8 +55,10 @@ extension ControllerContainer {
     }
     
     private func snippetEditorControllerInit(_ snippet: Snippet? = nil) {
-        self.snippetEditorController = SnippetEditorController(
-            subject: controllSubject
-        )        
+        if snippetEditorController == nil {
+            self.snippetEditorController = SnippetEditorController(
+                subject: controllSubject
+            )
+        }                
     }
 }

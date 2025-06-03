@@ -26,7 +26,11 @@ struct SnippetCardView: View {
                     .padding(.bottom, 7)
                 Text(viewModel.snippet.body)
                     .foregroundColor(.subText)
-            }            
+            }
+            .padding()
+            .frame(width: 240, height: 150, alignment: .topLeading)
+            .background(VisualEffectView.panelWithOverlay)
+            .cornerRadius(10)
         }
         .buttonStyle(.plain)
         .background(Color.clear)

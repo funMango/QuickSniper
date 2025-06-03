@@ -21,15 +21,22 @@ protocol ViewWindowControllable: AnyObject {
 
 extension ViewWindowControllable {
     func makeWindowController(origin: CGPoint? = nil, size: CGSize) {
-        if windowController == nil {
-            windowController = BaseWindowController(
-                size: size,
-                subject: subject,
-                origin: origin,
-                content: makeView
-            )
+        // 이미 창이 떠 있다면 show만 호출하고 리턴
+        if let existing = self.windowController, let win = existing.window {
+            win.makeKeyAndOrderFront(nil)
+            NSApp.activate(ignoringOtherApps: true)
+            return
         }
-        windowController?.show()
+
+        // 새로 생성
+        let controller = BaseWindowController(
+            size: size,
+            subject: subject
+        ) {
+            self.makeView()
+        }
+        self.windowController = controller
+        controller.show()
     }
 
     func setupBindings() {

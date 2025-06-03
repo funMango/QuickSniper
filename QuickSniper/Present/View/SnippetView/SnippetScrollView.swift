@@ -25,11 +25,7 @@ struct SnippetScrollView: View {
                 ForEach(viewModel.snippets, id: \.id) { snippet in
                     SnippetCardView(
                         viewModel: viewModelContainer.getSnippetCardViewModel(snippet: snippet)
-                    )
-                    .padding()
-                    .frame(width: 240, height: 150, alignment: .topLeading)
-                    .background(VisualEffectView.panelWithOverlay)
-                    .cornerRadius(10)
+                    )                                        
                 }
                 .padding(.trailing, 10)
                                                               

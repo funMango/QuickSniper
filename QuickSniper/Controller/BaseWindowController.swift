@@ -17,7 +17,7 @@ class InputPanel: NSPanel {
 
 // MARK: - 기본 윈도우 컨트롤러
 class BaseWindowController<Content: View>: NSObject, NSWindowDelegate {
-    private var window: NSWindow?
+    var window: NSWindow?
     private let content: () -> Content
     private let size: CGSize
     private let subject: PassthroughSubject<ControllerMessage, Never>
@@ -37,7 +37,7 @@ class BaseWindowController<Content: View>: NSObject, NSWindowDelegate {
     }
 
     func show() {
-        subject.send(.pauseAutoHidePanel)
+        subject.send(.pauseAutoHidePanel)               
         
         if window == nil {
             let hostingView = NSHostingView(rootView: content())
@@ -57,13 +57,8 @@ class BaseWindowController<Content: View>: NSObject, NSWindowDelegate {
             panel.hidesOnDeactivate = false
             panel.isMovableByWindowBackground = true
             panel.level = .floating
-                        
-            if let origin = origin {                
-                panel.setFrameOrigin(getCalculatedOrigin(origin: origin))
-            } else {
-                panel.center()
-            }
-                        
+            panel.center()
+                                                                
             self.window = panel
         }
                 

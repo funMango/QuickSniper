@@ -24,6 +24,8 @@ final class ViewModelContainer {
     private lazy var folderUseCase = DefaultFolderUseCase(repository: folderRepository)
     private lazy var snippetUseCase = DefaultSnippetUseCase(repository: snippetRepository)
     
+    private var snippetCardViewModelCache: [String: SnippetCardViewModel] = [:]
+    
     init(
         modelContext: ModelContext,
         controllerSubject: PassthroughSubject<ControllerMessage, Never>,
@@ -91,12 +93,18 @@ final class ViewModelContainer {
         )
     }
     
-    func getSnippetCardViewModel(snippet: Snippet) -> SnippetCardViewModel{
-        return SnippetCardViewModel(
+    func getSnippetCardViewModel(snippet: Snippet) -> SnippetCardViewModel {
+        if let cached = snippetCardViewModelCache[snippet.id] {
+            return cached
+        }
+
+        let viewModel = SnippetCardViewModel(
             snippet: snippet,
             controllSubject: controllerSubject,
             snippetSubject: snippetSubject
         )
+        snippetCardViewModelCache[snippet.id] = viewModel
+        return viewModel
     }
     
     func getRenameableButtonViewModel(folder: Folder) ->  RenameableButtonViewModel{
