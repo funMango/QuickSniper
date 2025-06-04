@@ -8,24 +8,43 @@
 import SwiftUI
 import Resolver
 import SwiftData
+import AppKit
+import UniformTypeIdentifiers
 
 struct SnippetScrollView: View {
     @Injected var container: ControllerContainer
     @Injected var viewModelContainer: ViewModelContainer
     @StateObject var viewModel: SnippetScrollViewModel
+    @State var draggingSnippet: Snippet?
+    @State var isDroped = false
     @Query var snippets: [Snippet]
     
+        
     init(viewModel: SnippetScrollViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
     }
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: true) {
-            HStack(alignment: .top, spacing: 12) {                                                  
+            LazyHStack(alignment: .top, spacing: 12) {
                 ForEach(viewModel.snippets, id: \.id) { snippet in
                     SnippetCardView(
-                        viewModel: viewModelContainer.getSnippetCardViewModel(snippet: snippet)
-                    )                                        
+                        viewModel: viewModelContainer.getSnippetCardViewModel(snippet: snippet),
+                        draggingSnippet: $draggingSnippet
+                    )
+                    .onDrag {
+                        draggingSnippet = snippet
+                        return NSItemProvider(object: SnippetWrapper(snippet: snippet))
+                    }
+                    .onDrop (
+                        of: [UTType.snippet],
+                        delegate:EdgeDropDelegate(
+                            draggingSnippet: $draggingSnippet,
+                            snippets: $viewModel.snippets,
+                            isDroped: $isDroped,
+                            destinationSnippet: snippet
+                        )
+                    )
                 }
                 .padding(.trailing, 10)
                                                               
@@ -38,7 +57,6 @@ struct SnippetScrollView: View {
                     )
                     Spacer()
                 }
-                
             }
             .frame(height: 150)
             .padding()
@@ -50,8 +68,15 @@ struct SnippetScrollView: View {
             }
         }
         .onChange(of: snippets) {oldSnippets, newSnippets in
+            print("snippets 변경!")
             DispatchQueue.main.async {
                 viewModel.getSnippets(newSnippets)
+            }
+        }
+        .onChange(of: isDroped) { _ , isDroped in
+            DispatchQueue.main.async {
+                viewModel.updateSnippets()
+                self.isDroped = false
             }
         }
     }

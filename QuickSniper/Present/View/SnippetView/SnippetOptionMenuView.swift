@@ -16,13 +16,7 @@ struct SnippetOptionMenuView: View {
         VStack {
             SnippetDeleteButtonView(
                 viewModel: viewModelContainer.snippetDeleteButtonViewModel
-            )
-            
-            Button {
-                
-            } label: {
-                
-            }
+            )                       
         }
     }
 }

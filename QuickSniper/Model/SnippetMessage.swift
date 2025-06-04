@@ -9,4 +9,7 @@ import Foundation
 
 enum SnippetMessage {
     case snippetHovering(Snippet)
+    case snippetReorder(String, String)
+    case switchOrder(Snippet, Snippet)
+    case saveSnippets
 }
