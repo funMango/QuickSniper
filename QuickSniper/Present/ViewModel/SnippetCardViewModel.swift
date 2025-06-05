@@ -30,28 +30,5 @@ final class SnippetCardViewModel: ObservableObject {
     
     func sendSelectedSnippet() {
         snippetSubject.send(.snippetHovering(snippet))
-    }
-    
-    func sendReorderSnippetId(sorceId: String, targetId: String) {
-        snippetSubject.send(.snippetReorder(sorceId, targetId))
-    }
-    
-    func switchSnippetOrder(draggingSnippet: Snippet, edge: Edge) {
-        switch edge {
-            case .left:
-            if draggingSnippet.order > snippet.order {
-                snippetSubject.send(.switchOrder(draggingSnippet, snippet))
-            }
-            case .right:
-            if draggingSnippet.order < snippet.order {
-                snippetSubject.send(.switchOrder(draggingSnippet, snippet))
-            }
-        }
-    }
-    
-    func sendSaveSnippets() {
-        snippetSubject.send(.saveSnippets)
-    }
-    
-    
+    }        
 }

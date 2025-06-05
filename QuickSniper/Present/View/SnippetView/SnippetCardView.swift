@@ -11,23 +11,15 @@ import UniformTypeIdentifiers
 
 struct SnippetCardView: View {
     @StateObject var viewModel: SnippetCardViewModel
-    @Binding var draggingSnippet: Snippet?
-    private var isDragging: Bool {
-        draggingSnippet?.id == viewModel.snippet.id
-    }
     
     init(
-        viewModel: SnippetCardViewModel,
-        draggingSnippet: Binding<Snippet?>
+        viewModel: SnippetCardViewModel
     ){
         _viewModel = StateObject(wrappedValue: viewModel)
-        _draggingSnippet = draggingSnippet
     }
         
     var body: some View {
         card
-            .opacity(isDragging ? 0.3 : 1.0)
-            .animation(.easeInOut(duration: 0.2), value: isDragging)
             .onTapGesture {
                 viewModel.openSnippetEditor()
             }
@@ -60,11 +52,11 @@ struct SnippetCardView: View {
 
 
 #Preview {
+    @Previewable @Namespace var ns
     @Injected var viewModelContainer: ViewModelContainer
     SnippetCardView(
         viewModel: viewModelContainer.getSnippetCardViewModel(
-            snippet: Snippet(folderId: "", title: "", body: "", order: 1)
-        ),
-        draggingSnippet: .constant(nil)
+            snippet: Snippet(folderId: "", title: "", body: "", order: 1),
+        )        
     )
 }

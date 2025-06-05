@@ -16,9 +16,7 @@ struct SnippetScrollView: View {
     @Injected var viewModelContainer: ViewModelContainer
     @StateObject var viewModel: SnippetScrollViewModel
     @State var draggingSnippet: Snippet?
-    @State var isDroped = false
     @Query var snippets: [Snippet]
-    
         
     init(viewModel: SnippetScrollViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -26,27 +24,33 @@ struct SnippetScrollView: View {
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: true) {
-            LazyHStack(alignment: .top, spacing: 12) {
+            LazyHStack(spacing: 12) {
                 ForEach(viewModel.snippets, id: \.id) { snippet in
                     SnippetCardView(
-                        viewModel: viewModelContainer.getSnippetCardViewModel(snippet: snippet),
-                        draggingSnippet: $draggingSnippet
+                        viewModel: viewModelContainer.getSnippetCardViewModel(snippet: snippet)
                     )
                     .onDrag {
                         draggingSnippet = snippet
                         return NSItemProvider(object: SnippetWrapper(snippet: snippet))
                     }
-                    .onDrop (
-                        of: [UTType.snippet],
-                        delegate:EdgeDropDelegate(
-                            draggingSnippet: $draggingSnippet,
-                            snippets: $viewModel.snippets,
-                            isDroped: $isDroped,
-                            destinationSnippet: snippet
-                        )
-                    )
+                    .dropDestination(for: Snippet.self) { items, location in
+                        draggingSnippet = nil
+                        return false
+                    } isTargeted: { status in
+                        if let draggingSnippet, status, draggingSnippet.id != snippet.id {
+                            DispatchQueue.main.async {
+                                handleDrop(from: draggingSnippet, to: snippet)
+                            }
+                        }
+                    }
                 }
                 .padding(.trailing, 10)
+                
+                Button {
+                    viewModel.removeAllSnippets()
+                } label: {
+                    Text("all snippets remove")
+                }
                                                               
                 VStack() {
                     Spacer()                    
@@ -58,10 +62,12 @@ struct SnippetScrollView: View {
                     Spacer()
                 }
             }
+            .animation(.easeInOut, value: viewModel.snippets)
             .frame(height: 150)
             .padding()
             .padding(.bottom)
         }
+        
         .onAppear() {
             DispatchQueue.main.async {
                 viewModel.getSnippets(snippets)
@@ -72,11 +78,18 @@ struct SnippetScrollView: View {
             DispatchQueue.main.async {
                 viewModel.getSnippets(newSnippets)
             }
-        }
-        .onChange(of: isDroped) { _ , isDroped in
-            DispatchQueue.main.async {
+        }        
+    }
+       
+    private func handleDrop(from draggingSnippet: Snippet, to targetSnippet: Snippet){
+        let from = viewModel.snippets.firstIndex(where: { $0.id == draggingSnippet.id })
+        let to = viewModel.snippets.firstIndex(where: { $0.id == targetSnippet.id })
+        
+        if let from, let to {
+            withAnimation(.easeInOut) {
+                let sourceItem = viewModel.snippets.remove(at: from)
+                viewModel.snippets.insert(sourceItem, at: to)
                 viewModel.updateSnippets()
-                self.isDroped = false
             }
         }
     }

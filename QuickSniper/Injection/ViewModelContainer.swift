@@ -77,8 +77,7 @@ final class ViewModelContainer {
     
     lazy var snippetScrollViewModel = SnippetScrollViewModel(
         snippetUseCase: snippetUseCase,
-        selectedFolderSubject: selectedFolderSubject,
-        snippetSubject: snippetSubject
+        selectedFolderSubject: selectedFolderSubject        
     )
     
     lazy var snippetPlusButtonViewModel = SnippetPlusButtonViewModel(

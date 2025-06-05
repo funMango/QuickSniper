@@ -57,5 +57,12 @@ class Snippet: Codable, Identifiable{
         try container.encode(title, forKey: .title)
         try container.encode(body, forKey: .body)
         try container.encode(order, forKey: .order)
-    }        
+    }
+}
+
+extension Snippet: Transferable {
+    static var transferRepresentation: some TransferRepresentation {
+        CodableRepresentation(contentType: .data)
+        ProxyRepresentation(exporting: \.id)
+    }
 }
