@@ -10,8 +10,10 @@ import SwiftData
 import CoreTransferable
 import UniformTypeIdentifiers
 
+
+
 @Model
-class Snippet: Codable, Identifiable{
+class Snippet: Codable, Identifiable, Equatable, CoreModel{
     var id: String
     var folderId: String
     var title: String

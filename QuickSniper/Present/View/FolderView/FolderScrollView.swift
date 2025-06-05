@@ -12,27 +12,26 @@ import Resolver
 struct FolderScrollView: View {
     @Injected var viewModelContainer: ViewModelContainer
     @ObservedObject var viewModel: FolderViewModel
+    @State var draggingFolder: Folder?
     @Query var folders: [Folder]
 
     var body: some View {
-        HStack {
-            ScrollView(.horizontal, showsIndicators: false) {
-                HStack(spacing: 10) {
-                    ForEach(folders, id: \.self) { folder in
-                        FolderButtonBackgroundView(
-                            viewModel: viewModelContainer.folderButtonViewModel,
-                            title: folder.name,
-                            isSelected: viewModel.selectedFolder == folder,
-                            folder: folder,
-                            onTap: { viewModel.selectedFolder = folder }
-                        )
-                    }
+        ScrollView(.horizontal, showsIndicators: false) {
+            LazyHStack(spacing: 10) {
+                ForEach(folders, id: \.id) { folder in
+                    FolderButtonBackgroundView(
+                        viewModel: viewModelContainer.folderButtonViewModel,
+                        title: folder.name,
+                        isSelected: viewModel.selectedFolder == folder,
+                        folder: folder,
+                        onTap: { viewModel.selectedFolder = folder }
+                    )
                 }
             }
         }
         .fixedSize()
         .frame(height: 40)
-        .background(Color.clear)                    
+        .background(Color.clear)
     }
 }
 

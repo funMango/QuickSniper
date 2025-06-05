@@ -10,13 +10,14 @@ import Combine
 import SwiftUI
 
 
-final class SnippetScrollViewModel: ObservableObject {
-    @Published var snippets: [Snippet] = []
-    @Published private var allSnippets: [Snippet] = []
+final class SnippetScrollViewModel: ObservableObject, DragabbleObject, QuerySyncableObject {
+    typealias Item = Snippet
+    @Published var items: [Snippet] = []
+    @Published var allItems: [Snippet] = []
     @Published private var selectedFolder: Folder?
-        
+    
     private var snippetUseCase: SnippetUseCase
-    private var selectedFolderSubject: CurrentValueSubject<Folder?, Never>    
+    private var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     private var cancellables: Set<AnyCancellable> = []
     
     init(
@@ -28,31 +29,21 @@ final class SnippetScrollViewModel: ObservableObject {
         setupSelectedFolderBindings()
     }
     
-    func getSnippets(_ snippets: [Snippet]) {
+    func getItems(_ items: [Item]) {
         DispatchQueue.main.async { [weak self] in
-            self?.allSnippets = snippets
+            self?.allItems = items
         }
     }
     
-    func updateSnippets() {
-        for (i, s) in snippets.enumerated() {
+    func updateItems() {
+        for (i, s) in items.enumerated() {
             s.order = i
         }
         
         do {
-            try self.snippetUseCase.updateAllSnippets(snippets)
+            try self.snippetUseCase.updateAllSnippets(items)
         } catch {
             print("[ERROR]: SnippetScrollViewModel-handleSwitchOrder \(error)")
-        }
-    }
-    
-    func removeAllSnippets() {
-        do {
-            for s in snippets {
-                try self.snippetUseCase.deleteSnippet(s)
-            }
-        } catch {
-            
         }
     }
     
@@ -60,17 +51,19 @@ final class SnippetScrollViewModel: ObservableObject {
         selectedFolderSubject
             .assign(to: &$selectedFolder)
         
-        Publishers.CombineLatest($allSnippets, $selectedFolder)
+        Publishers.CombineLatest($allItems, $selectedFolder)
             .sink { [weak self] allSnippets, selectedFolder in
                 guard selectedFolder != nil else { return }
                                                                        
                 DispatchQueue.main.async { [weak self] in
+                    guard let self = self else { return }
+                    
                     if let folder = selectedFolder {
-                        self?.snippets = allSnippets
-                                            .filter { $0.folderId == folder.id }
-                                            .sorted { $0.order < $1.order }
+                        self.items = self.allItems
+                                         .filter { $0.folderId == folder.id }
+                                         .sorted { $0.order < $1.order }
                     } else {
-                        self?.snippets = []
+                        self.items = []
                     }
                 }
             }

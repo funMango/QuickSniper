@@ -11,11 +11,6 @@
 import UniformTypeIdentifiers
 import Foundation
 
-// 1) 고유 UTI (팀/앱 도메인으로 바꿔 주세요)
-extension UTType {
-    static let snippet = UTType(exportedAs: "sample.quickSniper.snippet")
-}
-
 // 2) Snippet → Data → Snippet 로 변환해 줄 래퍼
 final class SnippetWrapper: NSObject, NSItemProviderWriting, NSItemProviderReading {
     // MARK: Model

@@ -7,9 +7,10 @@
 
 import Foundation
 import SwiftData
+import CoreTransferable
 
 @Model
-final class Folder: Equatable{
+class Folder: Equatable, Codable, Identifiable, CoreModel {
     var id: String
     var name: String
     var type: FolderType
@@ -29,5 +30,38 @@ final class Folder: Equatable{
     
     func changeName(_ name: String) {
         self.name = name
+    }
+    
+    // MARK: - Codable Implementation
+    enum CodingKeys: String, CodingKey {
+        case id
+        case name
+        case type
+        case order
+    }
+    
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        id = try container.decode(String.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        type = try container.decode(FolderType.self, forKey: .type)
+        order = try container.decode(Int.self, forKey: .order)
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try container.encode(id, forKey: .id)
+        try container.encode(name, forKey: .name)
+        try container.encode(type, forKey: .type)
+        try container.encode(order, forKey: .order)
+    }
+}
+
+extension Folder: Transferable {
+    static var transferRepresentation: some TransferRepresentation {
+        CodableRepresentation(contentType: .data)
+        ProxyRepresentation(exporting: \.id)
     }
 }
