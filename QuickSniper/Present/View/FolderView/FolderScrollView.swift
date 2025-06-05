@@ -9,16 +9,20 @@ import SwiftUI
 import SwiftData
 import Resolver
 
-struct FolderScrollView: View {
+struct FolderScrollView: View, DraggableView {
     @Injected var viewModelContainer: ViewModelContainer
-    @ObservedObject var viewModel: FolderViewModel
-    @State var draggingFolder: Folder?
+    @StateObject var viewModel: FolderScrollViewModel
+    @State var draggingItem: String?
     @Query var folders: [Folder]
+    
+    init(viewModel: FolderScrollViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 10) {
-                ForEach(folders, id: \.id) { folder in
+                ForEach(viewModel.items, id: \.id) { folder in
                     FolderButtonBackgroundView(
                         viewModel: viewModelContainer.folderButtonViewModel,
                         title: folder.name,
@@ -26,12 +30,27 @@ struct FolderScrollView: View {
                         folder: folder,
                         onTap: { viewModel.selectedFolder = folder }
                     )
+                    .dragDrop(
+                        viewModel: viewModel,
+                        draggingItemId: $draggingItem,
+                        itemId: folder.id
+                    )
                 }
             }
         }
         .fixedSize()
         .frame(height: 40)
         .background(Color.clear)
+        .syncQuey(
+            viewModel: viewModel,
+            items: folders
+        )
+    }
+}
+
+extension FolderScrollView {
+    func getDraggingBinding() -> Binding<String?> {
+        return $draggingItem
     }
 }
 

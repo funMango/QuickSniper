@@ -8,8 +8,7 @@
 import Foundation
 
 protocol QuerySyncableObject: ObservableObject {
-    associatedtype Item: CoreModel
-    var items: [Item] { get set }
+    associatedtype Item: CoreModel    
     var allItems: [Item] { get set }
     
     func getItems(_ items: [Item])

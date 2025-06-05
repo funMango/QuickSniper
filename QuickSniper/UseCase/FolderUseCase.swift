@@ -10,6 +10,7 @@ import Foundation
 protocol FolderUseCase {
     func createFolder(name: String, type: FolderType) throws
     func updateFolder(_ folder: Folder) throws
+    func updateAllFolders(_ folders: [Folder]) throws
     func deleteFolder(_ folder: Folder) throws
     func getFirstFolder() throws -> Folder? 
 }
@@ -33,6 +34,12 @@ final class DefaultFolderUseCase: FolderUseCase {
 
     func updateFolder(_ folder: Folder) throws {
         try repository.update(folder)
+    }
+    
+    func updateAllFolders(_ folders: [Folder]) throws {
+        for folder in folders {
+            try updateFolder(folder)
+        }
     }
 
     func deleteFolder(_ folder: Folder) throws {

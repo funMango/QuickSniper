@@ -21,7 +21,7 @@ protocol DraggableView: View {
 
 extension View {
     func dragDrop<VM: DragabbleObject>(
-        viewModel: VM,  // Binding 제거
+        viewModel: VM,
         draggingItemId: Binding<String?>,
         itemId: String
     ) -> some View {

@@ -43,16 +43,14 @@ struct FolderButtonView: View {
                         viewModel.cancelRenaming()
                     }
             } else {
-                Button(action: {
-                    viewModel.selectFolder()
-                }) {
-                    Text(viewModel.folder.name)
-                        .lineLimit(1)
-                        .padding(.vertical, 8)
-                        .foregroundColor(Color.subText)
-                        .contentShape(Rectangle()) // Text만큼만 클릭되는 현상 방지
-                }
-                .buttonStyle(PlainButtonStyle())
+                Text(viewModel.folder.name)
+                    .lineLimit(1)
+                    .padding(.vertical, 8)
+                    .foregroundColor(Color.subText)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        viewModel.selectFolder()
+                    }
             }
         }
     }

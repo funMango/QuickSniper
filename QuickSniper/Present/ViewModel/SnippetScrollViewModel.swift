@@ -43,7 +43,7 @@ final class SnippetScrollViewModel: ObservableObject, DragabbleObject, QuerySync
         do {
             try self.snippetUseCase.updateAllSnippets(items)
         } catch {
-            print("[ERROR]: SnippetScrollViewModel-handleSwitchOrder \(error)")
+            print("[ERROR]: SnippetScrollViewModel-updateItems \(error)")
         }
     }
     

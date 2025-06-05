@@ -71,21 +71,6 @@ struct FolderButtonBackgroundView: View {
     }
 }
 
-@ViewBuilder
-func backgroundGrayView(_ isHovered: Bool) -> some View {
-    Group {
-        if isHovered {
-            ZStack {
-                Color.clear.background(.regularMaterial)
-                Color.accentColor.opacity(0.1)
-            }
-        } else {
-            VisualEffectView.panel
-        }
-    }
-    .clipShape(RoundedRectangle(cornerRadius: 5, style: .continuous))
-}
-
 #Preview {
     @Injected var viewModelContainer: ViewModelContainer
     

@@ -30,7 +30,7 @@ struct SnippetScrollView: View, DraggableView {
                         viewModel: viewModelContainer.getSnippetCardViewModel(snippet: snippet)
                     )
                     .dragDrop(
-                        viewModel: viewModel,  // $ 없이 직접 전달
+                        viewModel: viewModel,
                         draggingItemId: $draggingItem,
                         itemId: snippet.id
                     )
@@ -46,7 +46,7 @@ struct SnippetScrollView: View, DraggableView {
                     )
                     Spacer()
                 }
-            }            
+            }
             .frame(height: 150)
             .padding()
             .padding(.bottom)

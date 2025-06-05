@@ -8,7 +8,10 @@
 import Foundation
 import Combine
 
-final class FolderViewModel: ObservableObject {
+final class FolderScrollViewModel: ObservableObject, DragabbleObject, QuerySyncableObject {
+    typealias Item = Folder
+    @Published var items: [Folder] = []
+    @Published var allItems: [Folder] = []
     @Published var selectedFolder: Folder?
     private var useCase: FolderUseCase
     private var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
@@ -22,6 +25,24 @@ final class FolderViewModel: ObservableObject {
         self.selectedFolderSubject = selectedFolderSubject
         setSelectedFolder()
         setupSelectedFolderBindings()
+    }
+    
+    func getItems(_ items: [Folder]) {
+        DispatchQueue.main.async { [weak self] in
+            self?.items = items.sorted { $0.order < $1.order }
+        }
+    }
+    
+    func updateItems() {
+        for (i, s) in items.enumerated() {
+            s.order = i
+        }
+        
+        do {
+            try self.useCase.updateAllFolders(items)
+        } catch {
+            print("[ERROR]: FolderScrollViewModel-updateItems \(error)")
+        }
     }
     
     private func setSelectedFolder() {
