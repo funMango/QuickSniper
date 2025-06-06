@@ -1,0 +1,25 @@
+//
+//  AppMenuBarViewModel.swift
+//  QuickSniper
+//
+//  Created by 이민호 on 6/6/25.
+//
+
+import Foundation
+import Combine
+
+final class AppMenuBarViewModel: ObservableObject {
+    private let controllerSubject: PassthroughSubject<ControllerMessage, Never>
+    
+    init(controllerSubject: PassthroughSubject<ControllerMessage, Never>) {
+        self.controllerSubject = controllerSubject
+    }
+    
+    func closePanel() {
+        controllerSubject.send(.closePanel)
+    }
+    
+    func openShortcutSettingsView() {
+        controllerSubject.send(.openShortcutSettingView)
+    }
+}

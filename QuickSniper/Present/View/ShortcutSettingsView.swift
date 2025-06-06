@@ -8,7 +8,14 @@
 import SwiftUI
 import KeyboardShortcuts
 
-struct SettingsView: View {
+struct ShortcutSettingsView: View {
+    var width: CGFloat, height: CGFloat
+    
+    init(width: CGFloat, height: CGFloat) {
+        self.width = width
+        self.height = height
+    }
+    
     var body: some View {
         VStack(alignment: .leading) {
             Text("단축키 설정")
@@ -21,6 +28,6 @@ struct SettingsView: View {
     }
 }
 
-#Preview {
-    SettingsView()
-}
+//#Preview {
+//    ShortcutSettingsView()
+//}

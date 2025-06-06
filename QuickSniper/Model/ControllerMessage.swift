@@ -9,11 +9,18 @@ import Foundation
 
 enum ControllerMessage: Equatable {
     case togglePanel
+    case closePanel
     case pauseAutoHidePanel
+    
     case hideCreateFolderView
     case hideSnippetEditorView
-    case hideEditFolderView    
+    case hideEditFolderView
+    case hideShorcutSettingView
+    
     case focusPanel
+    
+    case openShortcutSettingView
+    case showShortcutSettingView
     
     case openSnippetEditorWith(Snippet)
     case openSnippetEditor    

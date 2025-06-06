@@ -12,6 +12,7 @@ final class ControllerContainer {
     private let controllSubject: PassthroughSubject<ControllerMessage, Never>
     private let geometrySubject: CurrentValueSubject<CGRect, Never>    
     private var snippetEditorController: SnippetEditorController?
+    private var shortcutSettingsController: ShortcutSettingsController?
     private var cancellables = Set<AnyCancellable>()
                 
     init(
@@ -44,6 +45,11 @@ extension ControllerContainer {
                     DispatchQueue.main.async { [weak self] in
                         self?.controllSubject.send(.showSnipperEditor)
                     }
+                case .openShortcutSettingView:
+                    shortcutSettingsControllerInit()
+                    DispatchQueue.main.async { [weak self] in
+                        self?.controllSubject.send(.showShortcutSettingView)
+                    }
                 default:
                     break
                 }
@@ -54,6 +60,14 @@ extension ControllerContainer {
     private func snippetEditorControllerInit(_ snippet: Snippet? = nil) {
         if snippetEditorController == nil {
             self.snippetEditorController = SnippetEditorController(
+                subject: controllSubject
+            )
+        }
+    }
+    
+    private func shortcutSettingsControllerInit() {
+        if shortcutSettingsController == nil {
+            self.shortcutSettingsController = ShortcutSettingsController(
                 subject: controllSubject
             )
         }

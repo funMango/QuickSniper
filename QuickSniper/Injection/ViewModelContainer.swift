@@ -11,7 +11,6 @@ import Combine
 
 final class ViewModelContainer {
     private let modelContext: ModelContext
-    
     private let controllerSubject: PassthroughSubject<ControllerMessage, Never>
     private let folderSubject: CurrentValueSubject<Folder?, Never>
     private let folderEditSubject: PassthroughSubject<Folder, Never>
@@ -77,7 +76,8 @@ final class ViewModelContainer {
     
     lazy var snippetScrollViewModel = SnippetScrollViewModel(
         snippetUseCase: snippetUseCase,
-        selectedFolderSubject: selectedFolderSubject
+        selectedFolderSubject: selectedFolderSubject,
+        controllerSubject: controllerSubject
     )
     
     lazy var snippetPlusButtonViewModel = SnippetPlusButtonViewModel(
@@ -87,6 +87,10 @@ final class ViewModelContainer {
     lazy var snippetDeleteButtonViewModel = SnippetDeleteButtonViewModel(
         snippetUseCase: snippetUseCase,
         snippetSubject: snippetSubject
+    )
+    
+    lazy var appMenuBarViewModel = AppMenuBarViewModel(
+        controllerSubject: controllerSubject
     )
         
     func getSnippetEditorViewModel(snippet: Snippet? = nil) -> SnippetEditorViewModel{

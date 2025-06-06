@@ -158,6 +158,8 @@ class PanelController: NSWindowController, NSWindowDelegate {
                 switch message {
                 case .togglePanel:
                     self?.toggle()
+                case .closePanel:
+                    self?.isPanelVisible = false
                 case .pauseAutoHidePanel:
                     self?.allowAutoHide = false
                 case .focusPanel:

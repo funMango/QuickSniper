@@ -18,14 +18,18 @@ final class SnippetScrollViewModel: ObservableObject, DragabbleObject, QuerySync
     
     private var snippetUseCase: SnippetUseCase
     private var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
+    private var controllerSubject: PassthroughSubject<ControllerMessage, Never>
     private var cancellables: Set<AnyCancellable> = []
+    
     
     init(
         snippetUseCase: SnippetUseCase,
         selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
+        controllerSubject: PassthroughSubject<ControllerMessage, Never>
     ) {
         self.snippetUseCase = snippetUseCase
         self.selectedFolderSubject = selectedFolderSubject
+        self.controllerSubject = controllerSubject
         setupSelectedFolderBindings()
     }
     
@@ -65,6 +69,10 @@ final class SnippetScrollViewModel: ObservableObject, DragabbleObject, QuerySync
                     } else {
                         self.items = []
                     }
+                    
+//                    DispatchQueue.main.async { [weak self] in
+//                        self?.controllerSubject.send(.togglePanel)
+//                    }
                 }
             }
             .store(in: &cancellables)

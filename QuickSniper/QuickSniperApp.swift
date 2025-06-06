@@ -13,8 +13,7 @@ import SwiftData
 import Combine
 
 @main
-struct QuickSniperApp: App {
-    @StateObject private var settingsWindowController = SettingsWindowController()
+struct QuickSniperApp: App {    
     private let controllerContainer:  ControllerContainer
     private let modelContainer: ModelContainer
     private let modelContext: ModelContext
@@ -35,20 +34,13 @@ struct QuickSniperApp: App {
     }
 
     var body: some Scene {
-        MenuBarExtra("QuickSniper", systemImage: "bolt.circle.fill") {
-            Button("패널 토글") {
-                controllerContainer.panelController.toggle()
-            }
-
-            Button("단축키 설정") {
-                settingsWindowController.showSettings()
-            }
-
-            Divider()
-
-            Button("종료", role: .destructive) {
-                NSApplication.shared.terminate(nil)
-            }
+        MenuBarExtra(
+            "shifty",
+            systemImage: "arrow.up.circle.fill"
+        ) {
+            AppMenuBarView(
+                viewModel: viewModelContainer.appMenuBarViewModel
+            )
         }
         .menuBarExtraStyle(.window)
     }
