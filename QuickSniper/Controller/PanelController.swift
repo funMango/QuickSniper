@@ -14,9 +14,9 @@ import SwiftData
 class PanelController: NSWindowController, NSWindowDelegate {
     private var allowAutoHide: Bool = true
     private var isPanelVisible = false
+    private var previousApp: NSRunningApplication?
     private var subject: PassthroughSubject<ControllerMessage, Never>
     private var cancellables = Set<AnyCancellable>()
-    
 
     init(subject: PassthroughSubject<ControllerMessage, Never>) {
         self.subject = subject
@@ -43,6 +43,7 @@ class PanelController: NSWindowController, NSWindowDelegate {
 
     private func showPanel() {
         guard let window = self.window, !isPanelVisible else { return }
+        previousApp = NSWorkspace.shared.frontmostApplication
         let bottomMargin: CGFloat = 10
 
         let targetFrame = NSRect(
@@ -61,7 +62,12 @@ class PanelController: NSWindowController, NSWindowDelegate {
 
         window.setFrame(startFrame, display: false)
         window.makeKeyAndOrderFront(nil)
-        NSApp.activate(ignoringOtherApps: true)
+        
+        if #available(macOS 14.0, *) {
+            NSApp.activate() // 단순 activate
+        } else {
+            NSApp.activate(ignoringOtherApps: true)
+        }
 
         NSAnimationContext.runAnimationGroup { context in
             context.duration = 0.25
@@ -88,11 +94,37 @@ class PanelController: NSWindowController, NSWindowDelegate {
             context.duration = 0.25
             context.timingFunction = .init(name: .easeIn)
             window.animator().setFrame(hideFrame, display: true)
-        }, completionHandler: {
+        }, completionHandler: { [weak self] in
             window.orderOut(nil)
+            self?.restorePreviousAppFocus()
         })
 
         isPanelVisible = false
+    }
+    
+    private func restorePreviousAppFocus() {
+        guard let previousApp = previousApp,
+              !previousApp.isTerminated,
+              previousApp != NSRunningApplication.current else { return }
+        
+        if #available(macOS 14.0, *) {
+            // macOS 14+에서는 단순히 activate
+            previousApp.activate()
+        } else {
+            // 이전 버전 호환성
+            previousApp.activate(options: .activateIgnoringOtherApps)
+        }
+        
+        // 실패시 대안 - 잠시 후 재시도
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            if NSWorkspace.shared.frontmostApplication == NSRunningApplication.current {
+                if #available(macOS 14.0, *) {
+                    previousApp.activate()
+                } else {
+                    previousApp.activate(options: .activateAllWindows)
+                }
+            }
+        }
     }
 
     func windowDidResignKey(_ notification: Notification) {
@@ -170,6 +202,9 @@ class PanelController: NSWindowController, NSWindowDelegate {
                     self?.allowAutoHide = false
                 case .focusPanel:
                     self?.window?.makeKeyAndOrderFront(nil)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+                        self?.allowAutoHide = true
+                    }
                 default:
                     break
                 }
