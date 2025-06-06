@@ -36,6 +36,7 @@ extension View {
 }
 
 struct DragDropModifier<VM: DragabbleObject>: ViewModifier {
+    @State private var isDragPressed = false
     @Binding var draggingItemId: String?
     var viewModel: VM
     let itemId: String
@@ -43,9 +44,24 @@ struct DragDropModifier<VM: DragabbleObject>: ViewModifier {
     
     func body(content: Content) -> some View {
         content
+            .overlay(
+                Rectangle()
+                    .fill(Color.black.opacity(isDragPressed ? 0.3 : 0))
+                    .animation(.easeInOut(duration: 0.15), value: isDragPressed)
+            )
+            .clipShape(RoundedRectangle(cornerRadius: 10))
             .onDrag {
                 draggingItemId = itemId
                 return NSItemProvider(object: NSString(string: itemId))
+            } preview: {
+                // 주의!: EmptyView() 사용시 오류
+                Rectangle()
+                    .fill(Color.clear)
+                    .frame(width: 0, height: 0)
+            }
+            .onLongPressGesture(minimumDuration: 0, maximumDistance: .infinity) {
+            } onPressingChanged: { pressing in
+                isDragPressed = pressing
             }
             .dropDestination(for: String.self) { items, location in
                 draggingItemId = nil
