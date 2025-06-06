@@ -13,7 +13,9 @@ final class ControllerContainer {
     private let geometrySubject: CurrentValueSubject<CGRect, Never>    
     private var snippetEditorController: SnippetEditorController?
     private var shortcutSettingsController: ShortcutSettingsController?
+    private var createFolderController: CreateFolderController?
     private var cancellables = Set<AnyCancellable>()
+    private var currentPage: Page?
                 
     init(
         controllSubject: PassthroughSubject<ControllerMessage, Never>,
@@ -25,7 +27,6 @@ final class ControllerContainer {
     }
     
     lazy var panelController = PanelController(subject: controllSubject)
-    lazy var createFolderController = CreateFolderController(subject: controllSubject)
 }
 
 extension ControllerContainer {
@@ -36,25 +37,53 @@ extension ControllerContainer {
                 
                 switch message {
                 case .openSnippetEditorWith(let snippet):
-                    snippetEditorControllerInit(snippet)
-                    DispatchQueue.main.async { [weak self] in
-                        self?.controllSubject.send(.showSnippetEditorWith(snippet))
-                    }
+                    switchCurrentPage(.snippetEditorWith(snippet))
                 case .openSnippetEditor:
-                    snippetEditorControllerInit()
-                    DispatchQueue.main.async { [weak self] in
-                        self?.controllSubject.send(.showSnipperEditor)
-                    }
+                    switchCurrentPage(.snippetEditor)
                 case .openShortcutSettingView:
-                    shortcutSettingsControllerInit()
-                    DispatchQueue.main.async { [weak self] in
-                        self?.controllSubject.send(.showShortcutSettingView)
-                    }
+                    switchCurrentPage(.shortcutSettings)
+                case .openCreateFolderView:
+                    switchCurrentPage(.createFolder)
+                case .escapePressed:
+                    closePage()
                 default:
                     break
                 }
             }
             .store(in: &cancellables)
+    }
+}
+
+extension ControllerContainer {
+    private func closePage() {
+        if let currentPage = currentPage {
+            controllSubject.send(currentPage.getHideMessage())
+            self.currentPage = nil
+        } else {
+            controllSubject.send(.closePanel)
+        }
+    }
+    
+    private func switchCurrentPage(_ page: Page) {
+        if let currentPage = currentPage {
+            self.controllSubject.send(currentPage.getHideMessage())
+        }
+        
+        switch page {
+        case .snippetEditor:
+            snippetEditorControllerInit()
+        case .snippetEditorWith(let snippet):
+            snippetEditorControllerInit(snippet)
+        case .shortcutSettings:
+            shortcutSettingsControllerInit()
+        case .createFolder:
+            createFolderControllerInit()
+        }
+        
+        self.currentPage = page
+        DispatchQueue.main.async { [weak self] in
+            self?.controllSubject.send(page.getShowMessage())
+        }
     }
     
     private func snippetEditorControllerInit(_ snippet: Snippet? = nil) {
@@ -68,6 +97,14 @@ extension ControllerContainer {
     private func shortcutSettingsControllerInit() {
         if shortcutSettingsController == nil {
             self.shortcutSettingsController = ShortcutSettingsController(
+                subject: controllSubject
+            )
+        }
+    }
+    
+    private func createFolderControllerInit() {
+        if createFolderController == nil {
+            self.createFolderController = CreateFolderController(
                 subject: controllSubject
             )
         }

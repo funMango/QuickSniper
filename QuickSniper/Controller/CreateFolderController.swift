@@ -23,6 +23,7 @@ final class CreateFolderController: ViewWindowControllable {
     init(subject: PassthroughSubject<ControllerMessage, Never>) {
         self.subject = subject
         setupBindings()
+        controllerMessageBinding()
     }
 
     func makeView() -> CreateFolderView {
@@ -35,5 +36,18 @@ final class CreateFolderController: ViewWindowControllable {
 
     func show() {
         makeWindowController(size: CGSize(width: width, height: height))
+    }
+    
+    func controllerMessageBinding() {
+        subject.sink { [weak self] message in
+            guard let self else { return }
+            
+            switch message {
+            case .showCreateFolderView:
+                show()
+            default: break
+            }
+        }
+        .store(in: &cancellables)
     }
 }

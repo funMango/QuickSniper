@@ -22,6 +22,7 @@ final class ViewModelContainer {
     
     private lazy var folderRepository = DefaultFolderRepository(context: modelContext)
     private lazy var snippetRepository = DefaultSnippetRepository(context: modelContext)
+    
     private lazy var folderUseCase = DefaultFolderUseCase(repository: folderRepository)
     private lazy var snippetUseCase = DefaultSnippetUseCase(repository: snippetRepository)
             
@@ -42,13 +43,53 @@ final class ViewModelContainer {
         self.geometrySubject = geometrySubject
         self.snippetSubject = snippetSubject
     }
-                
+    
+    //MARK: - Snippet
     lazy var snippetEditorViewModel = SnippetEditorViewModel(
         subject: controllerSubject,
         selectedFolderSubject: selectedFolderSubject,
         useCase: snippetUseCase
     )
+            
+    lazy var snippetPlusButtonViewModel = SnippetPlusButtonViewModel(
+        controllSubject: controllerSubject
+    )
     
+    lazy var snippetDeleteButtonViewModel = SnippetDeleteButtonViewModel(
+        snippetUseCase: snippetUseCase,
+        snippetSubject: snippetSubject
+    )
+    
+    lazy var snippetScrollViewModel = SnippetScrollViewModel(
+        snippetUseCase: snippetUseCase,
+        selectedFolderSubject: selectedFolderSubject,
+        controllerSubject: controllerSubject
+    )
+    
+    func getSnippetEditorViewModel(snippet: Snippet? = nil) -> SnippetEditorViewModel{
+        return SnippetEditorViewModel(
+            subject: controllerSubject,
+            selectedFolderSubject: selectedFolderSubject,
+            useCase: snippetUseCase,
+            snippet: snippet
+        )
+    }
+    
+    func getSnippetCardViewModel(snippet: Snippet) -> SnippetCardViewModel {
+        if let cached = snippetCardViewModelCache[snippet.id] {
+            return cached
+        }
+
+        let viewModel = SnippetCardViewModel(
+            snippet: snippet,
+            controllSubject: controllerSubject,
+            snippetSubject: snippetSubject
+        )
+        snippetCardViewModelCache[snippet.id] = viewModel
+        return viewModel
+    }
+    
+    //MARK: - Folder
     lazy var createFolderViewModel = CreateFolderViewModel(
         useCase: folderUseCase,
         subject: controllerSubject
@@ -74,48 +115,6 @@ final class ViewModelContainer {
         selectedFolderSubject: selectedFolderSubject
     )
     
-    lazy var snippetScrollViewModel = SnippetScrollViewModel(
-        snippetUseCase: snippetUseCase,
-        selectedFolderSubject: selectedFolderSubject,
-        controllerSubject: controllerSubject
-    )
-    
-    lazy var snippetPlusButtonViewModel = SnippetPlusButtonViewModel(
-        controllSubject: controllerSubject        
-    )
-    
-    lazy var snippetDeleteButtonViewModel = SnippetDeleteButtonViewModel(
-        snippetUseCase: snippetUseCase,
-        snippetSubject: snippetSubject
-    )
-    
-    lazy var appMenuBarViewModel = AppMenuBarViewModel(
-        controllerSubject: controllerSubject
-    )
-        
-    func getSnippetEditorViewModel(snippet: Snippet? = nil) -> SnippetEditorViewModel{
-        return SnippetEditorViewModel(
-            subject: controllerSubject,
-            selectedFolderSubject: selectedFolderSubject,
-            useCase: snippetUseCase,
-            snippet: snippet
-        )
-    }
-    
-    func getSnippetCardViewModel(snippet: Snippet) -> SnippetCardViewModel {
-        if let cached = snippetCardViewModelCache[snippet.id] {
-            return cached
-        }
-
-        let viewModel = SnippetCardViewModel(
-            snippet: snippet,
-            controllSubject: controllerSubject,
-            snippetSubject: snippetSubject
-        )
-        snippetCardViewModelCache[snippet.id] = viewModel
-        return viewModel
-    }
-    
     func getRenameableButtonViewModel(folder: Folder) ->  RenameableButtonViewModel{
         return RenameableButtonViewModel(
             folder: folder,
@@ -124,4 +123,29 @@ final class ViewModelContainer {
             selectedFolderSubject: selectedFolderSubject
         )
     }
+    
+    //MARK: - else
+    lazy var panelHeaderViewModel = PanelHeaderViewModel(
+        controllerSubject: controllerSubject
+    )
+    
+    lazy var appMenuBarViewModel = AppMenuBarViewModel(
+        controllerSubject: controllerSubject
+    )
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+        
+    
+    
+    
+    
+    
 }

@@ -51,13 +51,13 @@ extension ViewWindowControllable {
                 }
                 
                 // escapePressed 처리
-                if message == .escapePressed,
-                   let window = self.windowController?.window,
-                   window.isKeyWindow {
-                    self.windowController?.close()
-                    self.windowController = nil
-                    self.subject.send(.focusPanel)
-                }
+//                if message == .escapePressed,
+//                   let window = self.windowController?.window,
+//                   window.isKeyWindow {
+//                    self.windowController?.close()
+//                    self.windowController = nil
+//                    self.subject.send(.focusPanel)
+//                }
             }
             .store(in: &cancellables)
     }

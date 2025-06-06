@@ -48,14 +48,14 @@ class PanelController: NSWindowController, NSWindowDelegate {
 
         let targetFrame = NSRect(
             x: window.frame.origin.x,
-            y: bottomMargin, // 하단에서 살짝 띄움
+            y: bottomMargin,
             width: window.frame.width,
             height: window.frame.height
         )
 
         let startFrame = NSRect(
             x: targetFrame.origin.x,
-            y: -window.frame.height, // 아래에서 올라오도록
+            y: -window.frame.height,
             width: targetFrame.width,
             height: targetFrame.height
         )
@@ -64,7 +64,7 @@ class PanelController: NSWindowController, NSWindowDelegate {
         window.makeKeyAndOrderFront(nil)
         
         if #available(macOS 14.0, *) {
-            NSApp.activate() // 단순 activate
+            NSApp.activate()
         } else {
             NSApp.activate(ignoringOtherApps: true)
         }
@@ -108,14 +108,11 @@ class PanelController: NSWindowController, NSWindowDelegate {
               previousApp != NSRunningApplication.current else { return }
         
         if #available(macOS 14.0, *) {
-            // macOS 14+에서는 단순히 activate
             previousApp.activate()
         } else {
-            // 이전 버전 호환성
             previousApp.activate(options: .activateIgnoringOtherApps)
         }
         
-        // 실패시 대안 - 잠시 후 재시도
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             if NSWorkspace.shared.frontmostApplication == NSRunningApplication.current {
                 if #available(macOS 14.0, *) {
@@ -192,19 +189,13 @@ class PanelController: NSWindowController, NSWindowDelegate {
                     self?.toggle()
                 case .closePanel:
                     self?.hidePanel()
-                case .escapePressed:
-                    if let window = self?.window, window.isKeyWindow {
-                        self?.hidePanel()
-                    }
                 case .openPanel:
-                    self?.isPanelVisible = true
+                    self?.showPanel()
                 case .pauseAutoHidePanel:
                     self?.allowAutoHide = false
                 case .focusPanel:
                     self?.window?.makeKeyAndOrderFront(nil)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                        self?.allowAutoHide = true
-                    }
+                    self?.allowAutoHide = true
                 default:
                     break
                 }

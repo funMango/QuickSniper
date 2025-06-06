@@ -31,6 +31,11 @@ enum ControllerMessage: Equatable {
     case showSnippetEditorWith(Snippet)
     case showSnipperEditor
     
+    // MARK: - Snippet
+    case openCreateFolderView
+    case showCreateFolderView
+    
+    
     // MARK: - else
     case focusPanel
 }

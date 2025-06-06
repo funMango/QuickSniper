@@ -12,6 +12,11 @@ struct PanelHeaderView: View {
     @Injected var controllerContainer: ControllerContainer
     @Injected var viewModelContainer: ViewModelContainer
     @State private var selectedFolder: String = "Documents"
+    @StateObject var viewModel: PanelHeaderViewModel
+    
+    init(viewModel: PanelHeaderViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
             
     var body: some View {
         HStack {
@@ -19,7 +24,7 @@ struct PanelHeaderView: View {
                                         
             HoverIconButton(
                 onTap: {
-                    controllerContainer.createFolderController.show()
+                    viewModel.openCreateFolderView()
                 },
                 systemName: "plus"
             )
@@ -28,7 +33,7 @@ struct PanelHeaderView: View {
             
             HoverIconButton(
                 onTap: {
-                    
+                    viewModel.closePanel()
                 },
                 systemName: "xmark",
                 size: 14
@@ -40,6 +45,6 @@ struct PanelHeaderView: View {
     }
 }
 
-#Preview {
-    PanelHeaderView()
-}
+//#Preview {
+//    PanelHeaderView()
+//}

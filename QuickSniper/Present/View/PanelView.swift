@@ -11,14 +11,16 @@ import Resolver
 
 struct PanelView: View {    
     @Injected var controllerContainer: ControllerContainer
-    @Injected var viewModelContainer: ViewModelContainer    
+    @Injected var viewModelContainer: ViewModelContainer
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            PanelHeaderView()
-                .padding(.horizontal)
-                .padding(.top, 14)
-                .padding(.bottom, 5)
+            PanelHeaderView(
+                viewModel: viewModelContainer.panelHeaderViewModel
+            )
+            .padding(.horizontal)
+            .padding(.top, 14)
+            .padding(.bottom, 5)
             
             Divider()
                 .padding(.horizontal)
