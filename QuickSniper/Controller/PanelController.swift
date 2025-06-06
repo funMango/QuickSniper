@@ -129,8 +129,8 @@ class PanelController: NSWindowController, NSWindowDelegate {
     private static func makePanel(
         with hosting: NSHostingView<some View>,
         frame: NSRect
-    ) -> SniperPanel {
-        let panel: SniperPanel = SniperPanel(
+    ) -> ShiftyPanel {
+        let panel: ShiftyPanel = ShiftyPanel(
             contentRect: frame,
             styleMask: [.nonactivatingPanel, .borderless],
             backing: .buffered,
@@ -141,7 +141,7 @@ class PanelController: NSWindowController, NSWindowDelegate {
         return panel
     }
 
-    private func configurePanel(_ panel: SniperPanel) {
+    private func configurePanel(_ panel: ShiftyPanel) {
         panel.styleMask.insert(.nonactivatingPanel)
         panel.level = .floating
         panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
@@ -159,7 +159,13 @@ class PanelController: NSWindowController, NSWindowDelegate {
                 case .togglePanel:
                     self?.toggle()
                 case .closePanel:
-                    self?.isPanelVisible = false
+                    self?.hidePanel()
+                case .escapePressed:
+                    if let window = self?.window, window.isKeyWindow {
+                        self?.hidePanel()
+                    }
+                case .openPanel:
+                    self?.isPanelVisible = true
                 case .pauseAutoHidePanel:
                     self?.allowAutoHide = false
                 case .focusPanel:
@@ -172,15 +178,11 @@ class PanelController: NSWindowController, NSWindowDelegate {
     }
 }
 
-class SniperPanel: NSPanel {
+class ShiftyPanel: NSPanel {
     override var canBecomeKey: Bool { true }
     override var canBecomeMain: Bool { true }
 
     override func keyDown(with event: NSEvent) {
-        if event.keyCode == 53 { // ESC
-            (self.delegate as? PanelController)?.hidePanel()
-        } else {
-            super.keyDown(with: event)
-        }
+        super.keyDown(with: event)
     }
 }

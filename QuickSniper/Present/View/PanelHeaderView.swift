@@ -28,7 +28,7 @@ struct PanelHeaderView: View {
             
             HoverIconButton(
                 onTap: {
-                    print("닫힘 버튼 눌림")
+                    
                 },
                 systemName: "xmark",
                 size: 14

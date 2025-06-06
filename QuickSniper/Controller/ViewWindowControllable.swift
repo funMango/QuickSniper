@@ -43,7 +43,17 @@ extension ViewWindowControllable {
         subject
             .sink { [weak self] message in
                 guard let self = self else { return }
+                
                 if message == self.hideMessage {
+                    self.windowController?.close()
+                    self.windowController = nil
+                    self.subject.send(.focusPanel)
+                }
+                
+                // escapePressed 처리
+                if message == .escapePressed,
+                   let window = self.windowController?.window,
+                   window.isKeyWindow {
                     self.windowController?.close()
                     self.windowController = nil
                     self.subject.send(.focusPanel)

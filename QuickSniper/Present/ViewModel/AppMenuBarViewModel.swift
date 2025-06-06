@@ -15,8 +15,8 @@ final class AppMenuBarViewModel: ObservableObject {
         self.controllerSubject = controllerSubject
     }
     
-    func closePanel() {
-        controllerSubject.send(.closePanel)
+    func openPanel() {
+        controllerSubject.send(.openPanel)
     }
     
     func openShortcutSettingsView() {

@@ -18,6 +18,7 @@ struct QuickSniperApp: App {
     private let modelContainer: ModelContainer
     private let modelContext: ModelContext
     private let viewModelContainer: ViewModelContainer
+    private let keyboardShortcutManager: KeyboardShortcutManager
     
     init() {
         if let (modelContainer, modelContext, viewModelContainer) = QuickSniperApp.configureDependencies() {
@@ -25,11 +26,11 @@ struct QuickSniperApp: App {
             self.modelContext = modelContext
             self.viewModelContainer = viewModelContainer
             self.controllerContainer = Resolver.resolve(ControllerContainer.self)
+            self.keyboardShortcutManager = Resolver.resolve(KeyboardShortcutManager.self)
         } else {
             fatalError("❌ 의존성 구성 실패")
         }
-        
-        configureKeyboardShortcuts()
+                
         runInitialLaunchActions()
     }
 
@@ -43,17 +44,6 @@ struct QuickSniperApp: App {
             )
         }
         .menuBarExtraStyle(.window)
-    }
-    
-    private func configureKeyboardShortcuts() {
-        if KeyboardShortcuts.getShortcut(for: .toggleQuickSniper) == nil {
-            let shortcut = KeyboardShortcuts.Shortcut(.k, modifiers: [.option])
-            KeyboardShortcuts.setShortcut(shortcut, for: .toggleQuickSniper)
-        }
-
-        KeyboardShortcuts.onKeyUp(for: .toggleQuickSniper) {
-            controllerContainer.panelController.toggle()
-        }
     }
     
     private func runInitialLaunchActions() {
@@ -93,10 +83,15 @@ struct QuickSniperApp: App {
                 controllSubject: controllerSubject,
                 geometrySubject: geometrySubject                
             )
+            
+            let keyboardShortcutManager = KeyboardShortcutManager(                
+                controllerSubject: controllerSubject
+            )
                 
             Resolver.register { controllerConntainer }.scope(.application)
             Resolver.register { context }.scope(.application)
             Resolver.register { viewModelContainer }.scope(.application)
+            Resolver.register { keyboardShortcutManager }.scope(.application)
 
             return (container, context, viewModelContainer)
         } catch {

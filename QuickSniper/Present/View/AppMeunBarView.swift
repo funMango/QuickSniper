@@ -25,6 +25,16 @@ struct AppMenuBarView: View {
     var body: some View {
         VStack(spacing: 2) {
             MenuBarItem(
+                title: String(localized: "openShifty"),
+                isHovered: hoveredItem == .close
+            ) {
+                viewModel.openPanel()
+            }
+            .onHover { isHovered in
+                hoveredItem = isHovered ? .close : nil
+            }
+            
+            MenuBarItem(
                 title: String(localized: "shortCutSettings"),
                 isHovered: hoveredItem == .settings
             ) {
@@ -32,17 +42,7 @@ struct AppMenuBarView: View {
             }
             .onHover { isHovered in
                 hoveredItem = isHovered ? .settings : nil
-            }
-            
-            MenuBarItem(
-                title: String(localized: "closePanel"),
-                isHovered: hoveredItem == .close
-            ) {
-                viewModel.closePanel()
-            }
-            .onHover { isHovered in
-                hoveredItem = isHovered ? .close : nil
-            }
+            }            
             
             Divider()
                 .padding(.vertical, 4)

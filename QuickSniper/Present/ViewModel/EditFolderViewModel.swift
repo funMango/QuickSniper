@@ -14,7 +14,6 @@ class EditFolderViewModel: ObservableObject {
     private var cancellables = Set<AnyCancellable>()
     private var folder: Folder?
     
-    
     init(
         folderSubject: CurrentValueSubject<Folder?, Never>,
         folderEditSubject: PassthroughSubject<Folder, Never>

@@ -20,6 +20,7 @@ class ShortcutSettingsController: ViewWindowControllable {
     
     init(subject: PassthroughSubject<ControllerMessage, Never>) {
         self.subject = subject
+        setupBindings()
         controllMessageBindings()
     }
     
@@ -39,7 +40,7 @@ class ShortcutSettingsController: ViewWindowControllable {
                 guard let self else { return }
                 
                 switch message {
-                case .showShortcutSettingView:                    
+                case .showShortcutSettingView:
                     show()
                 default: break
                 }

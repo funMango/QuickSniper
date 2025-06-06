@@ -21,19 +21,19 @@
         }
       }
     },
-    "closePanel" : {
+    "closeShifty" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Close Panel"
+            "value" : "Close Shifty"
           }
         },
         "ko" : {
           "stringUnit" : {
-            "state" : "translated",
-            "value" : "패널 닫기"
+            "state" : "needs_review",
+            "value" : "Shifty 닫기"
           }
         }
       }
@@ -113,6 +113,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "제목을 입력하세요"
+          }
+        }
+      }
+    },
+    "openShifty" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Shifty"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "Shify 열기"
           }
         }
       }

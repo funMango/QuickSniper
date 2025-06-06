@@ -11,8 +11,7 @@ import Resolver
 
 struct PanelView: View {    
     @Injected var controllerContainer: ControllerContainer
-    @Injected var viewModelContainer: ViewModelContainer
-    @State private var selectedFolder: String = "Documents"
+    @Injected var viewModelContainer: ViewModelContainer    
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -23,8 +22,7 @@ struct PanelView: View {
             
             Divider()
                 .padding(.horizontal)
-
-            // 카드 스크롤 뷰
+            
             SnippetScrollView(
                 viewModel: viewModelContainer.snippetScrollViewModel
             )

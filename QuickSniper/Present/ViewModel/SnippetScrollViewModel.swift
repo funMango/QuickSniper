@@ -69,10 +69,6 @@ final class SnippetScrollViewModel: ObservableObject, DragabbleObject, QuerySync
                     } else {
                         self.items = []
                     }
-                    
-//                    DispatchQueue.main.async { [weak self] in
-//                        self?.controllerSubject.send(.togglePanel)
-//                    }
                 }
             }
             .store(in: &cancellables)
