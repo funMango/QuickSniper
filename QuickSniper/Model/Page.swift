@@ -8,13 +8,17 @@
 import Foundation
 
 enum Page {
+    case panel
     case snippetEditor
     case snippetEditorWith(Snippet)
     case shortcutSettings
     case createFolder
     
+    
     func getShowMessage() -> ControllerMessage {
         switch self {
+        case .panel:
+            return .showPanel
         case .snippetEditor:
             return .showSnipperEditor
         case .snippetEditorWith(let snippet):
@@ -28,6 +32,8 @@ enum Page {
     
     func getHideMessage() -> ControllerMessage {
         switch self {
+        case .panel:
+            return .hidePanel
         case .snippetEditor:
             return .hideSnippetEditorView
         case .snippetEditorWith:

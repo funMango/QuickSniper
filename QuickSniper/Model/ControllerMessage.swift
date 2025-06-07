@@ -9,10 +9,11 @@ import Foundation
 
 enum ControllerMessage: Equatable {
     // MARK: - Panel
-    case togglePanel
-    case openPanel
-    case closePanel
+    case togglePanel    
+    case hidePanel
     case pauseAutoHidePanel
+    case openPanel
+    case showPanel    
     
     // MARK: - Hide
     case hideCreateFolderView

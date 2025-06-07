@@ -20,6 +20,6 @@ final class PanelHeaderViewModel: ObservableObject {
     }
     
     func closePanel() {
-        controllerSubject.send(.closePanel)
+        controllerSubject.send(.hidePanel)
     }
 }

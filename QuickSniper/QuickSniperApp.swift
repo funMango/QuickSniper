@@ -21,17 +21,21 @@ struct QuickSniperApp: App {
     private let keyboardShortcutManager: KeyboardShortcutManager
     
     init() {
-        if let (modelContainer, modelContext, viewModelContainer) = QuickSniperApp.configureDependencies() {
+        if let (
+            modelContainer,
+            modelContext,
+            viewModelContainer,
+            controllerContainer,
+            keyboardShortcutManager
+        ) = QuickSniperApp.configureDependencies() {
             self.modelContainer = modelContainer
             self.modelContext = modelContext
             self.viewModelContainer = viewModelContainer
-            self.controllerContainer = Resolver.resolve(ControllerContainer.self)
-            self.keyboardShortcutManager = Resolver.resolve(KeyboardShortcutManager.self)
+            self.controllerContainer = controllerContainer
+            self.keyboardShortcutManager = keyboardShortcutManager
         } else {
             fatalError("❌ 의존성 구성 실패")
         }
-                
-        runInitialLaunchActions()
     }
 
     var body: some Scene {
@@ -46,16 +50,14 @@ struct QuickSniperApp: App {
         .menuBarExtraStyle(.window)
     }
     
-    private func runInitialLaunchActions() {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            controllerContainer.panelController.toggle()
-        }
-    }
+    
     
     private static func configureDependencies() -> (
         modelContainer: ModelContainer,
         modelContext: ModelContext,
-        viewModelContainer: ViewModelContainer
+        viewModelContainer: ViewModelContainer,
+        controllerContainer: ControllerContainer,
+        keyboardShortcutManager: KeyboardShortcutManager
     )? {
         do {
             let container = try ModelContainer(for: Folder.self, Snippet.self)
@@ -67,8 +69,7 @@ struct QuickSniperApp: App {
             let selectedFolderSubject = CurrentValueSubject<Folder?, Never>(nil)
             let geometrySubject = CurrentValueSubject<CGRect, Never>(.zero)
             let snippetSubject = CurrentValueSubject<SnippetMessage?, Never>(nil)
-            
-            
+                        
             let viewModelContainer = ViewModelContainer(
                 modelContext: context,
                 controllerSubject: controllerSubject,
@@ -92,8 +93,12 @@ struct QuickSniperApp: App {
             Resolver.register { context }.scope(.application)
             Resolver.register { viewModelContainer }.scope(.application)
             Resolver.register { keyboardShortcutManager }.scope(.application)
+            
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                controllerSubject.send(.openPanel)
+            }
 
-            return (container, context, viewModelContainer)
+            return (container, context, viewModelContainer, controllerConntainer, keyboardShortcutManager)
         } catch {
             print("❌ ModelContainer 생성 실패: \(error)")
             return nil

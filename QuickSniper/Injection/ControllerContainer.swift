@@ -14,6 +14,7 @@ final class ControllerContainer {
     private var snippetEditorController: SnippetEditorController?
     private var shortcutSettingsController: ShortcutSettingsController?
     private var createFolderController: CreateFolderController?
+    private var panelController: PanelController?
     private var cancellables = Set<AnyCancellable>()
     private var currentPage: Page?
                 
@@ -24,9 +25,7 @@ final class ControllerContainer {
         self.controllSubject = controllSubject
         self.geometrySubject = geometrySubject
         controllMesaageBindings()
-    }
-    
-    lazy var panelController = PanelController(subject: controllSubject)
+    }    
 }
 
 extension ControllerContainer {
@@ -36,6 +35,8 @@ extension ControllerContainer {
                 guard let self else { return }
                 
                 switch message {
+                case .openPanel:
+                    switchCurrentPage(.panel)
                 case .openSnippetEditorWith(let snippet):
                     switchCurrentPage(.snippetEditorWith(snippet))
                 case .openSnippetEditor:
@@ -60,7 +61,7 @@ extension ControllerContainer {
             controllSubject.send(currentPage.getHideMessage())
             self.currentPage = nil
         } else {
-            controllSubject.send(.closePanel)
+            controllSubject.send(.hidePanel)
         }
     }
     
@@ -70,10 +71,12 @@ extension ControllerContainer {
         }
         
         switch page {
+        case .panel:
+            panelControllerInit()
         case .snippetEditor:
             snippetEditorControllerInit()
-        case .snippetEditorWith(let snippet):
-            snippetEditorControllerInit(snippet)
+        case .snippetEditorWith(_):
+            snippetEditorControllerInit()
         case .shortcutSettings:
             shortcutSettingsControllerInit()
         case .createFolder:
@@ -86,7 +89,15 @@ extension ControllerContainer {
         }
     }
     
-    private func snippetEditorControllerInit(_ snippet: Snippet? = nil) {
+    private func panelControllerInit() {
+        if panelController == nil {
+            self.panelController = PanelController(
+                subject: controllSubject
+            )
+        }
+    }
+    
+    private func snippetEditorControllerInit() {
         if snippetEditorController == nil {
             self.snippetEditorController = SnippetEditorController(
                 subject: controllSubject
