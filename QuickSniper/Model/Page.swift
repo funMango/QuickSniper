@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Page {
+enum Page: Equatable {
     case panel
     case snippetEditor
     case snippetEditorWith(Snippet)

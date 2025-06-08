@@ -35,7 +35,10 @@ final class CreateFolderController: ViewWindowControllable {
     }
 
     func show() {
-        makeWindowController(size: CGSize(width: width, height: height))
+        makeWindowController(
+            size: CGSize(width: width, height: height),
+            page: .createFolder
+        )
     }
     
     func controllerMessageBinding() {

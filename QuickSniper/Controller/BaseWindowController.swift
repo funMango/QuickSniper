@@ -20,24 +20,26 @@ class BaseWindowController<Content: View>: NSObject, NSWindowDelegate {
     var window: NSWindow?
     private let content: () -> Content
     private let size: CGSize
+    private var page: Page
     private let subject: PassthroughSubject<ControllerMessage, Never>
     private var cancellables = Set<AnyCancellable>()
-    private var origin: CGPoint? = nil
+    private var isManualClose: Bool = false
 
     init(
         size: CGSize,
+        page: Page,
         subject: PassthroughSubject<ControllerMessage, Never>,
-        origin: CGPoint? = nil,
         @ViewBuilder content: @escaping () -> Content,
     ) {
         self.size = size
-        self.origin = origin
-        self.content = content
+        self.page = page
         self.subject = subject
+        self.content = content
     }
 
     func show() {
-        subject.send(.pauseAutoHidePanel)               
+        subject.send(.pauseAutoHidePanel)
+        self.isManualClose = false
         
         if window == nil {
             let hostingView = NSHostingView(rootView: content())
@@ -57,6 +59,7 @@ class BaseWindowController<Content: View>: NSObject, NSWindowDelegate {
             panel.hidesOnDeactivate = false
             panel.isMovableByWindowBackground = true
             panel.level = .floating
+            panel.delegate = self
             panel.center()
                                                                 
             self.window = panel
@@ -66,13 +69,15 @@ class BaseWindowController<Content: View>: NSObject, NSWindowDelegate {
         NSApp.activate(ignoringOtherApps: true)
     }
     
-    private func getCalculatedOrigin(origin: CGPoint) -> NSPoint {
-        let realY = origin.y + size.height + 32.0 / 2
-        let realX = origin.x + 55.5 / 2
-        return NSPoint(x: realX, y: realY)
+    func windowDidResignKey(_ notification: Notification) {
+        if !isManualClose{
+            subject.send(.AutoHidePage(page))
+            close()
+        }
     }
     
-    func close() {
+    func close(isManualClose: Bool = false) {
+        self.isManualClose = isManualClose
         window?.close()
         window = nil
     }

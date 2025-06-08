@@ -14,9 +14,9 @@ import SwiftData
 class PanelController: NSWindowController, NSWindowDelegate {
     private var allowAutoHide: Bool = true
     private var isPanelVisible = false
-    private var previousApp: NSRunningApplication?
     private var subject: PassthroughSubject<ControllerMessage, Never>
     private var cancellables = Set<AnyCancellable>()
+    private var isManualHide: Bool = false
 
     init(subject: PassthroughSubject<ControllerMessage, Never>) {
         self.subject = subject
@@ -38,12 +38,11 @@ class PanelController: NSWindowController, NSWindowDelegate {
     }
 
     func toggle() {
-        isPanelVisible ? hidePanel() : showPanel()
+        isPanelVisible ? performHidePanel() : showPanel()
     }
 
     private func showPanel() {
         guard let window = self.window, !isPanelVisible else { return }
-        previousApp = NSWorkspace.shared.frontmostApplication
         let bottomMargin: CGFloat = 10
 
         let targetFrame = NSRect(
@@ -63,23 +62,27 @@ class PanelController: NSWindowController, NSWindowDelegate {
         window.setFrame(startFrame, display: false)
         window.makeKeyAndOrderFront(nil)
         
-        if #available(macOS 14.0, *) {
-            NSApp.activate()
-        } else {
-            NSApp.activate(ignoringOtherApps: true)
-        }
-
         NSAnimationContext.runAnimationGroup { context in
             context.duration = 0.25
             context.timingFunction = .init(name: .easeOut)
             window.animator().setFrame(targetFrame, display: true)
         }
-
+        
+        isManualHide = false
         isPanelVisible = true
         allowAutoHide = true
     }
-
+    
     func hidePanel() {
+        isManualHide = true
+        performHidePanel()
+    }
+    
+    func AutoHidePanel() {
+        performHidePanel()
+    }
+        
+    private func performHidePanel() {
         guard let window = self.window, isPanelVisible else { return }
         let screen = NSScreen.main!.frame
 
@@ -94,39 +97,17 @@ class PanelController: NSWindowController, NSWindowDelegate {
             context.duration = 0.25
             context.timingFunction = .init(name: .easeIn)
             window.animator().setFrame(hideFrame, display: true)
-        }, completionHandler: { [weak self] in
+        }, completionHandler: {
             window.orderOut(nil)
-            self?.restorePreviousAppFocus()
         })
 
         isPanelVisible = false
     }
-    
-    private func restorePreviousAppFocus() {
-        guard let previousApp = previousApp,
-              !previousApp.isTerminated,
-              previousApp != NSRunningApplication.current else { return }
-        
-        if #available(macOS 14.0, *) {
-            previousApp.activate()
-        } else {
-            previousApp.activate(options: .activateIgnoringOtherApps)
-        }
-        
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            if NSWorkspace.shared.frontmostApplication == NSRunningApplication.current {
-                if #available(macOS 14.0, *) {
-                    previousApp.activate()
-                } else {
-                    previousApp.activate(options: .activateAllWindows)
-                }
-            }
-        }
-    }
 
     func windowDidResignKey(_ notification: Notification) {
-        if allowAutoHide {
-            hidePanel()
+        if allowAutoHide && !isManualHide {
+            AutoHidePanel()
+            subject.send(.AutoHidePage(.panel))
         }
     }
 

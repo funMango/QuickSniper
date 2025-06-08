@@ -71,7 +71,7 @@ class SnippetEditorViewModel: ObservableObject {
     }
     
     func hide() {
-        controllSubject.send(.hideSnippetEditorView)        
+        controllSubject.send(.escapePressed)        
     }
     
     private func resetSnippet() {

@@ -37,8 +37,18 @@ final class SnippetEditorController: ViewWindowControllable {
         )
     }
 
-    func show() {                
-        makeWindowController(size: CGSize(width: width, height: height))
+    func show() {
+        if let snippet = snippet {
+            makeWindowController(
+                size: CGSize(width: width, height: height),
+                page: .snippetEditorWith(snippet)
+            )
+        } else {
+            makeWindowController(
+                size: CGSize(width: width, height: height),
+                page: .snippetEditor
+            )
+        }
     }
     
     func controllMessageBindings() {

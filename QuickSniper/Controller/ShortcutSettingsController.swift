@@ -31,7 +31,10 @@ class ShortcutSettingsController: ViewWindowControllable {
     }
     
     func show() {
-        makeWindowController(size: CGSize(width: width, height: height))
+        makeWindowController(
+            size: CGSize(width: width, height: height),
+            page: .shortcutSettings
+        )
     }
     
     func controllMessageBindings() {

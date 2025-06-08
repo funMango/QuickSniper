@@ -37,7 +37,7 @@ final class CreateFolderViewModel: ObservableObject {
     }
     
     func hide() {
-        subject.send(.hideCreateFolderView)
+        subject.send(.escapePressed)
     }
     
     private func reset() {

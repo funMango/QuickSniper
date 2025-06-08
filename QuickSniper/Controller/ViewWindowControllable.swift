@@ -20,7 +20,7 @@ protocol ViewWindowControllable: AnyObject {
 }
 
 extension ViewWindowControllable {
-    func makeWindowController(origin: CGPoint? = nil, size: CGSize) {
+    func makeWindowController(origin: CGPoint? = nil, size: CGSize, page: Page) {
         // 이미 창이 떠 있다면 show만 호출하고 리턴
         if let existing = self.windowController, let win = existing.window {
             win.makeKeyAndOrderFront(nil)
@@ -31,6 +31,7 @@ extension ViewWindowControllable {
         // 새로 생성
         let controller = BaseWindowController(
             size: size,
+            page: page,
             subject: subject
         ) {
             self.makeView()
@@ -45,19 +46,10 @@ extension ViewWindowControllable {
                 guard let self = self else { return }
                 
                 if message == self.hideMessage {
-                    self.windowController?.close()
+                    self.windowController?.close(isManualClose: true)
                     self.windowController = nil
                     self.subject.send(.focusPanel)
                 }
-                
-                // escapePressed 처리
-//                if message == .escapePressed,
-//                   let window = self.windowController?.window,
-//                   window.isKeyWindow {
-//                    self.windowController?.close()
-//                    self.windowController = nil
-//                    self.subject.send(.focusPanel)
-//                }
             }
             .store(in: &cancellables)
     }

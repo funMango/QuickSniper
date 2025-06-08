@@ -9,17 +9,17 @@ import Foundation
 
 enum ControllerMessage: Equatable {
     // MARK: - Panel
-    case togglePanel    
-    case hidePanel
     case pauseAutoHidePanel
+    case togglePanel
     case openPanel
     case showPanel    
     
     // MARK: - Hide
+    case hidePanel
     case hideCreateFolderView
     case hideSnippetEditorView
     case hideEditFolderView
-    case hideShorcutSettingView
+    case hideShorcutSettingView     
     case escapePressed
             
     // MARK: - ShortcutSetting
@@ -39,4 +39,6 @@ enum ControllerMessage: Equatable {
     
     // MARK: - else
     case focusPanel
+    case switchPage(Page)
+    case AutoHidePage(Page)
 }

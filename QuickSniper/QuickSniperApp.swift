@@ -88,11 +88,14 @@ struct QuickSniperApp: App {
             let keyboardShortcutManager = KeyboardShortcutManager(                
                 controllerSubject: controllerSubject
             )
+            
+            let pageManager = PageManager(controllSubject: controllerSubject)
                 
             Resolver.register { controllerConntainer }.scope(.application)
             Resolver.register { context }.scope(.application)
             Resolver.register { viewModelContainer }.scope(.application)
             Resolver.register { keyboardShortcutManager }.scope(.application)
+            Resolver.register { pageManager }.scope(.application)
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 controllerSubject.send(.openPanel)

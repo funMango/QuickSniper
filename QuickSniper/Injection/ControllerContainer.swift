@@ -25,9 +25,10 @@ final class ControllerContainer {
         self.controllSubject = controllSubject
         self.geometrySubject = geometrySubject
         controllMesaageBindings()
-    }    
+    }
 }
 
+// MARK: - Controll Message Binding
 extension ControllerContainer {
     private func controllMesaageBindings() {
         controllSubject
@@ -45,8 +46,6 @@ extension ControllerContainer {
                     switchCurrentPage(.shortcutSettings)
                 case .openCreateFolderView:
                     switchCurrentPage(.createFolder)
-                case .escapePressed:
-                    closePage()
                 default:
                     break
                 }
@@ -55,21 +54,9 @@ extension ControllerContainer {
     }
 }
 
+// MARK: - Controller init
 extension ControllerContainer {
-    private func closePage() {
-        if let currentPage = currentPage {
-            controllSubject.send(currentPage.getHideMessage())
-            self.currentPage = nil
-        } else {
-            controllSubject.send(.hidePanel)
-        }
-    }
-    
     private func switchCurrentPage(_ page: Page) {
-        if let currentPage = currentPage {
-            self.controllSubject.send(currentPage.getHideMessage())
-        }
-        
         switch page {
         case .panel:
             panelControllerInit()
@@ -83,9 +70,8 @@ extension ControllerContainer {
             createFolderControllerInit()
         }
         
-        self.currentPage = page
         DispatchQueue.main.async { [weak self] in
-            self?.controllSubject.send(page.getShowMessage())
+            self?.controllSubject.send(.switchPage(page))
         }
     }
     
