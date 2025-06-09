@@ -47,8 +47,7 @@ extension ViewWindowControllable {
                 
                 if message == self.hideMessage {
                     self.windowController?.close(isManualClose: true)
-                    self.windowController = nil
-                    self.subject.send(.focusPanel)
+                    self.windowController = nil                    
                 }
             }
             .store(in: &cancellables)

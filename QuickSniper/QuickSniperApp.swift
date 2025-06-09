@@ -19,6 +19,8 @@ struct QuickSniperApp: App {
     private let modelContext: ModelContext
     private let viewModelContainer: ViewModelContainer
     private let keyboardShortcutManager: KeyboardShortcutManager
+    private let pageManager: PageManager
+    
     
     init() {
         if let (
@@ -26,13 +28,15 @@ struct QuickSniperApp: App {
             modelContext,
             viewModelContainer,
             controllerContainer,
-            keyboardShortcutManager
+            keyboardShortcutManager,
+            pageManger
         ) = QuickSniperApp.configureDependencies() {
             self.modelContainer = modelContainer
             self.modelContext = modelContext
             self.viewModelContainer = viewModelContainer
             self.controllerContainer = controllerContainer
             self.keyboardShortcutManager = keyboardShortcutManager
+            self.pageManager = pageManger
         } else {
             fatalError("❌ 의존성 구성 실패")
         }
@@ -57,7 +61,8 @@ struct QuickSniperApp: App {
         modelContext: ModelContext,
         viewModelContainer: ViewModelContainer,
         controllerContainer: ControllerContainer,
-        keyboardShortcutManager: KeyboardShortcutManager
+        keyboardShortcutManager: KeyboardShortcutManager,
+        pageManager: PageManager
     )? {
         do {
             let container = try ModelContainer(for: Folder.self, Snippet.self)
@@ -97,11 +102,13 @@ struct QuickSniperApp: App {
             Resolver.register { keyboardShortcutManager }.scope(.application)
             Resolver.register { pageManager }.scope(.application)
             
+            
+            
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                controllerSubject.send(.openPanel)
+                controllerSubject.send(.openPanel)                
             }
 
-            return (container, context, viewModelContainer, controllerConntainer, keyboardShortcutManager)
+            return (container, context, viewModelContainer, controllerConntainer, keyboardShortcutManager, pageManager)
         } catch {
             print("❌ ModelContainer 생성 실패: \(error)")
             return nil

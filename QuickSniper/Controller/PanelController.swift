@@ -43,6 +43,7 @@ class PanelController: NSWindowController, NSWindowDelegate {
 
     private func showPanel() {
         guard let window = self.window, !isPanelVisible else { return }
+        isManualHide = false
         let bottomMargin: CGFloat = 10
 
         let targetFrame = NSRect(
@@ -112,7 +113,6 @@ class PanelController: NSWindowController, NSWindowDelegate {
     }
 
     // MARK: - 구성 요소 메서드
-
     private static func makeHostingView() -> NSHostingView<some View> {
         let modelContext = Resolver.resolve(ModelContext.self)
         let view = PanelView().environment(\.modelContext, modelContext)
@@ -172,10 +172,9 @@ class PanelController: NSWindowController, NSWindowDelegate {
                     self?.showPanel()
                 case .hidePanel:
                     self?.hidePanel()
-                case .pauseAutoHidePanel:
+                case .deactivateAutoHidePanel:
                     self?.allowAutoHide = false
-                case .focusPanel:
-                    self?.window?.makeKeyAndOrderFront(nil)
+                case .activateAutoHidePanel:
                     self?.allowAutoHide = true
                 default:
                     break

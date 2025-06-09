@@ -38,8 +38,9 @@ class BaseWindowController<Content: View>: NSObject, NSWindowDelegate {
     }
 
     func show() {
-        subject.send(.pauseAutoHidePanel)
+        subject.send(.deactivateAutoHidePanel)
         self.isManualClose = false
+                
         
         if window == nil {
             let hostingView = NSHostingView(rootView: content())
@@ -66,10 +67,9 @@ class BaseWindowController<Content: View>: NSObject, NSWindowDelegate {
         }
                 
         self.window?.makeKeyAndOrderFront(nil)
-        NSApp.activate(ignoringOtherApps: true)
     }
     
-    func windowDidResignKey(_ notification: Notification) {
+    func windowDidResignKey(_ notification: Notification) {        
         if !isManualClose{
             subject.send(.AutoHidePage(page))
             close()
@@ -78,8 +78,9 @@ class BaseWindowController<Content: View>: NSObject, NSWindowDelegate {
     
     func close(isManualClose: Bool = false) {
         self.isManualClose = isManualClose
-        window?.close()
-        window = nil
+        self.window?.close()
+        self.window = nil
+        self.subject.send(.activateAutoHidePanel)
     }
 
     func windowWillClose(_ notification: Notification) {
