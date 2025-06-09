@@ -13,11 +13,14 @@ struct SnippetOptionMenuView: View {
     @Injected var viewModelContainer: ViewModelContainer
     
     var body: some View {
-        VStack {
-            SnippetDeleteButtonView(
-                viewModel: viewModelContainer.snippetDeleteButtonViewModel
-            )                       
-        }
+        SnippetDeleteButtonView(
+            viewModel: viewModelContainer.snippetDeleteButtonViewModel
+        )
+        
+        SnippetMoveButtonView(
+            viewModel: viewModelContainer.snippetMoveButtonViewModel
+        )
+        
     }
 }
 

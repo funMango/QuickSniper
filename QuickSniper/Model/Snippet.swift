@@ -13,7 +13,7 @@ import UniformTypeIdentifiers
 
 
 @Model
-class Snippet: Codable, Identifiable, Equatable, CoreModel{
+class Snippet: Codable, Identifiable, Equatable, CoreModel, Hashable{
     var id: String
     var folderId: String
     var title: String
@@ -28,8 +28,12 @@ class Snippet: Codable, Identifiable, Equatable, CoreModel{
         self.order = order
     }
     
-    func setFolderId(_ folderId: String) {
+    func updateFolderId(_ folderId: String) {
         self.folderId = folderId
+    }
+    
+    func updateOrder(_ order: Int) {
+        self.order = order
     }
     
     enum CodingKeys: String, CodingKey {

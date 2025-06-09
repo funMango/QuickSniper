@@ -60,10 +60,16 @@ final class ViewModelContainer {
         snippetSubject: snippetSubject
     )
     
+    lazy var snippetMoveButtonViewModel = SnippetMoveButtonViewModel(
+        snippetSubject: snippetSubject,
+        snippetUseCase: snippetUseCase
+    )
+    
     lazy var snippetScrollViewModel = SnippetScrollViewModel(
         snippetUseCase: snippetUseCase,
         selectedFolderSubject: selectedFolderSubject,
-        controllerSubject: controllerSubject
+        controllerSubject: controllerSubject,
+        snippetSubject: snippetSubject
     )
     
     func getSnippetEditorViewModel(snippet: Snippet? = nil) -> SnippetEditorViewModel{

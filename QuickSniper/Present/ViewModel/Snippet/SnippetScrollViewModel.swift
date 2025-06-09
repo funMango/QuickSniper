@@ -19,29 +19,31 @@ final class SnippetScrollViewModel: ObservableObject, DragabbleObject, QuerySync
     private var snippetUseCase: SnippetUseCase
     private var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     private var controllerSubject: PassthroughSubject<ControllerMessage, Never>
+    private var snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
     private var cancellables: Set<AnyCancellable> = []
-    
-    
+        
     init(
         snippetUseCase: SnippetUseCase,
         selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
-        controllerSubject: PassthroughSubject<ControllerMessage, Never>
+        controllerSubject: PassthroughSubject<ControllerMessage, Never>,
+        snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
     ) {
         self.snippetUseCase = snippetUseCase
         self.selectedFolderSubject = selectedFolderSubject
         self.controllerSubject = controllerSubject
+        self.snippetSubject = snippetSubject
+        
         setupSelectedFolderBindings()
+        setupSnippetMessageBindings()
     }
     
     func getItems(_ items: [Item]) {
-        DispatchQueue.main.async { [weak self] in
-            self?.allItems = items
-        }
+        self.allItems = items
     }
     
     func updateItems() {
         for (i, s) in items.enumerated() {
-            s.order = i
+            s.updateOrder(i + 1)
         }
         
         do {
@@ -54,23 +56,42 @@ final class SnippetScrollViewModel: ObservableObject, DragabbleObject, QuerySync
     private func setupSelectedFolderBindings() {
         selectedFolderSubject
             .assign(to: &$selectedFolder)
-        
+
         Publishers.CombineLatest($allItems, $selectedFolder)
-            .sink { [weak self] allSnippets, selectedFolder in
-                guard selectedFolder != nil else { return }
-                                                                       
-                DispatchQueue.main.async { [weak self] in
-                    guard let self = self else { return }
-                    
-                    if let folder = selectedFolder {
-                        self.items = self.allItems
-                                         .filter { $0.folderId == folder.id }
-                                         .sorted { $0.order < $1.order }
-                    } else {
-                        self.items = []
-                    }
+            .map { snippets, folder -> [Snippet] in
+                guard let folder = folder else {
+                    return []
                 }
+                
+                let result = self.getFilterdSnippets(
+                    snippets: snippets,
+                    folderId: folder.id
+                )
+                                
+                return result
+            }
+            .receive(on: DispatchQueue.main)
+            .assign(to: &$items)
+    }
+    
+    private func setupSnippetMessageBindings() {
+        snippetSubject
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] message in
+                guard case .switchFolder = message,
+                      let self = self,
+                      let folder = self.selectedFolder else { return }
+                
+                self.items = self.getFilterdSnippets(
+                    snippets: self.allItems,
+                    folderId: folder.id)
+                self.updateItems()
             }
             .store(in: &cancellables)
+    }
+    
+    private func getFilterdSnippets(snippets: [Snippet], folderId: String) -> [Snippet] {
+        return snippets.filter { $0.folderId == folderId }
+                       .sorted { $0.order < $1.order }
     }
 }

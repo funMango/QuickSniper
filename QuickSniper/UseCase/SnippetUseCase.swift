@@ -10,6 +10,7 @@ import Foundation
 protocol SnippetUseCase {
     func createSnippet(folderId: String, title: String, body: String)
     func updateSnippet(_ snippet: Snippet) throws
+    func updateSnippetFolder(_ snippet: Snippet) throws
     func updateAllSnippets(_ snippets: [Snippet]) throws
     func deleteSnippet(_ snippet: Snippet) throws
 }
@@ -37,6 +38,12 @@ final class DefaultSnippetUseCase: SnippetUseCase {
     }
     
     func updateSnippet(_ snippet: Snippet) throws {
+        try repository.update(snippet)
+    }
+    
+    func updateSnippetFolder(_ snippet: Snippet) throws {
+        let order = try repository.fetchByFolderId(snippet.folderId).count
+        snippet.updateOrder(order)
         try repository.update(snippet)
     }
     

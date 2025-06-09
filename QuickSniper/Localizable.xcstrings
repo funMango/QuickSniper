@@ -4,6 +4,9 @@
     "" : {
 
     },
+    "%@" : {
+
+    },
     "cancel" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -113,6 +116,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "제목을 입력하세요"
+          }
+        }
+      }
+    },
+    "moveFolder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Move to Folder"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "폴더 이동"
           }
         }
       }

@@ -29,7 +29,7 @@ where VM.Item == Item {
                     viewModel.getItems(items)
                 }
             }
-            .onChange(of: items) { _, newItems in
+            .onChange(of: items) { _, newItems in                
                 DispatchQueue.main.async {
                     viewModel.getItems(newItems)
                 }

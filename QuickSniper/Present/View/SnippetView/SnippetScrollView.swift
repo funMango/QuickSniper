@@ -24,11 +24,15 @@ struct SnippetScrollView: View, DraggableView {
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            LazyHStack(spacing: 12) {
+            HStack(spacing: 12) {
                 ForEach(viewModel.items, id: \.id) { snippet in
                     SnippetCardView(
                         viewModel: viewModelContainer.getSnippetCardViewModel(snippet: snippet)
                     )
+                    .transition(.asymmetric(
+                        insertion: .scale.combined(with: .opacity),
+                        removal: .scale.combined(with: .opacity)
+                    ))
                     .dragDrop(
                         viewModel: viewModel,
                         draggingItemId: $draggingItem,
@@ -47,6 +51,7 @@ struct SnippetScrollView: View, DraggableView {
                     Spacer()
                 }
             }
+            .animation(.easeInOut(duration: 0.3), value: viewModel.items.count)
             .frame(height: 150)
             .padding()
             .padding(.bottom)
