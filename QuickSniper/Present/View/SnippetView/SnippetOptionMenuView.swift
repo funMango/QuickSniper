@@ -20,6 +20,10 @@ struct SnippetOptionMenuView: View {
         SnippetMoveButtonView(
             viewModel: viewModelContainer.snippetMoveButtonViewModel
         )
+        
+        SnippetCopyButtonView(
+            viewModel: viewModelContainer.snippetCopyButtonViewModel
+        )
     }
 }
 

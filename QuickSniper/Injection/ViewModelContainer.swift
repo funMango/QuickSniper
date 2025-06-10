@@ -72,6 +72,10 @@ final class ViewModelContainer {
         snippetSubject: snippetSubject
     )
     
+    lazy var snippetCopyButtonViewModel = SnippetCopyButtonViewModel(
+        snippetSubject: snippetSubject
+    )
+    
     func getSnippetEditorViewModel(snippet: Snippet? = nil) -> SnippetEditorViewModel{
         return SnippetEditorViewModel(
             subject: controllerSubject,

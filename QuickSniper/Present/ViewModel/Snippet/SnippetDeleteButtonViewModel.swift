@@ -20,7 +20,7 @@ final class SnippetDeleteButtonViewModel: ObservableObject {
     ) {
         self.snippetUseCase = snippetUseCase
         self.snippetSubject = snippetSubject
-        setUpHoveringSnippet()
+        setUpSelectedSnippet()
     }
     
     func deleteSnippet() {
@@ -37,7 +37,7 @@ final class SnippetDeleteButtonViewModel: ObservableObject {
         }        
     }
     
-    private func setUpHoveringSnippet() {
+    private func setUpSelectedSnippet() {
         snippetSubject
             .sink { [weak self] message in
                 switch message {
