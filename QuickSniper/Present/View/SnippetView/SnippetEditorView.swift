@@ -8,8 +8,14 @@
 import SwiftUI
 import Resolver
 
+enum Field: Hashable {
+    case title
+    case content
+}
+
 struct SnippetEditorView: View {
     @StateObject var viewModel: SnippetEditorViewModel
+    @FocusState private var focusedField: Field?
     var width: CGFloat, height: CGFloat
     
     init(viewModel: SnippetEditorViewModel, width: CGFloat, height: CGFloat) {
@@ -26,8 +32,12 @@ struct SnippetEditorView: View {
                     MultiLineTextFieldView(
                         text: $viewModel.title,
                         placeholder: String(localized: "inputTitle"),
-                        type: .singleLine
+                        type: .singleLine,
+                        onTabPressed: {
+                            focusedField = .content
+                        }
                     )
+                    .focused($focusedField, equals: .title)
                     .padding(.bottom, 7)
                     Divider()
                     Spacer()
@@ -41,6 +51,7 @@ struct SnippetEditorView: View {
                     placeholder: String(localized: "inputContent"),
                     type: .multiLine
                 )
+                .focused($focusedField, equals: .content)
                 .padding(.horizontal)
                 
             }

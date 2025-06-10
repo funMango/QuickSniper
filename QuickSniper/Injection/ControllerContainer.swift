@@ -43,7 +43,7 @@ extension ControllerContainer {
                 case .openSnippetEditor:
                     switchCurrentPage(.snippetEditor)
                 case .openShortcutSettingView:
-                    switchCurrentPage(.shortcutSettings)
+                    switchWindow(.shortcutSettings)
                 case .openCreateFolderView:
                     switchCurrentPage(.createFolder)
                 default:
@@ -56,6 +56,18 @@ extension ControllerContainer {
 
 // MARK: - Controller init
 extension ControllerContainer {
+    private func switchWindow(_ window: Window) {
+        switch window {
+        case .shortcutSettings:
+            shortcutSettingsControllerInit()
+        }
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.controllSubject.send(window.getShowMessage())
+            
+        }
+    }
+    
     private func switchCurrentPage(_ page: Page) {
         switch page {
         case .panel:
@@ -70,7 +82,7 @@ extension ControllerContainer {
             createFolderControllerInit()
         }
         
-        DispatchQueue.main.async { [weak self] in
+        DispatchQueue.main.async { [weak self] in            
             self?.controllSubject.send(.switchPage(page))
         }
     }

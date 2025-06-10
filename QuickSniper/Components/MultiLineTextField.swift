@@ -16,6 +16,7 @@ struct MultiLineTextFieldView: View {
     @Binding var text: String
     var placeholder: String
     var type: TextFieldType
+    var onTabPressed: (() -> Void)? = nil
     
     @FocusState private var isFocused: Bool
 
@@ -35,6 +36,10 @@ struct MultiLineTextFieldView: View {
         .scrollContentBackground(.hidden)
         .focused($isFocused)
         .background(Color.clear)
+        .onKeyPress(.tab) {            
+            onTabPressed?()
+            return .handled
+        }
         .overlay(alignment: .topLeading) {
             if text.isEmpty && !isFocused {
                 Text(placeholder)

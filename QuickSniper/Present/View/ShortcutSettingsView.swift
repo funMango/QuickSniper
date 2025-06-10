@@ -9,7 +9,10 @@ import SwiftUI
 import KeyboardShortcuts
 
 struct ShortcutSettingsView: View {
-    var width: CGFloat, height: CGFloat
+    
+    @State private var isBlocked = false
+    private let width: CGFloat
+    private let height: CGFloat
     
     init(width: CGFloat, height: CGFloat) {
         self.width = width
@@ -17,14 +20,33 @@ struct ShortcutSettingsView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text("단축키 설정")
-                .font(.headline)
-
-            KeyboardShortcuts.Recorder("패널 토글", name: .toggleQuickSniper)
+        VStack() {
+            HStack {
+                Text(String(localized: "shortCutSettings"))
+                    .font(.headline)
+                    .padding(.bottom, 15)
+                
+                Spacer()
+            }
+                                    
+            HStack {
+                Text(String(localized: "shiftyOpen"))
+                    .font(.subheadline)
+                
+                Spacer()
+                
+                KeyboardShortcuts.Recorder(
+                    "", name: .toggleQuickSniper
+                )
+            }
+                                                                                            
+            Spacer()
         }
         .padding()
-        .frame(width: 250)
+        .frame(width: width, height: height)
+        .background(.clear)
+        .clipShape(RoundedRectangle(cornerRadius: 10))
+        
     }
 }
 

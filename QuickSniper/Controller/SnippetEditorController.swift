@@ -15,7 +15,7 @@ final class SnippetEditorController: ViewWindowControllable {
 
     let subject: PassthroughSubject<ControllerMessage, Never>
     let hideMessage: ControllerMessage = .hideSnippetEditorView
-    var windowController: BaseWindowController<SnippetEditorView>?
+    var windowController: BasePanelController<SnippetEditorView>?
     var cancellables = Set<AnyCancellable>()
     var width: CGFloat = 450, height: CGFloat = 600
     var isVisible: Bool = false

@@ -225,6 +225,23 @@
     "shifty" : {
 
     },
+    "shiftyOpen" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shifty Open"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shifty 열기"
+          }
+        }
+      }
+    },
     "shortCutSettings" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -241,12 +258,6 @@
           }
         }
       }
-    },
-    "단축키 설정" : {
-
-    },
-    "패널 토글" : {
-
     }
   },
   "version" : "1.0"

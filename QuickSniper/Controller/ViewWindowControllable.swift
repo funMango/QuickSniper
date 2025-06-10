@@ -13,7 +13,7 @@ protocol ViewWindowControllable: AnyObject {
     associatedtype Content: View
     var subject: PassthroughSubject<ControllerMessage, Never> { get }
     var hideMessage: ControllerMessage { get }
-    var windowController: BaseWindowController<Content>? { get set }
+    var windowController: BasePanelController<Content>? { get set }
     var cancellables: Set<AnyCancellable> { get set }
 
     func makeView() -> Content
@@ -29,7 +29,7 @@ extension ViewWindowControllable {
         }
 
         // 새로 생성
-        let controller = BaseWindowController(
+        let controller = BasePanelController(
             size: size,
             page: page,
             subject: subject
