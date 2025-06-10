@@ -16,52 +16,51 @@ struct CreateFolderView: View {
     var body: some View {
         VStack(spacing: 20) {
             HStack {
-                Text("폴더 이름:")
+                Text(String(localized: "folderName"))
                 
                 Spacer()
                 
-                TextField("폴더 이름을 입력해주세요", text: $viewModel.folderName)
-            }
-            
-            HStack {
-                Text("폴더 종류:")
-                
-                Spacer()
-                
-                Menu {
-                    ForEach(FolderType.allCases, id: \.self) { type in
-                        Button {
-                            viewModel.folderType = type
-                        } label: {
-                            Text(type.rawValue)
+                TextField(String(localized: "enterFolderName"), text: $viewModel.folderName)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .onChange(of: viewModel.folderName) { oldValue, newValue in
+                        if newValue.count > 20 {
+                            viewModel.folderName = String(newValue.prefix(20))
                         }
                     }
-                } label: {
-                    Text(viewModel.folderType.rawValue)
-                }
             }
+            
+//            HStack {
+//                Text("폴더 종류:")
+//                
+//                Spacer()
+//                
+//                Menu {
+//                    ForEach(FolderType.allCases, id: \.self) { type in
+//                        Button {
+//                            viewModel.folderType = type
+//                        } label: {
+//                            Text(type.rawValue)
+//                        }
+//                    }
+//                } label: {
+//                    Text(viewModel.folderType.rawValue)
+//                }
+//            }
             
             HStack {
                 Spacer()
                 
                 HStack {
-                    Button {
-                        viewModel.hide()
-                    } label: {
-                        Text("취소")
-                    }
+                    ReturnButton(type: .cancel, action: viewModel.hide)
                     
-                    Button {
-                        viewModel.createFolder()
-                    } label: {
-                        Text("확인")
-                    }
+                    ReturnButton(type: .save, action: viewModel.createFolder)                                        
                 }
             }
         }
         .padding()
+        .background(VisualEffectView.panel)
+        .cornerRadius(10)
         .frame(width: width, height: height)
-        .background(Color.background)
     }
 }
 #Preview {

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-enum ButtonType {
+enum ReturnButtonType {
     case cancel
     case save
     
@@ -40,7 +40,7 @@ enum ButtonType {
 }
 
 struct ReturnButtonStyle: View {
-    var type: ButtonType
+    var type: ReturnButtonType
         
     var body: some View {
         Text(type.localized())

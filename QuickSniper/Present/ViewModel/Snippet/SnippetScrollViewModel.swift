@@ -59,19 +59,18 @@ final class SnippetScrollViewModel: ObservableObject, DragabbleObject, QuerySync
 
         Publishers.CombineLatest($allItems, $selectedFolder)
             .map { snippets, folder -> [Snippet] in
-                guard let folder = folder else {
-                    return []
-                }
-                
-                let result = self.getFilterdSnippets(
+                guard let folder = folder else { return [] }
+                return self.getFilterdSnippets(
                     snippets: snippets,
                     folderId: folder.id
                 )
-                                
-                return result
             }
             .receive(on: DispatchQueue.main)
-            .assign(to: &$items)
+            .sink { [weak self] newItems in
+                self?.items = newItems
+                self?.updateItems()
+            }
+            .store(in: &cancellables)
     }
     
     private func setupSnippetMessageBindings() {

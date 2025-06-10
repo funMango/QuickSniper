@@ -69,6 +69,23 @@
         }
       }
     },
+    "enterFolderName" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enter Folder Name"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "폴더 이름을 입력해주세요"
+          }
+        }
+      }
+    },
     "exit" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -82,6 +99,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "종료"
+          }
+        }
+      }
+    },
+    "folderName" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folder Name"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "폴더 이름"
           }
         }
       }
@@ -211,22 +245,7 @@
     "단축키 설정" : {
 
     },
-    "취소" : {
-
-    },
     "패널 토글" : {
-
-    },
-    "폴더 이름:" : {
-
-    },
-    "폴더 이름을 입력해주세요" : {
-
-    },
-    "폴더 종류:" : {
-
-    },
-    "확인" : {
 
     }
   },

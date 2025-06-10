@@ -50,19 +50,9 @@ struct SnippetEditorView: View {
             HStack{
                 Spacer()
                 
-                Button {
-                    viewModel.hide()
-                } label: {
-                    ReturnButtonStyle(type: .cancel)
-                }
-                .buttonStyle(.plain)
+                ReturnButton(type: .cancel, action: viewModel.hide)
                 
-                Button {
-                    viewModel.save()
-                } label: {
-                    ReturnButtonStyle(type: .save)
-                }
-                .buttonStyle(.plain)
+                ReturnButton(type: .save, action: viewModel.save)
             }
         }
         .padding()

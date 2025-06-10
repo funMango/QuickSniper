@@ -43,7 +43,7 @@ struct SnippetCardView: View {
                 .foregroundColor(.subText)
         }
         .padding()
-        .frame(width: 240, height: 150, alignment: .topLeading)
+        .frame(width: 150, height: 150, alignment: .topLeading)
         .background(VisualEffectView.panelWithOverlay)
         .cornerRadius(10)
     }
@@ -51,8 +51,7 @@ struct SnippetCardView: View {
     
 
 
-#Preview {
-    @Previewable @Namespace var ns
+#Preview {    
     @Injected var viewModelContainer: ViewModelContainer
     SnippetCardView(
         viewModel: viewModelContainer.getSnippetCardViewModel(

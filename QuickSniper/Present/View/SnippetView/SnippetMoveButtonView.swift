@@ -19,7 +19,7 @@ struct SnippetMoveButtonView: View {
     }
     
     var body: some View {
-        Menu(String(localized: "moveFolder")) {
+        Menu {
             ForEach(viewModel.items, id: \.id) { folder in
                 Button {
                     viewModel.moveToFolder(folder)
@@ -27,6 +27,8 @@ struct SnippetMoveButtonView: View {
                     Text("\(folder.name)")
                 }
             }
+        } label: {
+            OptionButtonStyle(systemName: "arrowshape.turn.up.forward", title: "moveFolder")
         }
         .syncQuey(
             viewModel: viewModel,
