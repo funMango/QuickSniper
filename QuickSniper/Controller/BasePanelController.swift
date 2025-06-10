@@ -16,7 +16,7 @@ class InputPanel: NSPanel {
 }
 
 // MARK: - 기본 윈도우 컨트롤러
-class BaseWindowController<Content: View>: NSObject, NSWindowDelegate {
+class BasePanelController<Content: View>: NSObject, NSWindowDelegate {
     var window: NSWindow?
     private let content: () -> Content
     private let size: CGSize
