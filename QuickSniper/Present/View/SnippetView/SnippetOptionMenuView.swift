@@ -11,7 +11,7 @@ import Resolver
 
 struct SnippetOptionMenuView: View {
     @Injected var viewModelContainer: ViewModelContainer
-    
+            
     var body: some View {
         SnippetDeleteButtonView(
             viewModel: viewModelContainer.snippetDeleteButtonViewModel
@@ -20,10 +20,9 @@ struct SnippetOptionMenuView: View {
         SnippetMoveButtonView(
             viewModel: viewModelContainer.snippetMoveButtonViewModel
         )
-        
     }
 }
 
-#Preview {
-    SnippetOptionMenuView()
-}
+//#Preview {
+//    SnippetOptionMenuView()
+//}

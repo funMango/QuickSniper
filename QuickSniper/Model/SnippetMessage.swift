@@ -10,6 +10,7 @@ import Foundation
 enum SnippetMessage {
     case snippetHovering(Snippet)
     case snippetReorder(String, String)
+    case snippetSelected(Snippet)
     case switchOrder(Snippet, Snippet)
     case switchFolder
     case saveSnippets

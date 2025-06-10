@@ -23,7 +23,7 @@ struct FolderScrollView: View, DraggableView {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 10) {
                 ForEach(viewModel.items, id: \.id) { folder in
-                    FolderButtonBackgroundView(
+                    FolderButtonView(
                         viewModel: viewModelContainer.folderButtonViewModel,
                         title: folder.name,
                         isSelected: viewModel.selectedFolder == folder,

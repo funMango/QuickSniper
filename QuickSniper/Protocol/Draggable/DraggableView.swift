@@ -59,7 +59,7 @@ struct DragDropModifier<VM: DragabbleObject>: ViewModifier {
                     .fill(Color.clear)
                     .frame(width: 0, height: 0)
             }
-            .onLongPressGesture(minimumDuration: 0, maximumDistance: .infinity) {
+            .onLongPressGesture(minimumDuration: 0.7, maximumDistance: 10) {
             } onPressingChanged: { pressing in
                 isDragPressed = pressing
             }

@@ -48,7 +48,7 @@ final class SnippetMoveButtonViewModel: ObservableObject, QuerySyncableObject {
         snippetSubject
             .sink { [weak self] message in
                 switch message {
-                case .snippetHovering(let snippet):
+                case .snippetSelected(let snippet):
                     self?.snippet = snippet
                 default:
                     break

@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-final class RenameableButtonViewModel: ObservableObject {
+final class FolderButtonContentViewModel: ObservableObject {
     @Published var hoverFolder: Folder?
     @Published var buttonText: String = ""
     @Published var isRenaming: Bool = false

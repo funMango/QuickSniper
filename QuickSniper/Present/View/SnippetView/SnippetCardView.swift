@@ -10,26 +10,32 @@ import Resolver
 import UniformTypeIdentifiers
 
 struct SnippetCardView: View {
+    @Injected var viewModelContainer: ViewModelContainer
     @StateObject var viewModel: SnippetCardViewModel
     
-    init(
-        viewModel: SnippetCardViewModel
-    ){
+    init(viewModel: SnippetCardViewModel){
         _viewModel = StateObject(wrappedValue: viewModel)
     }
         
     var body: some View {
         card
-            .onTapGesture {
+            .onDoubleClick {
+                viewModel.sendSelectedSnippetMessage()
                 viewModel.openSnippetEditor()
+            }
+            .onClick{
+                viewModel.sendSelectedSnippetMessage()
             }
             .onHover { hovering in
                 if hovering {
                     viewModel.sendSelectedSnippet()
                 }
             }
+            .onRightClick {
+                viewModel.sendSelectedSnippetMessage()
+            }            
             .contextMenu{
-                SnippetOptionMenuView()
+                SnippetOptionMenuView()                                    
             }
     }
     
@@ -46,6 +52,10 @@ struct SnippetCardView: View {
         .frame(width: 150, height: 150, alignment: .topLeading)
         .background(VisualEffectView.panelWithOverlay)
         .cornerRadius(10)
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(viewModel.isSelected ? Color.accentColor : Color.clear, lineWidth: 2)
+        )
     }
 }
     

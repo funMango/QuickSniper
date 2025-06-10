@@ -121,8 +121,8 @@ final class ViewModelContainer {
         selectedFolderSubject: selectedFolderSubject
     )
     
-    func getRenameableButtonViewModel(folder: Folder) ->  RenameableButtonViewModel{
-        return RenameableButtonViewModel(
+    func getRenameableButtonViewModel(folder: Folder) ->  FolderButtonContentViewModel{
+        return FolderButtonContentViewModel(
             folder: folder,
             folderUseCase: folderUseCase,
             folderEditSubject: folderEditSubject,
