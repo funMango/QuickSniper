@@ -9,11 +9,14 @@ import Foundation
 
 enum Window: Equatable {
     case shortcutSettings
+    case hotCorner
     
     func getShowMessage() -> ControllerMessage {
         switch self {
         case .shortcutSettings:
             return .showShortcutSettingView
+        case .hotCorner:
+            return .showHotCorner
         }
     }
     
@@ -21,6 +24,8 @@ enum Window: Equatable {
         switch self {
         case .shortcutSettings:
             return .hideShorcutSettingView
+        case .hotCorner:
+            return .hideHotCorner        
         }
     }
 }

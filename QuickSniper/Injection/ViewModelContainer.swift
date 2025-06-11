@@ -17,6 +17,7 @@ final class ViewModelContainer {
     private let selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     private let geometrySubject: CurrentValueSubject<CGRect, Never>
     private let snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
+    private let serviceSubject: CurrentValueSubject<ServiceMessage?, Never>
     
     private var snippetCardViewModelCache: [String: SnippetCardViewModel] = [:]
     
@@ -33,7 +34,8 @@ final class ViewModelContainer {
         folderEditSubject:PassthroughSubject<Folder, Never>,
         selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
         geometrySubject: CurrentValueSubject<CGRect, Never>,
-        snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
+        snippetSubject: CurrentValueSubject<SnippetMessage?, Never>,
+        serviceSubject: CurrentValueSubject<ServiceMessage?, Never>
     ){
         self.modelContext = modelContext
         self.controllerSubject = controllerSubject
@@ -42,6 +44,7 @@ final class ViewModelContainer {
         self.selectedFolderSubject = selectedFolderSubject
         self.geometrySubject = geometrySubject
         self.snippetSubject = snippetSubject
+        self.serviceSubject = serviceSubject
     }
     
     //MARK: - Snippet
@@ -73,7 +76,8 @@ final class ViewModelContainer {
     )
     
     lazy var snippetCopyButtonViewModel = SnippetCopyButtonViewModel(
-        snippetSubject: snippetSubject
+        snippetSubject: snippetSubject,
+        serviceSubject: serviceSubject
     )
     
     func getSnippetEditorViewModel(snippet: Snippet? = nil) -> SnippetEditorViewModel{

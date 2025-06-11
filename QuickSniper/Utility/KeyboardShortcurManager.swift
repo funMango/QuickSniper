@@ -44,7 +44,13 @@ final class KeyboardShortcutManager {
             defaultKey: .escape,
             defaultModifiers: [],
             message: .escapePressed
-        )
+        ),
+//        ShortcutConfig(
+//            name: .copySnippet,
+//            defaultKey: .c,
+//            defaultModifiers: [.command],
+//            message: .copySnippet
+//        )
     ]
     
     init(controllerSubject: PassthroughSubject<ControllerMessage, Never>) {
@@ -79,4 +85,5 @@ final class KeyboardShortcutManager {
 extension KeyboardShortcuts.Name {
     static let toggleQuickSniper = Self("toggleQuickSniper")
     static let escapedPressed = Self("escapedPressed")
+    static let copySnippet = Self("copySnippet")
 }

@@ -10,13 +10,14 @@ import Combine
 
 final class ControllerContainer {
     private let controllSubject: PassthroughSubject<ControllerMessage, Never>
-    private let geometrySubject: CurrentValueSubject<CGRect, Never>    
+    private let geometrySubject: CurrentValueSubject<CGRect, Never>
+    private var cancellables = Set<AnyCancellable>()
+    
     private var snippetEditorController: SnippetEditorController?
     private var shortcutSettingsController: ShortcutSettingsController?
     private var createFolderController: CreateFolderController?
     private var panelController: PanelController?
-    private var cancellables = Set<AnyCancellable>()
-    private var currentPage: Page?
+    private var hotConerController: HotCornerController?    
                 
     init(
         controllSubject: PassthroughSubject<ControllerMessage, Never>,
@@ -46,6 +47,8 @@ extension ControllerContainer {
                     switchWindow(.shortcutSettings)
                 case .openCreateFolderView:
                     switchCurrentPage(.createFolder)
+                case .openHotCorner:
+                    switchWindow(.hotCorner)
                 default:
                     break
                 }
@@ -60,11 +63,12 @@ extension ControllerContainer {
         switch window {
         case .shortcutSettings:
             shortcutSettingsControllerInit()
+        case .hotCorner:
+            hotConerConrollerInit()
         }
-        
+            
         DispatchQueue.main.async { [weak self] in
             self?.controllSubject.send(window.getShowMessage())
-            
         }
     }
     
@@ -115,6 +119,14 @@ extension ControllerContainer {
         if createFolderController == nil {
             self.createFolderController = CreateFolderController(
                 subject: controllSubject
+            )
+        }
+    }
+    
+    private func hotConerConrollerInit() {
+        if hotConerController == nil {
+            self.hotConerController = HotCornerController(
+                controllSubject: controllSubject
             )
         }
     }

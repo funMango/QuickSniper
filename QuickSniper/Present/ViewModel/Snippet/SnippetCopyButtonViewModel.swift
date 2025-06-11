@@ -11,20 +11,23 @@ import AppKit
 
 final class SnippetCopyButtonViewModel: ObservableObject {
     private let snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
+    private let serviceSubject: CurrentValueSubject<ServiceMessage?, Never>
     private var cancellables: Set<AnyCancellable> = []
     private var snippet: Snippet?
     
-    init(snippetSubject: CurrentValueSubject<SnippetMessage?, Never>) {
+    init(
+        snippetSubject: CurrentValueSubject<SnippetMessage?, Never>,
+        serviceSubject: CurrentValueSubject<ServiceMessage?, Never>
+    ) {
         self.snippetSubject = snippetSubject
+        self.serviceSubject = serviceSubject
         setUpSelectedSnippet()
     }
     
     func copy() {
         if let snippet = snippet {
-            let pasteboard = NSPasteboard.general
-            pasteboard.clearContents()
-            pasteboard.setString(snippet.body, forType: .string)
-        }
+            serviceSubject.send(.copySnippet(snippet))
+        }        
     }
     
     private func setUpSelectedSnippet() {
@@ -32,7 +35,6 @@ final class SnippetCopyButtonViewModel: ObservableObject {
             .sink { [weak self] message in
                 switch message {
                 case .snippetSelected(let snippet):
-                    print("스니펫: \(snippet.title)")
                     self?.snippet = snippet
                 default:
                     break

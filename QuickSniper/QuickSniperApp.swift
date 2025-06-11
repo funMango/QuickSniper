@@ -20,8 +20,8 @@ struct QuickSniperApp: App {
     private let viewModelContainer: ViewModelContainer
     private let keyboardShortcutManager: KeyboardShortcutManager
     private let pageManager: PageManager
-    
-    
+    private let serviceContainer: ServiceContainer
+        
     init() {
         if let (
             modelContainer,
@@ -29,7 +29,8 @@ struct QuickSniperApp: App {
             viewModelContainer,
             controllerContainer,
             keyboardShortcutManager,
-            pageManger
+            pageManger,
+            serviceContainer
         ) = QuickSniperApp.configureDependencies() {
             self.modelContainer = modelContainer
             self.modelContext = modelContext
@@ -37,6 +38,7 @@ struct QuickSniperApp: App {
             self.controllerContainer = controllerContainer
             self.keyboardShortcutManager = keyboardShortcutManager
             self.pageManager = pageManger
+            self.serviceContainer = serviceContainer
         } else {
             fatalError("❌ 의존성 구성 실패")
         }
@@ -53,16 +55,15 @@ struct QuickSniperApp: App {
         }
         .menuBarExtraStyle(.window)
     }
-    
-    
-    
+            
     private static func configureDependencies() -> (
         modelContainer: ModelContainer,
         modelContext: ModelContext,
         viewModelContainer: ViewModelContainer,
         controllerContainer: ControllerContainer,
         keyboardShortcutManager: KeyboardShortcutManager,
-        pageManager: PageManager
+        pageManager: PageManager,
+        serviceContainer: ServiceContainer
     )? {
         do {
             let container = try ModelContainer(for: Folder.self, Snippet.self)
@@ -74,6 +75,7 @@ struct QuickSniperApp: App {
             let selectedFolderSubject = CurrentValueSubject<Folder?, Never>(nil)
             let geometrySubject = CurrentValueSubject<CGRect, Never>(.zero)
             let snippetSubject = CurrentValueSubject<SnippetMessage?, Never>(nil)
+            let serviceSubject = CurrentValueSubject<ServiceMessage?, Never>(nil)
                         
             let viewModelContainer = ViewModelContainer(
                 modelContext: context,
@@ -82,7 +84,8 @@ struct QuickSniperApp: App {
                 folderEditSubject: folderEditSubject,
                 selectedFolderSubject: selectedFolderSubject,
                 geometrySubject: geometrySubject,
-                snippetSubject: snippetSubject
+                snippetSubject: snippetSubject,
+                serviceSubject: serviceSubject
             )
             
             let controllerConntainer = ControllerContainer(
@@ -95,20 +98,25 @@ struct QuickSniperApp: App {
             )
             
             let pageManager = PageManager(controllSubject: controllerSubject)
+            
+            let serviceContainer = ServiceContainer(
+                serviceSubject: serviceSubject,
+                snippetSubject: snippetSubject
+            )
                 
             Resolver.register { controllerConntainer }.scope(.application)
             Resolver.register { context }.scope(.application)
             Resolver.register { viewModelContainer }.scope(.application)
             Resolver.register { keyboardShortcutManager }.scope(.application)
             Resolver.register { pageManager }.scope(.application)
-            
-            
-            
+            Resolver.register { serviceContainer }.scope(.application)
+                                    
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                controllerSubject.send(.openPanel)                
+                controllerSubject.send(.openPanel)
+                controllerSubject.send(.openHotCorner)
             }
 
-            return (container, context, viewModelContainer, controllerConntainer, keyboardShortcutManager, pageManager)
+            return (container, context, viewModelContainer, controllerConntainer, keyboardShortcutManager, pageManager, serviceContainer)
         } catch {
             print("❌ ModelContainer 생성 실패: \(error)")
             return nil

@@ -36,9 +36,16 @@ enum ControllerMessage: Equatable {
     case openCreateFolderView
     case showCreateFolderView
     
+    // MARK: - HotCorner
+    case openHotCorner
+    case showHotCorner
+    case hideHotCorner
+    
     
     // MARK: - else
     case activateAutoHidePanel
     case switchPage(Page)
     case AutoHidePage(Page)
+    case copySnippet
+    
 }
