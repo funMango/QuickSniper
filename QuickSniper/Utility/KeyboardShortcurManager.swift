@@ -37,7 +37,7 @@ final class KeyboardShortcutManager {
             name: .toggleQuickSniper,
             defaultKey: .upArrow,
             defaultModifiers: [.command],
-            message: .openPanel
+            message: .togglePanel
         ),
         ShortcutConfig(
             name: .escapedPressed,

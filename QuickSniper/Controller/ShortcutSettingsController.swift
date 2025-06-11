@@ -13,7 +13,6 @@ import Resolver
 class ShortcutSettingsController  {
     @Injected var viewModelContainer: ViewModelContainer
     var subject: PassthroughSubject<ControllerMessage, Never>
-    var hideMessage: ControllerMessage = .hideShorcutSettingView
     var cancellables = Set<AnyCancellable>()
     var shared: NSWindowController?
     let width: CGFloat = 250

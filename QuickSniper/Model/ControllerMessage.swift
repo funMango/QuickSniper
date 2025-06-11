@@ -12,7 +12,9 @@ enum ControllerMessage: Equatable {
     case deactivateAutoHidePanel
     case togglePanel
     case openPanel
-    case showPanel    
+    case showPanel
+    case panelStatus(Bool)
+    case focusPanel
     
     // MARK: - Hide
     case hidePanel
@@ -47,5 +49,7 @@ enum ControllerMessage: Equatable {
     case switchPage(Page)
     case AutoHidePage(Page)
     case copySnippet
+    case allPageClose
+    case windowFocus
     
 }

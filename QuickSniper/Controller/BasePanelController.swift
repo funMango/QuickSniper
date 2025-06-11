@@ -40,8 +40,7 @@ class BasePanelController<Content: View>: NSObject, NSWindowDelegate {
     func show() {
         subject.send(.deactivateAutoHidePanel)
         self.isManualClose = false
-                
-        
+                        
         if window == nil {
             let hostingView = NSHostingView(rootView: content())
 
@@ -59,14 +58,16 @@ class BasePanelController<Content: View>: NSObject, NSWindowDelegate {
             panel.isReleasedWhenClosed = false
             panel.hidesOnDeactivate = false
             panel.isMovableByWindowBackground = true
-            panel.level = .floating
+            panel.level = .modalPanel
             panel.delegate = self
             panel.center()
                                                                 
             self.window = panel
         }
                 
-        self.window?.makeKeyAndOrderFront(nil)
+        self.window?.orderFront(nil)
+        self.window?.makeKey()
+        NSApp.activate(ignoringOtherApps: true)
     }
     
     func windowDidResignKey(_ notification: Notification) {        
@@ -85,5 +86,18 @@ class BasePanelController<Content: View>: NSObject, NSWindowDelegate {
 
     func windowWillClose(_ notification: Notification) {
         window = nil
+    }
+    
+    func focus() {
+        guard let window = self.window else { return }
+        
+        // 윈도우를 앞으로 가져오고 키 윈도우로 만들기
+        window.orderFront(nil)
+        window.makeKey()
+                                
+        // 추가적으로 윈도우가 보이도록 보장
+        if !window.isVisible {
+            window.makeKeyAndOrderFront(nil)
+        }
     }
 }

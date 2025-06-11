@@ -21,14 +21,11 @@ protocol ViewWindowControllable: AnyObject {
 
 extension ViewWindowControllable {
     func makeWindowController(origin: CGPoint? = nil, size: CGSize, page: Page) {
-        // 이미 창이 떠 있다면 show만 호출하고 리턴
-        if let existing = self.windowController, let win = existing.window {
-            win.makeKeyAndOrderFront(nil)
-            NSApp.activate(ignoringOtherApps: true)
+        if let existing = self.windowController, existing.window != nil {
+            existing.focus()
             return
         }
-
-        // 새로 생성
+        
         let controller = BasePanelController(
             size: size,
             page: page,
@@ -45,9 +42,13 @@ extension ViewWindowControllable {
             .sink { [weak self] message in
                 guard let self = self else { return }
                 
+                if message == .focusPanel {
+                    self.windowController?.focus()
+                }
+                
                 if message == self.hideMessage {
                     self.windowController?.close(isManualClose: true)
-                    self.windowController = nil                    
+                    self.windowController = nil
                 }
             }
             .store(in: &cancellables)

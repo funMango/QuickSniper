@@ -20,5 +20,9 @@
 		</dict>
 		<dict/>
 	</array>
+	<key>CFBundleIdentifier</key>
+	<string></string>
+	<key>LSUIElement</key>
+	<true/>
 </dict>
 </plist>

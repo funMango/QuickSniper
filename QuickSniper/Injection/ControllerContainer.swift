@@ -17,7 +17,9 @@ final class ControllerContainer {
     private var shortcutSettingsController: ShortcutSettingsController?
     private var createFolderController: CreateFolderController?
     private var panelController: PanelController?
-    private var hotConerController: HotCornerController?    
+    private var hotConerController: HotCornerController?
+    
+    private var panelStatus = false
                 
     init(
         controllSubject: PassthroughSubject<ControllerMessage, Never>,
@@ -37,6 +39,8 @@ extension ControllerContainer {
                 guard let self else { return }
                 
                 switch message {
+                case .togglePanel:
+                    togglePanel()
                 case .openPanel:
                     switchCurrentPage(.panel)
                 case .openSnippetEditorWith(let snippet):
@@ -49,6 +53,8 @@ extension ControllerContainer {
                     switchCurrentPage(.createFolder)
                 case .openHotCorner:
                     switchWindow(.hotCorner)
+                case .panelStatus(let status):
+                    self.panelStatus = status
                 default:
                     break
                 }
@@ -59,6 +65,15 @@ extension ControllerContainer {
 
 // MARK: - Controller init
 extension ControllerContainer {
+    private func togglePanel() {
+        if panelStatus {
+            switchCurrentPage(.panel)
+        } else {
+            controllSubject.send(.allPageClose)
+        }
+        panelStatus.toggle()
+    }
+    
     private func switchWindow(_ window: Window) {
         switch window {
         case .shortcutSettings:

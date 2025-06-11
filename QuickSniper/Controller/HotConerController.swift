@@ -58,7 +58,7 @@ class HotCornerController {
     }
     
     func widgetClicked() {
-        controllSubject.send(.openPanel)
+        controllSubject.send(.togglePanel)
     }
 }
 
@@ -95,7 +95,7 @@ private extension HotCornerController {
         
         window?.backgroundColor = .clear
         window?.level = .floating
-        window?.isOpaque = false                
+        window?.isOpaque = false
         window?.collectionBehavior = [.canJoinAllSpaces, .stationary]
         
         setupHotCornerView(for: detectionRect)

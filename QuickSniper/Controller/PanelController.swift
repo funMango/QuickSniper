@@ -11,38 +11,54 @@ import Combine
 import Resolver
 import SwiftData
 
+
 class PanelController: NSWindowController, NSWindowDelegate {
+    
+    // MARK: - Properties
     private var allowAutoHide: Bool = true
     private var isPanelVisible = false
     private var subject: PassthroughSubject<ControllerMessage, Never>
     private var cancellables = Set<AnyCancellable>()
     private var isManualHide: Bool = false
 
+    // MARK: - Initialization
     init(subject: PassthroughSubject<ControllerMessage, Never>) {
         self.subject = subject
         
         let hosting = PanelController.makeHostingView()
         let contentHeight = hosting.fittingSize.height
         let initialFrame = PanelController.makeInitialFrame(height: contentHeight)
-
         let panel = PanelController.makePanel(with: hosting, frame: initialFrame)
+        
         super.init(window: panel)
-
+        
         panel.delegate = self
         configurePanel(panel)
         setupBindings()
     }
 
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+        fatalError("PanelController does not support Storyboard/XIB initialization. Use init(subject:) instead.")
     }
 
+    // MARK: - Public Methods
     func toggle() {
         isPanelVisible ? performHidePanel() : showPanel()
     }
+    
+    func hidePanel() {
+        isManualHide = true
+        performHidePanel()
+    }
+    
+    func AutoHidePanel() {
+        performHidePanel()
+    }
 
+    // MARK: - Private Methods
     private func showPanel() {
         guard let window = self.window, !isPanelVisible else { return }
+        
         isManualHide = false
         let bottomMargin: CGFloat = 10
 
@@ -61,7 +77,8 @@ class PanelController: NSWindowController, NSWindowDelegate {
         )
 
         window.setFrame(startFrame, display: false)
-        window.makeKeyAndOrderFront(nil)
+        window.orderFront(nil)
+        window.makeKey()
         
         NSAnimationContext.runAnimationGroup { context in
             context.duration = 0.25
@@ -72,20 +89,13 @@ class PanelController: NSWindowController, NSWindowDelegate {
         isManualHide = false
         isPanelVisible = true
         allowAutoHide = true
-    }
-    
-    func hidePanel() {
-        isManualHide = true
-        performHidePanel()
-    }
-    
-    func AutoHidePanel() {
-        performHidePanel()
+        subject.send(.panelStatus(true))
     }
         
     private func performHidePanel() {
         guard let window = self.window, isPanelVisible else { return }
-        let screen = NSScreen.main!.frame
+        
+        let screen = NSScreen.main?.frame ?? NSRect(x: 0, y: 0, width: 1920, height: 1080)
 
         let hideFrame = NSRect(
             x: (screen.width - window.frame.width) / 2,
@@ -103,8 +113,23 @@ class PanelController: NSWindowController, NSWindowDelegate {
         })
 
         isPanelVisible = false
+        subject.send(.panelStatus(false))
     }
 
+    // MARK: - Window Delegate
+    private func forceFocus() {
+        guard let window = self.window else { return }
+        
+        window.orderFrontRegardless()
+        window.makeKey()
+        window.makeMain()
+        
+        // 확실히 하기 위해 한번 더
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05) {
+            window.makeKey()
+        }
+    }
+    
     func windowDidResignKey(_ notification: Notification) {
         if allowAutoHide && !isManualHide {
             AutoHidePanel()
@@ -112,49 +137,10 @@ class PanelController: NSWindowController, NSWindowDelegate {
         }
     }
 
-    // MARK: - 구성 요소 메서드
-    private static func makeHostingView() -> NSHostingView<some View> {
-        let modelContext = Resolver.resolve(ModelContext.self)
-        let view = PanelView().environment(\.modelContext, modelContext)
-        return NSHostingView(rootView: view)
-    }
-
-    private static func makeInitialFrame(height: CGFloat) -> NSRect {
-        let screen = NSScreen.main!.frame
-        let horizontalMargin: CGFloat = 30
-        let bottomMargin: CGFloat = 10
-
-        let width = screen.width - (horizontalMargin * 2)
-        let x = horizontalMargin
-        let y = bottomMargin
-
-        return NSRect(
-            x: x,
-            y: y,
-            width: width,
-            height: height
-        )
-    }
-
-    private static func makePanel(
-        with hosting: NSHostingView<some View>,
-        frame: NSRect
-    ) -> ShiftyPanel {
-        let panel: ShiftyPanel = ShiftyPanel(
-            contentRect: frame,
-            styleMask: [.nonactivatingPanel, .borderless],
-            backing: .buffered,
-            defer: false
-        )
-
-        panel.contentView = hosting
-        return panel
-    }
-
+    // MARK: - Setup Methods
     private func configurePanel(_ panel: ShiftyPanel) {
-        panel.styleMask.insert(.nonactivatingPanel)
-        panel.level = .floating
-        panel.collectionBehavior = [.canJoinAllSpaces, .fullScreenAuxiliary]
+        panel.level = .popUpMenu
+        panel.collectionBehavior = [.moveToActiveSpace, .fullScreenAuxiliary]
         panel.backgroundColor = .clear
         panel.isOpaque = false
         panel.hasShadow = true
@@ -176,14 +162,59 @@ class PanelController: NSWindowController, NSWindowDelegate {
                     self?.allowAutoHide = false
                 case .activateAutoHidePanel:
                     self?.allowAutoHide = true
+                case .focusPanel:
+                    self?.forceFocus()
                 default:
                     break
                 }
             }
             .store(in: &cancellables)
     }
+
+    // MARK: - Factory Methods
+    private static func makeHostingView() -> NSHostingView<some View> {
+        let modelContext = Resolver.resolve(ModelContext.self)
+        let view = PanelView().environment(\.modelContext, modelContext)
+        return NSHostingView(rootView: view)
+    }
+
+    private static func makeInitialFrame(height: CGFloat) -> NSRect {
+        let screen = NSScreen.main?.frame ?? NSRect(x: 0, y: 0, width: 1920, height: 1080)
+        let horizontalMargin: CGFloat = 30
+        let bottomMargin: CGFloat = 10
+
+        let width = screen.width - (horizontalMargin * 2)
+        let x = horizontalMargin
+        let y = bottomMargin
+
+        return NSRect(
+            x: x,
+            y: y,
+            width: width,
+            height: height
+        )
+    }
+
+    private static func makePanel(
+        with hosting: NSHostingView<some View>,
+        frame: NSRect
+    ) -> ShiftyPanel {
+        let panel = ShiftyPanel(
+            contentRect: frame,
+            styleMask: [.nonactivatingPanel, .borderless],
+            backing: .buffered,
+            defer: false
+        )
+
+        panel.contentView = hosting
+        return panel
+    }
 }
 
+
+
+
+// MARK: - ShiftyPanel
 class ShiftyPanel: NSPanel {
     override var canBecomeKey: Bool { true }
     override var canBecomeMain: Bool { true }
