@@ -6,3 +6,9 @@
 //
 
 import Foundation
+
+protocol HotCornerViewDelegate: AnyObject {
+    func hotCornerViewDidClick()
+    func hotCornerViewMouseEntered()
+    func hotCornerViewMouseExited()
+}

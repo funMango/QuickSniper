@@ -100,7 +100,3 @@ class HotCornerWidgetView: NSView {
         }
     }
 }
-
-#Preview {
-    HotCornerView()
-}

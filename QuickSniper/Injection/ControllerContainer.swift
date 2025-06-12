@@ -17,7 +17,7 @@ final class ControllerContainer {
     private var shortcutSettingsController: ShortcutSettingsController?
     private var createFolderController: CreateFolderController?
     private var panelController: PanelController?
-    private var hotConerController: HotCornerController?
+    private var hotCornerController: HotCornerController?
     
     private var panelStatus = false
                 
@@ -80,6 +80,10 @@ extension ControllerContainer {
             shortcutSettingsControllerInit()
         case .hotCorner:
             hotConerConrollerInit()
+            DispatchQueue.main.async { [weak self] in
+                self?.hotCornerController?.show()
+            }
+            return
         }
             
         DispatchQueue.main.async { [weak self] in
@@ -139,8 +143,8 @@ extension ControllerContainer {
     }
     
     private func hotConerConrollerInit() {
-        if hotConerController == nil {
-            self.hotConerController = HotCornerController(
+        if hotCornerController == nil {
+            self.hotCornerController = HotCornerController(
                 controllSubject: controllSubject
             )
         }
