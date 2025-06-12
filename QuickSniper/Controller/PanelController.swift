@@ -15,6 +15,7 @@ import SwiftData
 class PanelController: NSWindowController, NSWindowDelegate {
     
     // MARK: - Properties
+    @Injected var viewModelContainer: ViewModelContainer
     private var allowAutoHide: Bool = true
     private var isPanelVisible = false
     private var subject: PassthroughSubject<ControllerMessage, Never>
@@ -25,13 +26,14 @@ class PanelController: NSWindowController, NSWindowDelegate {
     init(subject: PassthroughSubject<ControllerMessage, Never>) {
         self.subject = subject
         
-        let hosting = PanelController.makeHostingView()
+        super.init(window: nil)
+        
+        let hosting = makeHostingView()
         let contentHeight = hosting.fittingSize.height
         let initialFrame = PanelController.makeInitialFrame(height: contentHeight)
         let panel = PanelController.makePanel(with: hosting, frame: initialFrame)
-        
-        super.init(window: panel)
-        
+                        
+        self.window = panel
         panel.delegate = self
         configurePanel(panel)
         setupBindings()
@@ -172,9 +174,10 @@ class PanelController: NSWindowController, NSWindowDelegate {
     }
 
     // MARK: - Factory Methods
-    private static func makeHostingView() -> NSHostingView<some View> {
+    private func makeHostingView() -> NSHostingView<some View> {
         let modelContext = Resolver.resolve(ModelContext.self)
-        let view = PanelView().environment(\.modelContext, modelContext)
+        let view = PanelView(viewModel: viewModelContainer.panelViewModel)
+                    .environment(\.modelContext, modelContext)
         return NSHostingView(rootView: view)
     }
 

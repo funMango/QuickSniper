@@ -8,10 +8,17 @@
 import AppKit
 import SwiftUI
 import Resolver
+import SwiftData
 
 struct PanelView: View {    
     @Injected var controllerContainer: ControllerContainer
     @Injected var viewModelContainer: ViewModelContainer
+    @StateObject var viewModel: PanelViewModel
+    @Query var users: [User]
+    
+    init(viewModel: PanelViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
@@ -34,9 +41,10 @@ struct PanelView: View {
         )
         .cornerRadius(10)
         .clipped()
+        .syncQuey(viewModel: viewModel, items: users)
     }
 }
 
-#Preview {
-    PanelView()
-}
+//#Preview {
+//    PanelView()
+//}

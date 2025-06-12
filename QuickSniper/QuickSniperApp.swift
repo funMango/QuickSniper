@@ -52,6 +52,7 @@ struct QuickSniperApp: App {
             AppMenuBarView(
                 viewModel: viewModelContainer.appMenuBarViewModel
             )
+            .environment(\.modelContext, modelContext)
         }
         .menuBarExtraStyle(.window)
     }
@@ -66,7 +67,7 @@ struct QuickSniperApp: App {
         serviceContainer: ServiceContainer
     )? {
         do {
-            let container = try ModelContainer(for: Folder.self, Snippet.self)
+            let container = try ModelContainer(for: Folder.self, Snippet.self, User.self)
             let context = container.mainContext
             
             let controllerSubject = PassthroughSubject<ControllerMessage, Never>()
@@ -76,6 +77,7 @@ struct QuickSniperApp: App {
             let geometrySubject = CurrentValueSubject<CGRect, Never>(.zero)
             let snippetSubject = CurrentValueSubject<SnippetMessage?, Never>(nil)
             let serviceSubject = CurrentValueSubject<ServiceMessage?, Never>(nil)
+            let hotCornerSubject = CurrentValueSubject<HotCornerMessage?, Never>(nil)
                         
             let viewModelContainer = ViewModelContainer(
                 modelContext: context,
@@ -85,12 +87,14 @@ struct QuickSniperApp: App {
                 selectedFolderSubject: selectedFolderSubject,
                 geometrySubject: geometrySubject,
                 snippetSubject: snippetSubject,
-                serviceSubject: serviceSubject
+                serviceSubject: serviceSubject,
+                hotCornerSubject: hotCornerSubject
             )
             
             let controllerConntainer = ControllerContainer(
                 controllSubject: controllerSubject,
-                geometrySubject: geometrySubject                
+                hotCornerSubject: hotCornerSubject,
+                geometrySubject: geometrySubject
             )
             
             let keyboardShortcutManager = KeyboardShortcutManager(                

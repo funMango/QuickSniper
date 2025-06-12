@@ -10,8 +10,11 @@ import Combine
 
 final class AppMenuBarViewModel: ObservableObject {
     private let controllerSubject: PassthroughSubject<ControllerMessage, Never>
-    
-    init(controllerSubject: PassthroughSubject<ControllerMessage, Never>) {
+    private var cancellables: Set<AnyCancellable> = []
+        
+    init(
+        controllerSubject: PassthroughSubject<ControllerMessage, Never>
+    ) {
         self.controllerSubject = controllerSubject
     }
     

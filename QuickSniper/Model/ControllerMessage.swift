@@ -41,8 +41,7 @@ enum ControllerMessage: Equatable {
     // MARK: - HotCorner
     case openHotCorner
     case showHotCorner
-    case hideHotCorner
-    
+    case hideHotCorner    
     
     // MARK: - else
     case activateAutoHidePanel

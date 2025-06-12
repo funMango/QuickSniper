@@ -7,6 +7,7 @@
 
 import SwiftUI
 import AppKit
+import SwiftData
 
 enum MenuBarItemType {
     case settings
@@ -16,7 +17,7 @@ enum MenuBarItemType {
 
 struct AppMenuBarView: View {
     @State private var hoveredItem: MenuBarItemType? = nil
-    @StateObject var viewModel: AppMenuBarViewModel
+    @StateObject var viewModel: AppMenuBarViewModel    
     
     init(viewModel: AppMenuBarViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
@@ -35,7 +36,7 @@ struct AppMenuBarView: View {
             }
             
             MenuBarItem(
-                title: String(localized: "shortCutSettings"),
+                title: String(localized: "settings"),
                 isHovered: hoveredItem == .settings
             ) {
                 viewModel.openShortcutSettingsView()

@@ -10,12 +10,12 @@ import SwiftUI
 import Combine
 import Resolver
 
-class ShortcutSettingsController  {
+class SettingsController  {
     @Injected var viewModelContainer: ViewModelContainer
     var subject: PassthroughSubject<ControllerMessage, Never>
     var cancellables = Set<AnyCancellable>()
     var shared: NSWindowController?
-    let width: CGFloat = 250
+    let width: CGFloat = 350
     let height: CGFloat = 200
     
     init(subject: PassthroughSubject<ControllerMessage, Never>) {
@@ -30,7 +30,7 @@ class ShortcutSettingsController  {
             return
         }
 
-        let contentView = ShortcutSettingsView(width: width, height: height)
+        let contentView = SettingsView(width: width, height: height)
         let hostingController = NSHostingController(rootView: contentView)
       
         let windowSize = NSSize(width: Int(width), height: Int(height))

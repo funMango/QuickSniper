@@ -11,10 +11,11 @@ import Combine
 final class ControllerContainer {
     private let controllSubject: PassthroughSubject<ControllerMessage, Never>
     private let geometrySubject: CurrentValueSubject<CGRect, Never>
+    private let hotCornerSubject: CurrentValueSubject<HotCornerMessage?, Never>
     private var cancellables = Set<AnyCancellable>()
     
     private var snippetEditorController: SnippetEditorController?
-    private var shortcutSettingsController: ShortcutSettingsController?
+    private var shortcutSettingsController: SettingsController?
     private var createFolderController: CreateFolderController?
     private var panelController: PanelController?
     private var hotCornerController: HotCornerController?
@@ -23,9 +24,11 @@ final class ControllerContainer {
                 
     init(
         controllSubject: PassthroughSubject<ControllerMessage, Never>,
+        hotCornerSubject: CurrentValueSubject<HotCornerMessage?, Never>,
         geometrySubject: CurrentValueSubject<CGRect, Never>,
     ) {
         self.controllSubject = controllSubject
+        self.hotCornerSubject = hotCornerSubject
         self.geometrySubject = geometrySubject
         controllMesaageBindings()
     }
@@ -128,7 +131,7 @@ extension ControllerContainer {
     
     private func shortcutSettingsControllerInit() {
         if shortcutSettingsController == nil {
-            self.shortcutSettingsController = ShortcutSettingsController(
+            self.shortcutSettingsController = SettingsController(
                 subject: controllSubject
             )
         }
@@ -145,7 +148,8 @@ extension ControllerContainer {
     private func hotConerConrollerInit() {
         if hotCornerController == nil {
             self.hotCornerController = HotCornerController(
-                controllSubject: controllSubject
+                controllSubject: controllSubject,
+                hotCornerSubject: hotCornerSubject
             )
         }
     }

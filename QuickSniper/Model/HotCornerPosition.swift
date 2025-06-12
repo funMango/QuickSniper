@@ -8,8 +8,7 @@
 import Foundation
 import AppKit
 
-// MARK: - Hot Corner Position Enum (하단만 지원)
-enum HotCornerPosition: String, CaseIterable {
+enum HotCornerPosition: String, CaseIterable, Codable {
     case bottomLeft = "bottomLeft"
     case bottomRight = "bottomRight"
     
@@ -22,7 +21,7 @@ enum HotCornerPosition: String, CaseIterable {
         }
     }
     
-    // 감지 영역 계산 (하단만)
+    /// 감지 영역 계산 (하단만)
     func detectionRect(for screen: NSScreen) -> NSRect {
         let fullFrame = screen.frame
         let width: CGFloat = 20
@@ -46,7 +45,7 @@ enum HotCornerPosition: String, CaseIterable {
         }
     }
     
-    // 위젯 시작 위치 계산
+    /// 위젯 시작 위치 계산
     func widgetStartRect(for screen: NSScreen) -> NSRect {
         let fullFrame = screen.frame
         let width: CGFloat = 60
@@ -70,7 +69,7 @@ enum HotCornerPosition: String, CaseIterable {
         }
     }
     
-    // 위젯 최종 위치 계산
+    /// 위젯 최종 위치 계산
     func widgetEndRect(for screen: NSScreen) -> NSRect {
         let fullFrame = screen.frame
         let width: CGFloat = 60

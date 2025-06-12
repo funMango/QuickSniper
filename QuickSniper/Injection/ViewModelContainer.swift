@@ -18,14 +18,17 @@ final class ViewModelContainer {
     private let geometrySubject: CurrentValueSubject<CGRect, Never>
     private let snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
     private let serviceSubject: CurrentValueSubject<ServiceMessage?, Never>
+    private let hotCornerSubject: CurrentValueSubject<HotCornerMessage?, Never>
     
     private var snippetCardViewModelCache: [String: SnippetCardViewModel] = [:]
     
     private lazy var folderRepository = DefaultFolderRepository(context: modelContext)
     private lazy var snippetRepository = DefaultSnippetRepository(context: modelContext)
+    private lazy var userRepository = DefaultUserRepository(context: modelContext)
     
     private lazy var folderUseCase = DefaultFolderUseCase(repository: folderRepository)
     private lazy var snippetUseCase = DefaultSnippetUseCase(repository: snippetRepository)
+    private lazy var userUseCase = DefaultUserUserCase(repository: userRepository)
             
     init(
         modelContext: ModelContext,
@@ -35,7 +38,8 @@ final class ViewModelContainer {
         selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
         geometrySubject: CurrentValueSubject<CGRect, Never>,
         snippetSubject: CurrentValueSubject<SnippetMessage?, Never>,
-        serviceSubject: CurrentValueSubject<ServiceMessage?, Never>
+        serviceSubject: CurrentValueSubject<ServiceMessage?, Never>,
+        hotCornerSubject: CurrentValueSubject<HotCornerMessage?, Never>
     ){
         self.modelContext = modelContext
         self.controllerSubject = controllerSubject
@@ -45,6 +49,7 @@ final class ViewModelContainer {
         self.geometrySubject = geometrySubject
         self.snippetSubject = snippetSubject
         self.serviceSubject = serviceSubject
+        self.hotCornerSubject = hotCornerSubject
     }
     
     //MARK: - Snippet
@@ -147,4 +152,12 @@ final class ViewModelContainer {
         controllerSubject: controllerSubject
     )
     
+    lazy var hotCornerSettingViewModel = HotCornerSettingViewModel(
+        hotCornerSubject: hotCornerSubject
+    )
+    
+    lazy var panelViewModel = PanelViewModel(
+        userUseCase: userUseCase,
+        hotCornerSubject: hotCornerSubject
+    )
 }

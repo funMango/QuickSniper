@@ -7,9 +7,10 @@
 
 import SwiftUI
 import KeyboardShortcuts
+import Resolver
 
-struct ShortcutSettingsView: View {
-    
+struct SettingsView: View {
+    @Injected var viewModelContainer: ViewModelContainer
     @State private var isBlocked = false
     private let width: CGFloat
     private let height: CGFloat
@@ -20,14 +21,15 @@ struct ShortcutSettingsView: View {
     }
     
     var body: some View {
-        VStack() {
+        VStack(spacing: 10) {
             HStack {
-                Text(String(localized: "shortCutSettings"))
+                Text(String(localized: "settings"))
                     .font(.headline)
-                    .padding(.bottom, 15)
+                    
                 
                 Spacer()
             }
+            .padding(.bottom, 5)
                                     
             HStack {
                 Text(String(localized: "shiftyOpen"))
@@ -38,7 +40,12 @@ struct ShortcutSettingsView: View {
                 KeyboardShortcuts.Recorder(
                     "", name: .toggleQuickSniper
                 )
+                .accentColor(.accentColor)
             }
+            
+            HotCornerSettingView(
+                viewModel: viewModelContainer.hotCornerSettingViewModel
+            )
                                                                                             
             Spacer()
         }
