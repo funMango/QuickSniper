@@ -21,27 +21,33 @@ struct PanelView: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            PanelHeaderView(
-                viewModel: viewModelContainer.panelHeaderViewModel
-            )
-            .padding(.horizontal)
-            .padding(.top, 14)
-            .padding(.bottom, 5)
+        ZStack {
+            KeyboardEventView { event in                
+                viewModel.sendPressShortcutMessage(event: event)
+            }
             
-            Divider()
+            VStack(alignment: .leading, spacing: 8) {
+                PanelHeaderView(
+                    viewModel: viewModelContainer.panelHeaderViewModel
+                )
                 .padding(.horizontal)
-            
-            SnippetScrollView(
-                viewModel: viewModelContainer.snippetScrollViewModel
+                .padding(.top, 14)
+                .padding(.bottom, 5)
+                
+                Divider()
+                    .padding(.horizontal)
+                
+                SnippetScrollView(
+                    viewModel: viewModelContainer.snippetScrollViewModel
+                )
+            }
+            .background(
+                VisualEffectView.panel
             )
-        }        
-        .background(
-            VisualEffectView.panel
-        )
-        .cornerRadius(10)
-        .clipped()
-        .syncQuey(viewModel: viewModel, items: users)
+            .cornerRadius(10)
+            .clipped()
+            .syncQuey(viewModel: viewModel, items: users)
+        }
     }
 }
 

@@ -33,7 +33,6 @@ struct SettingsView: View {
                                     
             HStack {
                 Text(String(localized: "shiftyOpen"))
-                    .font(.subheadline)
                 
                 Spacer()
                 

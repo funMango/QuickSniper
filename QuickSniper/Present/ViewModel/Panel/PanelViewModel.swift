@@ -8,20 +8,24 @@
 import SwiftUI
 import Combine
 import SwiftData
+import AppKit
 
 final class PanelViewModel: ObservableObject, QuerySyncableObject {
     typealias Item = User
     @Published var allItems: [Item] = []
     @Published private var user: User?
     private let userUseCase: UserUseCase
+    private let serviceSubject: CurrentValueSubject<ServiceMessage?, Never>
     private let hotCornerSubject: CurrentValueSubject<HotCornerMessage?, Never>
     private var cancellables: Set<AnyCancellable> = []
     
     init(
         userUseCase: UserUseCase,
+        serviceSubject: CurrentValueSubject<ServiceMessage?, Never>,
         hotCornerSubject: CurrentValueSubject<HotCornerMessage?, Never>
     ) {
         self.userUseCase = userUseCase
+        self.serviceSubject = serviceSubject
         self.hotCornerSubject = hotCornerSubject
                                 
         setupUserBindings()
@@ -36,6 +40,10 @@ final class PanelViewModel: ObservableObject, QuerySyncableObject {
             return
         }
         self.user = firstItem
+    }
+    
+    func sendPressShortcutMessage(event: NSEvent) {
+        serviceSubject.send(.pressShortcut(event))
     }
     
     private func createUser() {

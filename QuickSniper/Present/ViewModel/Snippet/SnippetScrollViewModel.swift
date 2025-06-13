@@ -96,7 +96,7 @@ final class SnippetScrollViewModel: ObservableObject, DragabbleObject, QuerySync
     }
     
     private func selectFirstSnippet() {
-        if let selected = self.items.first {
+        if let selected = self.items.first {            
             snippetSubject.send(.snippetSelected(selected))
         }
     }

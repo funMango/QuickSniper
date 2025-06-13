@@ -18,7 +18,6 @@ struct HotCornerSettingView: View {
         VStack(spacing: 5) {
             HStack {
                 Text(String(localized: "settingHotCorner"))
-                    .font(.subheadline)
                 
                 Spacer()
                 
@@ -36,16 +35,13 @@ struct HotCornerSettingView: View {
                     }
                 } label: {
                     HStack(spacing: 4) {
-                        Spacer()
                         Text(viewModel.selectedPosition.displayName)
-                        Spacer()
                         Image(systemName: "chevron.down")
                             .font(.system(size: 10))
                             .foregroundColor(.secondary)
                     }
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .frame(width: 150, height: 23)
+                    .padding(.horizontal, 15)
+                    .padding(.vertical, 5)
                     .background(Color.primary.opacity(0.1))
                     .cornerRadius(5)
                 }
@@ -53,11 +49,11 @@ struct HotCornerSettingView: View {
             }
             
             HStack {
-                Spacer()
-                
                 Text(String(localized: "hotCornerWarning"))
                     .font(.caption)
                     .foregroundColor(.gray)
+                
+                Spacer()
             }
         }
     }

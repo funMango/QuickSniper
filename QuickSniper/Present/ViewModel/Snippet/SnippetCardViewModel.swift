@@ -34,7 +34,7 @@ final class SnippetCardViewModel: ObservableObject {
         snippetSubject.send(.snippetHovering(snippet))
     }
     
-    func sendSelectedSnippetMessage() {
+    func sendSelectedSnippetMessage() {        
         snippetSubject.send(.snippetSelected(snippet))
     }
     

@@ -69,9 +69,7 @@ class SettingsController  {
             let x = screenRect.midX - windowRect.width / 2
             let y = screenRect.midY - windowRect.height / 2
             window.setFrameOrigin(NSPoint(x: x, y: y))
-        }
-                                
-        NSApp.activate(ignoringOtherApps: true)
+        }                                        
     }
     
     

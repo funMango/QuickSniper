@@ -23,8 +23,6 @@ final class PageManager {
         if pages.contains(page) { return }
         self.pages.append(page)
         self.controllSubject.send(page.getShowMessage())
-        
-        print("savePage: \(pages)")
     }
     
     private func closeAllPage() {
@@ -32,8 +30,6 @@ final class PageManager {
             let page = self.pages.removeLast()
             controllSubject.send(page.getHideMessage())
         }
-        
-        print("closeAllPage: \(pages)")
     }
     
     private func closePage() {
@@ -42,8 +38,6 @@ final class PageManager {
         controllSubject.send(page.getHideMessage())
         
         sendFocus()
-        
-        print("closePage: \(pages)")
     }
     
     private func autoClosePage(_ page: Page) {
@@ -54,9 +48,7 @@ final class PageManager {
             pages.remove(at: index)
         }
         
-        sendFocus()
-        
-        print("autoClosePage: \(pages)")
+        sendFocus()                
     }
     
     private func sendFocus() {

@@ -44,13 +44,7 @@ final class KeyboardShortcutManager {
             defaultKey: .escape,
             defaultModifiers: [],
             message: .escapePressed
-        ),
-//        ShortcutConfig(
-//            name: .copySnippet,
-//            defaultKey: .c,
-//            defaultModifiers: [.command],
-//            message: .copySnippet
-//        )
+        )
     ]
     
     init(controllerSubject: PassthroughSubject<ControllerMessage, Never>) {

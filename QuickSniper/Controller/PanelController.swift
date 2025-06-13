@@ -53,8 +53,7 @@ class PanelController: NSWindowController, NSWindowDelegate {
         performHidePanel()
     }
     
-    func AutoHidePanel() {
-        print("AutoHidePanel Active")
+    func AutoHidePanel() {        
         performHidePanel()
     }
 
