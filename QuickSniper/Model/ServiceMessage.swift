@@ -13,4 +13,6 @@ enum ServiceMessage {
     case copySnippetBody(Snippet)
     case pressShortcut(NSEvent)
     case handleKeyEvent(NSEvent)
+    
+    case showCopyToast(String)
 }

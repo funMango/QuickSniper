@@ -11,7 +11,6 @@ import AppKit
 
 final class ClipboardService {
     private let serviceSubject: CurrentValueSubject<ServiceMessage?, Never>
-    private var snippet: Snippet?
     private var cancellables: Set<AnyCancellable> = []
     
     init(serviceSubject: CurrentValueSubject<ServiceMessage?, Never>) {
@@ -20,10 +19,13 @@ final class ClipboardService {
     }
     
     func copy(_ snippet: Snippet) {
-        print(snippet.body)
         let pasteboard = NSPasteboard.general
         pasteboard.clearContents()
         pasteboard.setString(snippet.body, forType: .string)
+        
+        DispatchQueue.main.async{ [weak self] in
+            self?.serviceSubject.send(.showCopyToast(snippet.title))
+        }
     }
     
     private func setupServiceMessageBinding() {
@@ -31,7 +33,6 @@ final class ClipboardService {
             .sink { [weak self] message in
                 switch message {
                 case .copySnippetBody(let snippet):
-                    print("Snippet: \(snippet.title)")
                     self?.copy(snippet)
                 default:
                     break
@@ -39,6 +40,4 @@ final class ClipboardService {
             }
             .store(in: &cancellables)
     }
-    
-    
 }

@@ -47,6 +47,20 @@ struct PanelView: View {
             .cornerRadius(10)
             .clipped()
             .syncQuey(viewModel: viewModel, items: users)
+            
+            
+            /// 토스트 메세지 뷰
+            if let toast = viewModel.toast {
+                VStack {
+                    ToastView(toast: toast)
+                        .padding(.horizontal, 16)
+                        .padding(.top, 16)
+                        .opacity(viewModel.isToastVisible ? 1 : 0)
+                        .scaleEffect(viewModel.isToastVisible ? 1 : 0.95)
+                        .animation(.easeInOut(duration: 0.5), value: viewModel.isToastVisible)
+                    Spacer()
+                }
+            }
         }
     }
 }

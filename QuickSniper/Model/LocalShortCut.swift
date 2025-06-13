@@ -18,7 +18,6 @@ struct LocalShortcut: Hashable {
         // 나중에 추가할 액션들...
     }
     
-    // 편의 생성자
     static func create(
         keyCode: UInt16,
         modifiers: NSEvent.ModifierFlags = [],

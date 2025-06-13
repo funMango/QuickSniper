@@ -14,6 +14,8 @@ final class PanelViewModel: ObservableObject, QuerySyncableObject {
     typealias Item = User
     @Published var allItems: [Item] = []
     @Published private var user: User?
+    @Published var toast: ToastMessage?
+    @Published var isToastVisible = false
     private let userUseCase: UserUseCase
     private let serviceSubject: CurrentValueSubject<ServiceMessage?, Never>
     private let hotCornerSubject: CurrentValueSubject<HotCornerMessage?, Never>
@@ -30,6 +32,7 @@ final class PanelViewModel: ObservableObject, QuerySyncableObject {
                                 
         setupUserBindings()
         setupControllMessageBindings()
+        setupServiceMessageBindings()
     }
     
     func getItems(_ items: [Item]) {
@@ -67,8 +70,30 @@ final class PanelViewModel: ObservableObject, QuerySyncableObject {
             print("[ERROR]: AppMenuBarViewModel-updateUser")
         }
     }
+    
+    private func showToast(_ toast: ToastMessage) {
+        self.toast = toast
+
+        let animationDuration = 0.5
+
+        withAnimation(.easeInOut(duration: animationDuration)) {
+            self.isToastVisible = true
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + toast.duration) {
+            withAnimation(.easeInOut(duration: animationDuration)) {
+                self.isToastVisible = false
+            }
+
+            // 애니메이션이 끝난 후 뷰에서 완전히 제거
+            DispatchQueue.main.asyncAfter(deadline: .now() + animationDuration) {
+                self.toast = nil
+            }
+        }
+    }
 }
 
+//MARK: - Combine Bidnings
 extension PanelViewModel {
     private func setupUserBindings() {
         $user
@@ -94,6 +119,23 @@ extension PanelViewModel {
                 default:
                     break
                 }
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func setupServiceMessageBindings() {
+        serviceSubject
+            .sink { [weak self] message in
+                guard let self = self else { return }
+                
+                switch message {
+                case .showCopyToast(let snippetTitle):
+                    let toast = ToastMessage.copySuccess(snippetTitle: snippetTitle)
+                    self.showToast(toast)
+                default:
+                    break
+                }
+                
             }
             .store(in: &cancellables)
     }
