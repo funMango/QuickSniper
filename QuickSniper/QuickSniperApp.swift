@@ -105,6 +105,7 @@ struct QuickSniperApp: App {
             
             let serviceContainer = ServiceContainer(
                 serviceSubject: serviceSubject,
+                controllSubject: controllerSubject,
                 snippetSubject: snippetSubject
             )
                 

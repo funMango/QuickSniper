@@ -11,6 +11,7 @@ import AppKit
 
 final class ServiceContainer {
     private let serviceSubject: CurrentValueSubject<ServiceMessage?, Never>
+    private let controllSubject: PassthroughSubject<ControllerMessage, Never>
     private let snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
     private var cancellables = Set<AnyCancellable>()
     
@@ -19,9 +20,11 @@ final class ServiceContainer {
     
     init(
         serviceSubject: CurrentValueSubject<ServiceMessage?, Never>,
+        controllSubject: PassthroughSubject<ControllerMessage, Never>,
         snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
     ) {
         self.serviceSubject = serviceSubject
+        self.controllSubject = controllSubject
         self.snippetSubject = snippetSubject
         
         serviceMessageBindings()
@@ -59,7 +62,8 @@ extension ServiceContainer {
     private func clipboardServiceInit() {
         if clipboardService == nil {
             self.clipboardService = ClipboardService(
-                serviceSubject: serviceSubject
+                serviceSubject: serviceSubject,
+                controllSubject: controllSubject
             )
         }
     }
@@ -70,6 +74,6 @@ extension ServiceContainer {
                 snippetSubject: snippetSubject,
                 serviceSubject: serviceSubject
             )
-        }                
+        }
     }
 }

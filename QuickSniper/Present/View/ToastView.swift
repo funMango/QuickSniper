@@ -25,6 +25,7 @@ struct ToastView: View {
                         .font(.system(size: 12))
                         .foregroundColor(.secondary)
                         .lineLimit(2)
+                        .fixedSize(horizontal: false, vertical: true)
                 }
             }
         }

@@ -19,6 +19,7 @@ final class ControllerContainer {
     private var createFolderController: CreateFolderController?
     private var panelController: PanelController?
     private var hotCornerController: HotCornerController?
+    private var toastController: ToastController?
     
     private var panelStatus = false
                 
@@ -55,9 +56,18 @@ extension ControllerContainer {
                 case .openCreateFolderView:
                     switchCurrentPage(.createFolder)
                 case .openHotCorner:
-                    switchWindow(.hotCorner)
-                case .panelStatus(let status):                    
+                    hotConerConrollerInit()
+                    DispatchQueue.main.async { [weak self] in
+                        self?.hotCornerController?.show()
+                    }
+                case .openToast(let title):
+                    toastControllerInit()
+                    DispatchQueue.main.async { [weak self] in
+                        self?.controllSubject.send(.showToast(title))
+                    }
+                case .panelStatus(let status):
                     self.panelStatus = status
+                
                 default:
                     break
                 }
@@ -80,12 +90,6 @@ extension ControllerContainer {
         switch window {
         case .shortcutSettings:
             shortcutSettingsControllerInit()
-        case .hotCorner:
-            hotConerConrollerInit()
-            DispatchQueue.main.async { [weak self] in
-                self?.hotCornerController?.show()
-            }
-            return
         }
             
         DispatchQueue.main.async { [weak self] in
@@ -149,6 +153,14 @@ extension ControllerContainer {
             self.hotCornerController = HotCornerController(
                 controllSubject: controllSubject,
                 hotCornerSubject: hotCornerSubject
+            )
+        }
+    }
+    
+    private func toastControllerInit() {
+        if toastController == nil {
+            self.toastController = ToastController(
+                controllSubject: controllSubject
             )
         }
     }

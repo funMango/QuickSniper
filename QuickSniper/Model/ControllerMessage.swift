@@ -41,12 +41,17 @@ enum ControllerMessage: Equatable {
     // MARK: - HotCorner
     case openHotCorner
     case showHotCorner
-    case hideHotCorner    
+    case hideHotCorner
+    
+    // MARK: - Toast
+    case openToast(String)
+    case showToast(String)
     
     // MARK: - else
     case activateAutoHidePanel
     case switchPage(Page)
     case AutoHidePage(Page)
     case copySnippet
-    case allPageClose    
+    case allPageClose
+    
 }
