@@ -48,7 +48,5 @@ enum ControllerMessage: Equatable {
     case switchPage(Page)
     case AutoHidePage(Page)
     case copySnippet
-    case allPageClose
-    case windowFocus
-    
+    case allPageClose    
 }

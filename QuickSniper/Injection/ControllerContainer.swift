@@ -56,7 +56,7 @@ extension ControllerContainer {
                     switchCurrentPage(.createFolder)
                 case .openHotCorner:
                     switchWindow(.hotCorner)
-                case .panelStatus(let status):
+                case .panelStatus(let status):                    
                     self.panelStatus = status
                 default:
                     break
@@ -69,12 +69,11 @@ extension ControllerContainer {
 // MARK: - Controller init
 extension ControllerContainer {
     private func togglePanel() {
-        if panelStatus {
+        if !panelStatus {
             switchCurrentPage(.panel)
         } else {
             controllSubject.send(.allPageClose)
         }
-        panelStatus.toggle()
     }
     
     private func switchWindow(_ window: Window) {

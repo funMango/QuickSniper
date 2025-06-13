@@ -20,19 +20,20 @@ final class PageManager {
     }
             
     private func savePage(_ page: Page) {
-        
+        if pages.contains(page) { return }
         self.pages.append(page)
         self.controllSubject.send(page.getShowMessage())
         
-        controllSubject.send(.windowFocus)
-        
+        print("savePage: \(pages)")
     }
     
     private func closeAllPage() {
         while pages.count > 0 {
             let page = self.pages.removeLast()
-            self.controllSubject.send(page.getHideMessage())
+            controllSubject.send(page.getHideMessage())
         }
+        
+        print("closeAllPage: \(pages)")
     }
     
     private func closePage() {
@@ -40,16 +41,26 @@ final class PageManager {
         let page = pages.removeLast()
         controllSubject.send(page.getHideMessage())
         
-        if pages.count == 1 && pages[0] == .panel {
-            controllSubject.send(.focusPanel)
-        }
+        sendFocus()
+        
+        print("closePage: \(pages)")
     }
     
     private func autoClosePage(_ page: Page) {
         if pages.isEmpty { return }
-        pages.removeLast()
+        if !pages.contains(page) { return }
+
+        if let index = pages.firstIndex(of: page) {
+            pages.remove(at: index)
+        }
         
-        if pages.count == 1 && pages[0] == .panel {
+        sendFocus()
+        
+        print("autoClosePage: \(pages)")
+    }
+    
+    private func sendFocus() {
+        if pages.contains(.panel) {
             controllSubject.send(.focusPanel)
         }
     }

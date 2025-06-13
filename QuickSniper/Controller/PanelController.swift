@@ -54,6 +54,7 @@ class PanelController: NSWindowController, NSWindowDelegate {
     }
     
     func AutoHidePanel() {
+        print("AutoHidePanel Active")
         performHidePanel()
     }
 
@@ -153,9 +154,7 @@ class PanelController: NSWindowController, NSWindowDelegate {
     private func setupBindings() {
         subject
             .sink { [weak self] message in
-                switch message {
-                case .togglePanel:
-                    self?.toggle()
+                switch message {               
                 case .showPanel:
                     self?.showPanel()
                 case .hidePanel:
