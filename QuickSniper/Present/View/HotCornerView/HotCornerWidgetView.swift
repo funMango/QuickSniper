@@ -75,6 +75,8 @@ class HotCornerWidgetView: NSView {
             symbolName = "arrow.up.right.circle"
         case .bottomRight:
             symbolName = "arrow.up.left.circle"
+        case .off:
+                return nil
         }
         return NSImage(systemSymbolName: symbolName, accessibilityDescription: nil)
     }
@@ -97,6 +99,8 @@ class HotCornerWidgetView: NSView {
                 width: iconSize,
                 height: iconSize
             )
+        case .off:
+            return NSRect.zero
         }
     }
 }

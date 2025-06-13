@@ -21,7 +21,7 @@ struct SettingsView: View {
     }
     
     var body: some View {
-        VStack(spacing: 10) {
+        VStack(spacing: 13) {
             HStack {
                 Text(String(localized: "settings"))
                     .font(.headline)

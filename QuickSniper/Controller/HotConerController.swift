@@ -50,6 +50,16 @@ class HotCornerController {
         if wasVisible {
             hideWidget()
         }
+        
+        if newPosition == .off {
+            disableHotCorner()
+            currentPosition = newPosition
+            return
+        }
+        
+        if currentPosition == .off {
+            enableHotCorner()
+        }
                 
         currentPosition = newPosition
         
@@ -67,7 +77,32 @@ class HotCornerController {
     }
     
     // MARK: Private Methods
+    private func disableHotCorner() {
+        // 타이머 정지
+        positionCheckTimer?.invalidate()
+        positionCheckTimer = nil
+        
+        // 윈도우 숨기기
+        window?.orderOut(nil)
+        
+        // 상태 초기화
+        isWidgetVisible = false
+    }
+    
+    private func enableHotCorner() {
+        // 감지 영역 설정
+        setupDetectionArea()
+        
+        // 윈도우 다시 보이게 하기
+        window?.orderFront(nil)
+        
+        // 위치 모니터링 시작
+        startPositionMonitoring()
+    }
+    
     private func setupDetectionArea() {
+        guard currentPosition != .off else { return }
+        
         guard let screen = NSScreen.main else {
             return
         }
@@ -77,6 +112,7 @@ class HotCornerController {
         // 기존 윈도우가 있으면 프레임만 변경
         if let existingWindow = window {
             existingWindow.setFrame(detectionRect, display: true)
+            existingWindow.orderFront(nil)  // 이 줄 추가
             updateTrackingArea(for: NSRect(x: 0, y: 0, width: detectionRect.width, height: detectionRect.height))
             return
         }
@@ -117,6 +153,7 @@ class HotCornerController {
     }
     
     private func showWidget() {
+        guard currentPosition != .off else { return }
         guard !isWidgetVisible else { return }
         animateWidgetIn()
     }
@@ -127,6 +164,7 @@ class HotCornerController {
     }
     
     private func animateWidgetIn() {
+        guard currentPosition != .off else { return }
         guard let screen = NSScreen.main else { return }
         
         let startRect = currentPosition.widgetStartRect(for: screen)
@@ -176,6 +214,7 @@ class HotCornerController {
     }
     
     private func resetToDetectionArea() {
+        guard currentPosition != .off else { return }
         guard let screen = NSScreen.main else { return }
         
         let detectionRect = currentPosition.detectionRect(for: screen)

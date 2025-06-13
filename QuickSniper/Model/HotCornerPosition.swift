@@ -11,6 +11,7 @@ import AppKit
 enum HotCornerPosition: String, CaseIterable, Codable {
     case bottomLeft = "bottomLeft"
     case bottomRight = "bottomRight"
+    case off = "hotcornerOff"
     
     var displayName: String {
         switch self {
@@ -18,6 +19,8 @@ enum HotCornerPosition: String, CaseIterable, Codable {
             return String(localized: "bottomLeft")
         case .bottomRight:
             return String(localized: "bottomRight")
+        case .off:
+            return String(localized: "hotcornerOff")
         }
     }
     
@@ -42,6 +45,8 @@ enum HotCornerPosition: String, CaseIterable, Codable {
                 width: width,
                 height: height
             )
+        case .off:
+            return NSRect.zero
         }
     }
     
@@ -66,6 +71,8 @@ enum HotCornerPosition: String, CaseIterable, Codable {
                 width: width,
                 height: height
             )
+        case .off:
+            return NSRect.zero
         }
     }
     
@@ -90,6 +97,8 @@ enum HotCornerPosition: String, CaseIterable, Codable {
                 width: width,
                 height: height
             )
+        case .off:
+            return NSRect.zero
         }
     }
 }

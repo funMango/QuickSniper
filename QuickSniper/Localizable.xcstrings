@@ -171,6 +171,40 @@
         }
       }
     },
+    "hotcornerOff" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Off"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "끄기"
+          }
+        }
+      }
+    },
+    "hotCornerWarning" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Please select a position that doesn't conflict with system hot corners."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시스템 환경설정의 핫코너와 겹치지 않는 위치를 선택하세요."
+          }
+        }
+      }
+    },
     "inputContent" : {
       "extractionState" : "manual",
       "localizations" : {

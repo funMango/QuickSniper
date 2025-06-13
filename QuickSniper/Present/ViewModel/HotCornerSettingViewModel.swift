@@ -19,8 +19,7 @@ final class HotCornerSettingViewModel: ObservableObject {
         self.hotCornerSubject = hotCornerSubject
         setupControllMessageBindings()
     }
-    
-    
+        
     func setSelectedPosition(_ position: HotCornerPosition) {
         self.selectedPosition = position
         hotCornerSubject.send(.changeHotCornerPosition(position))
