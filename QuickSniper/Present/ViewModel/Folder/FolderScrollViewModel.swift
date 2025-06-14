@@ -8,23 +8,20 @@
 import Foundation
 import Combine
 
-final class FolderScrollViewModel: ObservableObject, DragabbleObject, QuerySyncableObject {
+final class FolderScrollViewModel: FolderBindableViewModel, DragabbleObject, QuerySyncableObject {
     typealias Item = Folder
     @Published var items: [Folder] = []
     @Published var allItems: [Folder] = []
-    @Published var selectedFolder: Folder?
     private var useCase: FolderUseCase
-    private var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
-    private var cancellables: Set<AnyCancellable> = []
     
     init(
         useCase: FolderUseCase,
         selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     ){
         self.useCase = useCase
-        self.selectedFolderSubject = selectedFolderSubject
-        setSelectedFolder()
+        super.init(selectedFolderSubject: selectedFolderSubject)
         setupSelectedFolderBindings()
+        setSelectedFolder()
     }
     
     func getItems(_ items: [Folder]) {
@@ -55,13 +52,5 @@ final class FolderScrollViewModel: ObservableObject, DragabbleObject, QuerySynca
         } catch {
             print("[ERROR]: FolderViewModel - setSelectedFolder: \(error)")
         }
-    }
-    
-    private func setupSelectedFolderBindings() {
-        selectedFolderSubject
-            .sink { [weak self] folder in
-                self?.selectedFolder = folder
-            }
-            .store(in: &cancellables)
     }
 }

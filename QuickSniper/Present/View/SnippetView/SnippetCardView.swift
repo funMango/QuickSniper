@@ -49,7 +49,7 @@ struct SnippetCardView: View {
                 .foregroundColor(.subText)
         }
         .padding()
-        .frame(width: 150, height: 150, alignment: .topLeading)
+        .frame(width: 200, height: 150, alignment: .topLeading)
         .background(VisualEffectView.panelWithOverlay)
         .cornerRadius(10)
         .overlay(

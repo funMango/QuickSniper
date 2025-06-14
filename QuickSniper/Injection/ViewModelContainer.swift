@@ -148,6 +148,10 @@ final class ViewModelContainer {
         controllerSubject: controllerSubject
     )
     
+    lazy var panelFooterViewModel = PanelFooterViewModel(
+        selectedFolderSubject: selectedFolderSubject
+    )
+    
     lazy var appMenuBarViewModel = AppMenuBarViewModel(
         controllerSubject: controllerSubject
     )

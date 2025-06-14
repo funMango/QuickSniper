@@ -53,8 +53,7 @@ struct SnippetScrollView: View, DraggableView {
             }
             .animation(.easeInOut(duration: 0.3), value: viewModel.items.count)
             .frame(height: 150)
-            .padding()
-            .padding(.bottom)
+            .padding()            
             
         }
         .syncQuey(

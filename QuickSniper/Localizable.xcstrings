@@ -92,6 +92,23 @@
         }
       }
     },
+    "copySnippet" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy Snippet"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "스니펫 복사"
+          }
+        }
+      }
+    },
     "deleteFolder" : {
       "extractionState" : "manual",
       "localizations" : {

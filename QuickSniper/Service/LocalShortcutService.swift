@@ -13,7 +13,7 @@ final class LocalShortcutService {
     private let snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
     private let serviceSubject: CurrentValueSubject<ServiceMessage?, Never>
     private var cancellables: Set<AnyCancellable> = []
-    private var registeredShortcuts: [LocalShortcut] = []
+    private var shorcutStorage = LocalShortcutStorage()
     private var snippet: Snippet?
         
     init(
@@ -24,20 +24,10 @@ final class LocalShortcutService {
         self.serviceSubject = serviceSubject
         setUpSelectedSnippet()
         setupServiceMessage()
-        registerDefaultShortcuts()
     }
-            
-    private func registerDefaultShortcuts() {
-        let copySnippet = LocalShortcut.create(
-            keyCode: 8,
-            modifiers: .command,
-            action: .copySnippet
-        )
-        registeredShortcuts.append(copySnippet)
-    }
-    
+                    
     func handleKeyEvent(_ event: NSEvent) {        
-        for shortcut in registeredShortcuts {
+        for shortcut in shorcutStorage.shortcuts {
             if shortcut.matches(event) {
                 executeAction(shortcut.action)
                 break

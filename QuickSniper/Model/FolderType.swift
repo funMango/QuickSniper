@@ -8,6 +8,7 @@
 import Foundation
 
 enum FolderType: String, CaseIterable, Identifiable, Codable {
+    static let localShortcutStorage = LocalShortcutStorage()
     case snippet = "Snippet"
     case quickLink = "Quick Link"
     
@@ -28,6 +29,21 @@ enum FolderType: String, CaseIterable, Identifiable, Codable {
             return "코드 조각이나 텍스트를 저장합니다"
         case .quickLink:
             return "빠른 연결을 저장합니다"
+        }
+    }
+    
+    var relatedActions: [LocalShortcut.ShortcutAction] {
+        switch self {
+        case .snippet:
+            return [.copySnippet]
+        default:
+            return []
+        }
+    }
+    
+    func getMyShortcuts() -> [LocalShortcut] {
+        return Self.localShortcutStorage.shortcuts.filter { shortcut in
+            relatedActions.contains(shortcut.action)
         }
     }
 }

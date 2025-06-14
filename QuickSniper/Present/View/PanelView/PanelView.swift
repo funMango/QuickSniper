@@ -40,6 +40,10 @@ struct PanelView: View {
                 SnippetScrollView(
                     viewModel: viewModelContainer.snippetScrollViewModel
                 )
+                                                
+                PanelFooterView(
+                    viewModel: viewModelContainer.panelFooterViewModel
+                )                                
             }
             .background(
                 VisualEffectView.panel

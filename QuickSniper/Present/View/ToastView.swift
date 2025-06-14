@@ -32,12 +32,12 @@ struct ToastView: View {
         .padding(.horizontal, 16)
         .padding(.vertical, 12)
         .background(
-            RoundedRectangle(cornerRadius: 12)
-                .fill(.regularMaterial)
+            VisualEffectView.panelWithOverlay
+                .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                 .shadow(color: .black.opacity(0.1), radius: 8, x: 0, y: 4)
         )
         .overlay(
-            RoundedRectangle(cornerRadius: 12)
+            RoundedRectangle(cornerRadius: 12, style: .continuous)
                 .stroke(.quaternary, lineWidth: 1)
         )
     }
