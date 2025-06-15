@@ -23,39 +23,34 @@ struct SnippetScrollView: View, DraggableView {
     }
     
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 12) {
-                ForEach(viewModel.items, id: \.id) { snippet in
-                    SnippetCardView(
-                        viewModel: viewModelContainer.getSnippetCardViewModel(snippet: snippet)
-                    )
-                    .transition(.asymmetric(
-                        insertion: .scale.combined(with: .opacity),
-                        removal: .scale.combined(with: .opacity)
-                    ))
-                    .dragDrop(
-                        viewModel: viewModel,
-                        draggingItemId: $draggingItem,
-                        itemId: snippet.id
-                    )
-                }
-                .padding(.trailing, 10)
-                                                              
-                VStack() {
-                    Spacer()                    
-                    SnippetPlusButtonView(
-                        viewModel: viewModelContainer.snippetPlusButtonViewModel,
-                        systemName: "plus",
-                        size: 30
-                    )
-                    Spacer()
-                }
+        Group {
+            ForEach(viewModel.items, id: \.id) { snippet in
+                SnippetCardView(
+                    viewModel: viewModelContainer.getSnippetCardViewModel(snippet: snippet)
+                )
+                .transition(.asymmetric(
+                    insertion: .scale.combined(with: .opacity),
+                    removal: .scale.combined(with: .opacity)
+                ))
+                .dragDrop(
+                    viewModel: viewModel,
+                    draggingItemId: $draggingItem,
+                    itemId: snippet.id
+                )
             }
-            .animation(.easeInOut(duration: 0.3), value: viewModel.items.count)
-            .frame(height: 150)
-            .padding()            
-            
+            .padding(.trailing, 10)
+                                                          
+            VStack() {
+                Spacer()
+                ItemPlusButtonView(
+                    viewModel: viewModelContainer.snippetPlusButtonViewModel,
+                    systemName: "plus",
+                    size: 30
+                )
+                Spacer()
+            }
         }
+        .hStackContainer(itemCount: viewModel.items.count) // HStack + 스타일링 한번에!
         .syncQuey(
             viewModel: self.viewModel,
             items: snippets

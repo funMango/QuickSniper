@@ -78,7 +78,7 @@ struct FolderButtonView: View {
         viewModel: viewModelContainer.folderButtonViewModel,
         title: "Folder1",
         isSelected: false,
-        folder: Folder(name: "", type: .quickLink, order: 1),
+        folder: Folder(name: "", type: .snippet, order: 1),
         onTap: {}
     )
     .frame(width: 200, height: 50)

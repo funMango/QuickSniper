@@ -37,8 +37,8 @@ struct PanelView: View {
                 Divider()
                     .padding(.horizontal)
                 
-                SnippetScrollView(
-                    viewModel: viewModelContainer.snippetScrollViewModel
+                ItemScrollView(
+                    viewModel: viewModelContainer.itemScrollViewModel
                 )
                                                 
                 PanelFooterView(

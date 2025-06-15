@@ -8,14 +8,14 @@
 import SwiftUI
 import Resolver
 
-struct SnippetPlusButtonView: View {
-    @StateObject var viewModel: SnippetPlusButtonViewModel
+struct ItemPlusButtonView: View {
+    @StateObject var viewModel: ItemPlusButtonViewModel
     @State private var isHovered = false
     private var systemName: String
     private var size: CGFloat
     
     init(
-        viewModel: SnippetPlusButtonViewModel,
+        viewModel: ItemPlusButtonViewModel,
         systemName: String,
         size: CGFloat = 16
     ) {
@@ -26,7 +26,7 @@ struct SnippetPlusButtonView: View {
     
     var body: some View {
         Button {
-            viewModel.openSnippetEditor()
+            viewModel.openItemEditor()
         } label: {
             Image(systemName: systemName)
                 .font(.system(size: size, weight: .medium))
@@ -53,7 +53,7 @@ struct SnippetPlusButtonView: View {
 
 #Preview {
     @Injected var viewModelContainer: ViewModelContainer
-    SnippetPlusButtonView(viewModel: viewModelContainer.snippetPlusButtonViewModel,
+    ItemPlusButtonView(viewModel: viewModelContainer.snippetPlusButtonViewModel,
                           systemName: "plus",
                           size: 20
     )

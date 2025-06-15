@@ -10,7 +10,6 @@ import Foundation
 enum FolderType: String, CaseIterable, Identifiable, Codable {
     static let localShortcutStorage = LocalShortcutStorage()
     case snippet = "Snippet"
-    case quickLink = "Quick Link"
     
     var id: String { self.rawValue }
     
@@ -18,8 +17,6 @@ enum FolderType: String, CaseIterable, Identifiable, Codable {
         switch self {
         case .snippet:
             return "doc.text"
-        case .quickLink:
-            return ""
         }
     }
     
@@ -27,8 +24,6 @@ enum FolderType: String, CaseIterable, Identifiable, Codable {
         switch self {
         case .snippet:
             return "코드 조각이나 텍스트를 저장합니다"
-        case .quickLink:
-            return "빠른 연결을 저장합니다"
         }
     }
     
@@ -36,8 +31,6 @@ enum FolderType: String, CaseIterable, Identifiable, Codable {
         switch self {
         case .snippet:
             return [.copySnippet]
-        default:
-            return []
         }
     }
     

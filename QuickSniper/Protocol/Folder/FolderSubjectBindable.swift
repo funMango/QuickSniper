@@ -24,7 +24,7 @@ extension FolderSubjectBindable {
 
 // MARK: - 기본 구현을 제공하는 베이스 클래스
 class FolderBindableViewModel: ObservableObject, FolderSubjectBindable {
-    var selectedFolder: Folder?
+    @Published var selectedFolder: Folder?
     
     let selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     var cancellables: Set<AnyCancellable> = []

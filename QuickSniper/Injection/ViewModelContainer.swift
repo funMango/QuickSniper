@@ -59,8 +59,9 @@ final class ViewModelContainer {
         useCase: snippetUseCase
     )
             
-    lazy var snippetPlusButtonViewModel = SnippetPlusButtonViewModel(
-        controllSubject: controllerSubject
+    lazy var snippetPlusButtonViewModel = ItemPlusButtonViewModel(
+        controllSubject: controllerSubject,
+        selectedFolderSubject: selectedFolderSubject
     )
     
     lazy var snippetDeleteButtonViewModel = SnippetDeleteButtonViewModel(
@@ -158,6 +159,10 @@ final class ViewModelContainer {
     
     lazy var hotCornerSettingViewModel = HotCornerSettingViewModel(
         hotCornerSubject: hotCornerSubject
+    )
+    
+    lazy var itemScrollViewModel = ItemScrollViewModel(
+        selectedFolderSubject: selectedFolderSubject
     )
     
     lazy var panelViewModel = PanelViewModel(
