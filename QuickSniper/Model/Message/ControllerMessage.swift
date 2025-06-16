@@ -47,6 +47,15 @@ enum ControllerMessage: Equatable {
     case openToast(String)
     case showToast(String)
     
+    // MARK: - FileBookmark
+    case hideFileBookmarkCreateView
+    case openFileBookmarkCreateView
+    case showFileBookmarkCreateView
+    
+    // MARK: - Page
+    case stopPageAutohide
+    case restartPageAutohide
+        
     // MARK: - else
     case activateAutoHidePanel
     case switchPage(Page)

@@ -58,6 +58,23 @@
         }
       }
     },
+    "chooseSaveFiles" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select the files you want to save"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저장할 파일을 선택하세요"
+          }
+        }
+      }
+    },
     "closeShifty" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -167,6 +184,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "종료"
+          }
+        }
+      }
+    },
+    "fileBookmark" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File Bookmark"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "파일 즐겨찾기"
           }
         }
       }
@@ -374,6 +408,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Shifty 열기"
+          }
+        }
+      }
+    },
+    "snippet" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Snippet"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "스니펫"
           }
         }
       }

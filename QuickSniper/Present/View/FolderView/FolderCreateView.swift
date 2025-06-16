@@ -8,13 +8,30 @@
 import SwiftUI
 import Resolver
 
-struct CreateFolderView: View {
-    @ObservedObject var viewModel: CreateFolderViewModel
+struct FolderCreateView: View {
+    @ObservedObject var viewModel: FolderCreateViewModel
     var width: CGFloat
     var height: CGFloat
+    private let columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: 3)
             
     var body: some View {
         VStack(spacing: 20) {
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: 12) {
+                    ForEach(FolderType.allCases, id: \.self) { type in
+                        FolderTypeCardView(
+                            folderType: type,
+                            isSelected: viewModel.selectedFolderType == type,
+                            action: {
+                                viewModel.selectFolderType(type)
+                            }
+                        )
+                        .padding(.vertical, 3)
+                        .padding(.horizontal, 5)
+                    }
+                }
+            }
+                        
             HStack {
                 Text(String(localized: "folderName"))
                 
@@ -28,24 +45,6 @@ struct CreateFolderView: View {
                         }
                     }
             }
-            
-//            HStack {
-//                Text("폴더 종류:")
-//                
-//                Spacer()
-//                
-//                Menu {
-//                    ForEach(FolderType.allCases, id: \.self) { type in
-//                        Button {
-//                            viewModel.folderType = type
-//                        } label: {
-//                            Text(type.rawValue)
-//                        }
-//                    }
-//                } label: {
-//                    Text(viewModel.folderType.rawValue)
-//                }
-//            }
             
             HStack {
                 Spacer()
@@ -65,9 +64,9 @@ struct CreateFolderView: View {
 }
 #Preview {
     @Injected var viewModelcontainer: ViewModelContainer
-    CreateFolderView(
+    FolderCreateView(
         viewModel: viewModelcontainer.createFolderViewModel,
         width: 400,
-        height: 250
+        height: 300
     )
 }

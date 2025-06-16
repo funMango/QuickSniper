@@ -38,17 +38,18 @@ struct SnippetScrollView: View, DraggableView {
                     itemId: snippet.id
                 )
             }
-            .padding(.trailing, 10)
+            
                                                           
-            VStack() {
+            VStack {
                 Spacer()
                 ItemPlusButtonView(
-                    viewModel: viewModelContainer.snippetPlusButtonViewModel,
+                    viewModel: viewModelContainer.itemPlusButtonViewModel,
                     systemName: "plus",
                     size: 30
                 )
                 Spacer()
             }
+            .padding(.leading, 10)
         }
         .hStackContainer(itemCount: viewModel.items.count) // HStack + 스타일링 한번에!
         .syncQuey(

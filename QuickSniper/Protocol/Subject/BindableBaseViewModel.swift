@@ -1,28 +1,13 @@
 //
-//  FolderSubjectBindable.swift
+//  BindableBaseViewModel.swift
 //  QuickSniper
+//
+//  Created by 이민호 on 6/15/25.
 //
 
 import Foundation
 import Combine
 
-protocol FolderSubjectBindable: AnyObject {
-    var selectedFolder: Folder? { get set }
-    var selectedFolderSubject: CurrentValueSubject<Folder?, Never> { get }
-    var cancellables: Set<AnyCancellable> { get set }
-}
-
-extension FolderSubjectBindable {
-    func setupSelectedFolderBindings() {
-        selectedFolderSubject
-            .sink { [weak self] folder in
-                self?.selectedFolder = folder
-            }
-            .store(in: &cancellables)
-    }
-}
-
-// MARK: - 기본 구현을 제공하는 베이스 클래스
 class FolderBindableViewModel: ObservableObject, FolderSubjectBindable {
     @Published var selectedFolder: Folder?
     

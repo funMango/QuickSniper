@@ -10,27 +10,25 @@ import Combine
 
 final class ControllerContainer {
     private let controllSubject: PassthroughSubject<ControllerMessage, Never>
-    private let geometrySubject: CurrentValueSubject<CGRect, Never>
     private let hotCornerSubject: CurrentValueSubject<HotCornerMessage?, Never>
     private var cancellables = Set<AnyCancellable>()
     
     private var snippetEditorController: SnippetEditorController?
     private var shortcutSettingsController: SettingsController?
-    private var createFolderController: CreateFolderController?
+    private var createFolderController: FolderCreateController?
     private var panelController: PanelController?
     private var hotCornerController: HotCornerController?
     private var toastController: ToastController?
+    private var fileBookmakrController: FileBookmarkController?
     
     private var panelStatus = false
                 
     init(
         controllSubject: PassthroughSubject<ControllerMessage, Never>,
         hotCornerSubject: CurrentValueSubject<HotCornerMessage?, Never>,
-        geometrySubject: CurrentValueSubject<CGRect, Never>,
     ) {
         self.controllSubject = controllSubject
-        self.hotCornerSubject = hotCornerSubject
-        self.geometrySubject = geometrySubject
+        self.hotCornerSubject = hotCornerSubject        
         controllMesaageBindings()
     }
 }
@@ -55,6 +53,8 @@ extension ControllerContainer {
                     switchWindow(.shortcutSettings)
                 case .openCreateFolderView:
                     switchCurrentPage(.createFolder)
+                case .openFileBookmarkCreateView:
+                    switchCurrentPage(.fileBookmark)
                 case .openHotCorner:
                     hotConerConrollerInit()
                     DispatchQueue.main.async { [weak self] in
@@ -109,6 +109,8 @@ extension ControllerContainer {
             shortcutSettingsControllerInit()
         case .createFolder:
             createFolderControllerInit()
+        case .fileBookmark:
+            fileBookmarkControllerInit()
         }
         
         DispatchQueue.main.async { [weak self] in            
@@ -142,7 +144,15 @@ extension ControllerContainer {
     
     private func createFolderControllerInit() {
         if createFolderController == nil {
-            self.createFolderController = CreateFolderController(
+            self.createFolderController = FolderCreateController(
+                subject: controllSubject
+            )
+        }
+    }
+    
+    private func fileBookmarkControllerInit() {
+        if fileBookmakrController == nil {
+            self.fileBookmakrController = FileBookmarkController(
                 subject: controllSubject
             )
         }

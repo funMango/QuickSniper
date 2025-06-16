@@ -53,7 +53,7 @@ struct ItemPlusButtonView: View {
 
 #Preview {
     @Injected var viewModelContainer: ViewModelContainer
-    ItemPlusButtonView(viewModel: viewModelContainer.snippetPlusButtonViewModel,
+    ItemPlusButtonView(viewModel: viewModelContainer.itemPlusButtonViewModel,
                           systemName: "plus",
                           size: 20
     )

@@ -12,18 +12,18 @@ import Combine
 final class ViewModelContainer {
     private let modelContext: ModelContext
     private let controllerSubject: PassthroughSubject<ControllerMessage, Never>
+    private let vmPassSubject: PassthroughSubject<VmPassMessage, Never>
     private let folderSubject: CurrentValueSubject<Folder?, Never>
     private let folderEditSubject: PassthroughSubject<Folder, Never>
     private let selectedFolderSubject: CurrentValueSubject<Folder?, Never>
-    private let geometrySubject: CurrentValueSubject<CGRect, Never>
     private let snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
     private let serviceSubject: CurrentValueSubject<ServiceMessage?, Never>
     private let hotCornerSubject: CurrentValueSubject<HotCornerMessage?, Never>
     
     private var snippetCardViewModelCache: [String: SnippetCardViewModel] = [:]
     
-    private lazy var folderRepository = DefaultFolderRepository(context: modelContext)
-    private lazy var snippetRepository = DefaultSnippetRepository(context: modelContext)
+    lazy var folderRepository = DefaultFolderRepository(context: modelContext)
+    lazy var snippetRepository = DefaultSnippetRepository(context: modelContext)
     private lazy var userRepository = DefaultUserRepository(context: modelContext)
     
     private lazy var folderUseCase = DefaultFolderUseCase(repository: folderRepository)
@@ -33,20 +33,20 @@ final class ViewModelContainer {
     init(
         modelContext: ModelContext,
         controllerSubject: PassthroughSubject<ControllerMessage, Never>,
+        vmPassSubject: PassthroughSubject<VmPassMessage, Never>,
         folderSubject: CurrentValueSubject<Folder?, Never>,
         folderEditSubject:PassthroughSubject<Folder, Never>,
         selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
-        geometrySubject: CurrentValueSubject<CGRect, Never>,
         snippetSubject: CurrentValueSubject<SnippetMessage?, Never>,
         serviceSubject: CurrentValueSubject<ServiceMessage?, Never>,
         hotCornerSubject: CurrentValueSubject<HotCornerMessage?, Never>
     ){
         self.modelContext = modelContext
         self.controllerSubject = controllerSubject
+        self.vmPassSubject = vmPassSubject
         self.folderSubject = folderSubject
         self.folderEditSubject = folderEditSubject
         self.selectedFolderSubject = selectedFolderSubject
-        self.geometrySubject = geometrySubject
         self.snippetSubject = snippetSubject
         self.serviceSubject = serviceSubject
         self.hotCornerSubject = hotCornerSubject
@@ -59,7 +59,7 @@ final class ViewModelContainer {
         useCase: snippetUseCase
     )
             
-    lazy var snippetPlusButtonViewModel = ItemPlusButtonViewModel(
+    lazy var itemPlusButtonViewModel = ItemPlusButtonViewModel(
         controllSubject: controllerSubject,
         selectedFolderSubject: selectedFolderSubject
     )
@@ -110,14 +110,13 @@ final class ViewModelContainer {
     }
     
     //MARK: - Folder
-    lazy var createFolderViewModel = CreateFolderViewModel(
+    lazy var createFolderViewModel = FolderCreateViewModel(
         useCase: folderUseCase,
         subject: controllerSubject
     )
     
     lazy var folderButtonViewModel = FolderButtonViewModel(
-        folderSubject: folderSubject,
-        geometrySubject: geometrySubject
+        folderSubject: folderSubject
     )
     
     lazy var folderDeleteButtonViewModel = FolderDeleteButtonViewModel(
@@ -125,7 +124,7 @@ final class ViewModelContainer {
         folderUseCase: folderUseCase,
     )
     
-    lazy var editFolderViewModel = EditFolderViewModel(
+    lazy var editFolderViewModel = FolderEditViewModel(
         folderSubject: folderSubject,
         folderEditSubject: folderEditSubject
     )
@@ -144,7 +143,7 @@ final class ViewModelContainer {
         )
     }
     
-    //MARK: - else
+    //MARK: Panel
     lazy var panelHeaderViewModel = PanelHeaderViewModel(
         controllerSubject: controllerSubject
     )
@@ -153,6 +152,20 @@ final class ViewModelContainer {
         selectedFolderSubject: selectedFolderSubject
     )
     
+    //MARK: FileBookmark
+    lazy var fileBookmarkListViewModel = FileBookmarkListViewModel(
+        controllSubject: controllerSubject,
+        vmPassSubject: vmPassSubject
+    )
+    
+    func getFileBookmarkRowViewModel(item: FileBookmarkItem) -> FileBookmarkRowViewModel{
+        FileBookmarkRowViewModel(
+            item: item,
+            vmPassSubject: vmPassSubject
+        )
+    }
+            
+    //MARK: - else
     lazy var appMenuBarViewModel = AppMenuBarViewModel(
         controllerSubject: controllerSubject
     )

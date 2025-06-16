@@ -21,6 +21,8 @@ struct ItemScrollView: View {
             switch viewModel.selectedFolder?.type {
             case .snippet:
                 SnippetScrollView(viewModel: viewModelContainer.snippetScrollViewModel)
+            case .fileBookmark:
+                FileBookmarkScrollView()
            
             case .none:
                 Text("")

@@ -13,6 +13,7 @@ enum Page: Equatable {
     case snippetEditorWith(Snippet)
     case shortcutSettings
     case createFolder
+    case fileBookmark
     
     
     func getShowMessage() -> ControllerMessage {
@@ -27,6 +28,8 @@ enum Page: Equatable {
             return .showShortcutSettingView
         case .createFolder:
             return .showCreateFolderView
+        case .fileBookmark:
+            return .showFileBookmarkCreateView
         }
     }
     
@@ -42,6 +45,8 @@ enum Page: Equatable {
             return .hideShorcutSettingView
         case .createFolder:
             return .hideCreateFolderView
+        case .fileBookmark:
+            return .hideFileBookmarkCreateView
         }
     }
 }

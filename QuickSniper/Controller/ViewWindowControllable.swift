@@ -42,13 +42,17 @@ extension ViewWindowControllable {
             .sink { [weak self] message in
                 guard let self = self else { return }
                 
-                if message == .focusPanel {
-                    self.windowController?.focus()
-                }
-                
                 if message == self.hideMessage {
                     self.windowController?.close(isManualClose: true)
                     self.windowController = nil
+                }
+                
+                if message == .stopPageAutohide {
+                    self.windowController?.isAutoHide = false
+                }
+                
+                if message == .restartPageAutohide {
+                    self.windowController?.isAutoHide = true                    
                 }
             }
             .store(in: &cancellables)

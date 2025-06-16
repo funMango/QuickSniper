@@ -8,8 +8,8 @@
 import SwiftUI
 import Resolver
 
-struct EditFolderButtonView: View {
-    @ObservedObject var viewModel: EditFolderViewModel
+struct FolderEditButtonView: View {
+    @ObservedObject var viewModel: FolderEditViewModel
     
     var body: some View {
         Button {

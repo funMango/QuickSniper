@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-class EditFolderViewModel: ObservableObject {
+class FolderEditViewModel: ObservableObject {
     private var folderSubject: CurrentValueSubject<Folder?, Never>
     private var folderEditSubject: PassthroughSubject<Folder, Never>
     private var cancellables = Set<AnyCancellable>()

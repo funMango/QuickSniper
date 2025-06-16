@@ -40,7 +40,7 @@ struct QuickSniperApp: App {
             self.pageManager = pageManger
             self.serviceContainer = serviceContainer
         } else {
-            fatalError("❌ 의존성 구성 실패")
+            fatalError("[Error]: QuickSniperApp: 의존성 구성 실패")
         }
     }
 
@@ -67,14 +67,18 @@ struct QuickSniperApp: App {
         serviceContainer: ServiceContainer
     )? {
         do {
+            /// SwiftData
             let container = try ModelContainer(for: Folder.self, Snippet.self, User.self)
             let context = container.mainContext
             
+            /// Core Subject
             let controllerSubject = PassthroughSubject<ControllerMessage, Never>()
+            let vmPassSubject = PassthroughSubject<VmPassMessage, Never>()
+            
+            /// Option Subject
             let folderSubject = CurrentValueSubject<Folder?, Never>(nil)
             let folderEditSubject = PassthroughSubject<Folder, Never>()
             let selectedFolderSubject = CurrentValueSubject<Folder?, Never>(nil)
-            let geometrySubject = CurrentValueSubject<CGRect, Never>(.zero)
             let snippetSubject = CurrentValueSubject<SnippetMessage?, Never>(nil)
             let serviceSubject = CurrentValueSubject<ServiceMessage?, Never>(nil)
             let hotCornerSubject = CurrentValueSubject<HotCornerMessage?, Never>(nil)
@@ -82,10 +86,10 @@ struct QuickSniperApp: App {
             let viewModelContainer = ViewModelContainer(
                 modelContext: context,
                 controllerSubject: controllerSubject,
+                vmPassSubject: vmPassSubject,
                 folderSubject: folderSubject,
                 folderEditSubject: folderEditSubject,
-                selectedFolderSubject: selectedFolderSubject,
-                geometrySubject: geometrySubject,
+                selectedFolderSubject: selectedFolderSubject,                
                 snippetSubject: snippetSubject,
                 serviceSubject: serviceSubject,
                 hotCornerSubject: hotCornerSubject
@@ -93,8 +97,7 @@ struct QuickSniperApp: App {
             
             let controllerConntainer = ControllerContainer(
                 controllSubject: controllerSubject,
-                hotCornerSubject: hotCornerSubject,
-                geometrySubject: geometrySubject
+                hotCornerSubject: hotCornerSubject
             )
             
             let keyboardShortcutManager = KeyboardShortcutManager(                
@@ -115,10 +118,11 @@ struct QuickSniperApp: App {
             Resolver.register { keyboardShortcutManager }.scope(.application)
             Resolver.register { pageManager }.scope(.application)
             Resolver.register { serviceContainer }.scope(.application)
-                                    
+            
+            /// System init function
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 controllerSubject.send(.openPanel)
-                controllerSubject.send(.openHotCorner)
+                // controllerSubject.send(.openHotCorner)
             }
 
             return (container, context, viewModelContainer, controllerConntainer, keyboardShortcutManager, pageManager, serviceContainer)

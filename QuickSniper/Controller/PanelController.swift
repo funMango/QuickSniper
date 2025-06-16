@@ -55,14 +55,6 @@ class PanelController: NSWindowController, NSWindowDelegate {
         }
     }
 
-    private func startDockHeightMonitoring() {
-        print("고정 위치 모드 - 모니터링 비활성화")
-    }
-
-    private func stopDockHeightMonitoring() {
-        print("고정 위치 모드 - 정리 완료")
-    }
-
     private func getMaxDockHeight(screen: NSScreen) -> CGFloat {
         return 100
     }
@@ -153,15 +145,12 @@ class PanelController: NSWindowController, NSWindowDelegate {
         isManualHide = false
         isPanelVisible = true
         allowAutoHide = true
-        startDockHeightMonitoring()
         subject.send(.panelStatus(true))
     }
 
     private func performHidePanel() {
         guard let window = self.window, isPanelVisible else { return }
-
-        stopDockHeightMonitoring()
-
+        
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 0.25
             context.timingFunction = CAMediaTimingFunction(name: .easeIn)

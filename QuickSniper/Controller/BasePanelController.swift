@@ -18,12 +18,14 @@ class InputPanel: NSPanel {
 // MARK: - 기본 윈도우 컨트롤러
 class BasePanelController<Content: View>: NSObject, NSWindowDelegate {
     var window: NSWindow?
+    var isAutoHide = true
     private let content: () -> Content
     private let size: CGSize
     private var page: Page
     private let subject: PassthroughSubject<ControllerMessage, Never>
     private var cancellables = Set<AnyCancellable>()
     private var isManualClose: Bool = false
+    
 
     init(
         size: CGSize,
@@ -71,7 +73,7 @@ class BasePanelController<Content: View>: NSObject, NSWindowDelegate {
     }
     
     func windowDidResignKey(_ notification: Notification) {        
-        if !isManualClose{
+        if !isManualClose && isAutoHide {
             subject.send(.AutoHidePage(page))
             close()
         }

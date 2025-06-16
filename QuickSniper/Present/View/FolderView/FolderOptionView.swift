@@ -14,7 +14,7 @@ struct FolderOptionView: View {
     
     var body: some View {
         VStack {
-            EditFolderButtonView(
+            FolderEditButtonView(
                 viewModel: viewModelContainer.editFolderViewModel
             )
             

@@ -9,28 +9,35 @@ import Foundation
 
 enum FolderType: String, CaseIterable, Identifiable, Codable {
     static let localShortcutStorage = LocalShortcutStorage()
-    case snippet = "Snippet"
+    case snippet = "snippet"
+    case fileBookmark = "fileBookmark"
     
     var id: String { self.rawValue }
+    
+    var name: String {
+        switch self {
+        case .snippet:
+            String(localized: "snippet")
+        case .fileBookmark:
+            String(localized: "fileBookmark")
+        }
+    }
     
     var icon: String {
         switch self {
         case .snippet:
             return "doc.text"
+        case .fileBookmark:
+            return "folder"
         }
-    }
-    
-    var description: String {
-        switch self {
-        case .snippet:
-            return "코드 조각이나 텍스트를 저장합니다"
-        }
-    }
+    }        
     
     var relatedActions: [LocalShortcut.ShortcutAction] {
         switch self {
         case .snippet:
             return [.copySnippet]
+        case .fileBookmark:
+            return []
         }
     }
     

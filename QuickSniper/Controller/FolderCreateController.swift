@@ -10,14 +10,14 @@ import SwiftUI
 import Combine
 import Resolver
 
-final class CreateFolderController: ViewWindowControllable {
+final class FolderCreateController: ViewWindowControllable {
     @Injected var viewModelContainer: ViewModelContainer
 
     let subject: PassthroughSubject<ControllerMessage, Never>
     let hideMessage: ControllerMessage = .hideCreateFolderView
-    var windowController: BasePanelController<CreateFolderView>?
+    var windowController: BasePanelController<FolderCreateView>?
     var cancellables = Set<AnyCancellable>()
-    private var width: CGFloat = 400, height: CGFloat =  250
+    private var width: CGFloat = 400, height: CGFloat =  300
                 
 
     init(subject: PassthroughSubject<ControllerMessage, Never>) {
@@ -26,8 +26,8 @@ final class CreateFolderController: ViewWindowControllable {
         controllerMessageBinding()
     }
 
-    func makeView() -> CreateFolderView {
-        CreateFolderView(
+    func makeView() -> FolderCreateView {
+        FolderCreateView(
             viewModel: viewModelContainer.createFolderViewModel,
             width: width,
             height: height
