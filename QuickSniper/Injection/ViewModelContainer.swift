@@ -22,13 +22,15 @@ final class ViewModelContainer {
     
     private var snippetCardViewModelCache: [String: SnippetCardViewModel] = [:]
     
-    lazy var folderRepository = DefaultFolderRepository(context: modelContext)
-    lazy var snippetRepository = DefaultSnippetRepository(context: modelContext)
+    private lazy var folderRepository = DefaultFolderRepository(context: modelContext)
+    private lazy var snippetRepository = DefaultSnippetRepository(context: modelContext)
     private lazy var userRepository = DefaultUserRepository(context: modelContext)
+    private lazy var fileBookmarkRepository = DefaultFileBookmarkRepository(context: modelContext)
     
     private lazy var folderUseCase = DefaultFolderUseCase(repository: folderRepository)
     private lazy var snippetUseCase = DefaultSnippetUseCase(repository: snippetRepository)
     private lazy var userUseCase = DefaultUserUserCase(repository: userRepository)
+    private lazy var fileBookmarkUseCase = DefaultFileBookmarkUseCase(repository: fileBookmarkRepository)
             
     init(
         modelContext: ModelContext,
@@ -154,6 +156,12 @@ final class ViewModelContainer {
     
     //MARK: FileBookmark
     lazy var fileBookmarkListViewModel = FileBookmarkListViewModel(
+        usecase: fileBookmarkUseCase,
+        controllSubject: controllerSubject,
+        vmPassSubject: vmPassSubject
+    )
+    
+    lazy var fileBookmarkCreateViewModel = FileBookmarkCreateViewModel(
         controllSubject: controllerSubject,
         vmPassSubject: vmPassSubject
     )

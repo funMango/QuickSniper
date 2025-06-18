@@ -10,6 +10,7 @@ import AppKit
 import Combine
 
 final class FileBookmarkListViewModel: ObservableObject, ControllSubjectBindable, VmPassSubjectBindable {
+    var usecase: FileBookmarkUseCase
     var controllSubject: PassthroughSubject<ControllerMessage, Never>
     var vmPassSubject: PassthroughSubject<VmPassMessage, Never>
     var cancellables: Set<AnyCancellable> = []
@@ -18,10 +19,12 @@ final class FileBookmarkListViewModel: ObservableObject, ControllSubjectBindable
     
     init(
         items: [FileBookmarkItem] = [],
+        usecase: FileBookmarkUseCase,
         controllSubject: PassthroughSubject<ControllerMessage, Never>,
         vmPassSubject: PassthroughSubject<VmPassMessage, Never>
     ) {
         self.items = items
+        self.usecase = usecase
         self.controllSubject = controllSubject
         self.vmPassSubject = vmPassSubject
         vmPassMessageBinding()
@@ -29,7 +32,7 @@ final class FileBookmarkListViewModel: ObservableObject, ControllSubjectBindable
     
     func deleteCheckedItem() {
         vmPassSubject.send(.deleteCheckedBookmarkItem)
-    }    
+    }
 }
 
 // MARK: - VmPassSubject Binding
@@ -39,6 +42,8 @@ extension FileBookmarkListViewModel {
             switch message {
             case .sendCheckedBookmarkItem(let item):
                 self?.deleteCheckedItem(item)
+            case .saveBookmarkItems:
+                self?.saveBookmarkItems()
             default:
                 break
             }
@@ -48,26 +53,39 @@ extension FileBookmarkListViewModel {
     private func deleteCheckedItem(_ item: FileBookmarkItem) {
         self.items = items.filter { $0.id != item.id }
     }
+    
+    private func saveBookmarkItems() {
+        do {
+            try usecase.saveItems(items)
+        } catch {
+            print("FileBookmarkListViewModel-saveBookmarkItems: \(error)")
+        }
+    }
 }
 
 // MARK: - bookmark 생성
 extension FileBookmarkListViewModel {
     func addFileOrFolder() {
         guard let urls = selectFileOrFolder() else { return }
-        
-        // 여러 파일/폴더 처리
+                
         for url in urls {
-            // Security-Scoped Bookmark 생성
+            /// Security-Scoped Bookmark 생성(macOS 정책)
             guard let bookmarkData = createBookmark(for: url) else {
                 print("FileBookmarkListViewModel-addFileOrFolder, 북마크 생성 실패: \(url.lastPathComponent)")
                 continue
             }
             
             let itemType: FileBookmarkType = url.hasDirectoryPath ? .folder : .file
-            let newItem = FileBookmarkItem(name: url.lastPathComponent, type: itemType)
-            newItem.bookmarkData = bookmarkData
+            let workspace = NSWorkspace.shared
+            let fileIcon = workspace.icon(forFile: url.path)
             
-            // items 배열에 추가
+            let newItem = FileBookmarkItem(
+                name: url.lastPathComponent,
+                type: itemType,
+                bookmarkData: bookmarkData,
+                image: fileIcon
+            )
+            
             items.append(newItem)
         }
     }

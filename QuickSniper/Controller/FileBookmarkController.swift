@@ -28,7 +28,9 @@ final class FileBookmarkController: ViewWindowControllable {
     }
     
     func makeView() -> FileBookmarkCreateView {
-        return FileBookmarkCreateView()
+        return FileBookmarkCreateView(
+            viewModel: viewModelContainer.fileBookmarkCreateViewModel
+        )
     }
     
     func show() {

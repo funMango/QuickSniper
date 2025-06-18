@@ -61,23 +61,18 @@ struct FileBookmarkListView: View {
 }
 
 #Preview {
-    let items: [FileBookmarkItem] = [
-        FileBookmarkItem(name: "test-1", type: .file),
-        FileBookmarkItem(name: "test-2", type: .folder),
-        FileBookmarkItem(name: "test-3", type: .file),
-        FileBookmarkItem(name: "test-1", type: .file),
-        FileBookmarkItem(name: "test-2", type: .folder),
-        FileBookmarkItem(name: "test-3", type: .file)
-    ]
-    let controllSubject = PassthroughSubject<ControllerMessage, Never>()
-    let vmPassSubject = PassthroughSubject<VmPassMessage, Never>()
+//    let items: [FileBookmarkItem] = [
+//        FileBookmarkItem(name: "test-1", type: .file),
+//        FileBookmarkItem(name: "test-2", type: .folder),
+//        FileBookmarkItem(name: "test-3", type: .file),
+//        FileBookmarkItem(name: "test-1", type: .file),
+//        FileBookmarkItem(name: "test-2", type: .folder),
+//        FileBookmarkItem(name: "test-3", type: .file)
+//    ]
+    @Injected var viewModelcontainer: ViewModelContainer
     
     FileBookmarkListView(
-        viewModel: FileBookmarkListViewModel(
-            items: items,
-            controllSubject: controllSubject,
-            vmPassSubject: vmPassSubject
-        )
+        viewModel: viewModelcontainer.fileBookmarkListViewModel
     )
     .frame(width: 500, height: 400)
     .padding()

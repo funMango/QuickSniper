@@ -13,4 +13,8 @@ protocol ControllSubjectBindable: AnyObject {
     var cancellables: Set<AnyCancellable> { get set }
 }
 
-
+extension ControllSubjectBindable {
+    func controllMessageBindings(action: @escaping (ControllerMessage) -> Void) {
+        controllSubject.sink(receiveValue: action).store(in: &cancellables)
+    }
+}

@@ -10,6 +10,11 @@ import Resolver
 
 struct FileBookmarkCreateView: View {
     @Injected var viewModelContainer: ViewModelContainer
+    @StateObject var viewModel: FileBookmarkCreateViewModel
+    
+    init(viewModel: FileBookmarkCreateViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
     
     var body: some View {
         VStack {
@@ -22,11 +27,12 @@ struct FileBookmarkCreateView: View {
             HStack {
                 Spacer()
                 ReturnButton(type: .cancel) {
-                    
+                    viewModel.closeView()
                 }
-                ReturnButton(type: .save, action: {})
-            }
-                        
+                ReturnButton(type: .save) {
+                    viewModel.save()
+                }
+            }                        
         }
         .padding()
         .background(VisualEffectView.panelWithOverlay)
@@ -34,6 +40,10 @@ struct FileBookmarkCreateView: View {
 }
 
 #Preview {
-    FileBookmarkCreateView()
-        .frame(width: 500, height: 300)
+    @Injected var viewModelContainer: ViewModelContainer
+    
+    FileBookmarkCreateView(
+        viewModel: viewModelContainer.fileBookmarkCreateViewModel
+    )
+    .frame(width: 500, height: 300)
 }

@@ -10,4 +10,5 @@ import Foundation
 enum VmPassMessage {
     case deleteCheckedBookmarkItem
     case sendCheckedBookmarkItem(FileBookmarkItem)
+    case saveBookmarkItems
 }
