@@ -80,6 +80,7 @@ extension FileBookmarkCardViewModel {
             }
 
             defer { url.stopAccessingSecurityScopedResource() }
+                                    
             NSWorkspace.shared.open(url)
             
             DispatchQueue.main.async { [weak self] in
@@ -88,6 +89,7 @@ extension FileBookmarkCardViewModel {
             
         } catch {
             print("[ERROR]: FileBookmarkCardViewModel-openFile: \(error)")
+            showMissingBookmarkAlert()            
         }
     }
     
