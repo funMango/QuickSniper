@@ -158,7 +158,8 @@ final class ViewModelContainer {
     lazy var fileBookmarkListViewModel = FileBookmarkListViewModel(
         usecase: fileBookmarkUseCase,
         controllSubject: controllerSubject,
-        vmPassSubject: vmPassSubject
+        vmPassSubject: vmPassSubject,
+        selectedFolderSubject: selectedFolderSubject
     )
     
     lazy var fileBookmarkCreateViewModel = FileBookmarkCreateViewModel(

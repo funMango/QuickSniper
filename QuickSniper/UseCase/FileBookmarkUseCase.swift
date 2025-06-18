@@ -25,7 +25,7 @@ final class DefaultFileBookmarkUseCase: FileBookmarkUseCase {
     
     func save(_ item: FileBookmarkItem) throws {
         do {
-            let order = try repository.fetchAll().count + 1
+            let order = try repository.fetchAll().filter{ $0.folderId == item.folderId }.count + 1
             item.setOrder(order)
             try repository.save(item)
         } catch {

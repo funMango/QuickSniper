@@ -18,6 +18,7 @@ enum FileBookmarkType: String, Codable{
 @Model
 class FileBookmarkItem: Identifiable, Codable, CoreModel {
     var id: String
+    var folderId: String
     var name: String
     var type: FileBookmarkType
     var bookmarkData: Data?
@@ -26,6 +27,7 @@ class FileBookmarkItem: Identifiable, Codable, CoreModel {
     
     init(
         id: String = UUID().uuidString,
+        folderId: String,
         name: String,
         type: FileBookmarkType,
         bookmarkData: Data? = nil,
@@ -33,6 +35,7 @@ class FileBookmarkItem: Identifiable, Codable, CoreModel {
         order: Int? = nil
     ) {
         self.id = id
+        self.folderId = folderId
         self.name = name
         self.type = type
         self.bookmarkData = bookmarkData
@@ -47,13 +50,14 @@ class FileBookmarkItem: Identifiable, Codable, CoreModel {
     
     // MARK: - Codable Implementation
     enum CodingKeys: String, CodingKey {
-        case id, name, type, bookmarkData, iconData, order
+        case id, folderId, name, type, bookmarkData, iconData, order
     }
     
     required init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         id = try container.decode(String.self, forKey: .id)
+        folderId = try container.decode(String.self, forKey: .folderId)
         name = try container.decode(String.self, forKey: .name)
         type = try container.decode(FileBookmarkType.self, forKey: .type)
         bookmarkData = try container.decodeIfPresent(Data.self, forKey: .bookmarkData)

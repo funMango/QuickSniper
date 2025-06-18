@@ -68,7 +68,7 @@ struct QuickSniperApp: App {
     )? {
         do {
             /// SwiftData
-            let container = try ModelContainer(for: Folder.self, Snippet.self, User.self)
+            let container = try ModelContainer(for: Folder.self, Snippet.self, User.self, FileBookmarkItem.self)
             let context = container.mainContext
             
             /// Core Subject

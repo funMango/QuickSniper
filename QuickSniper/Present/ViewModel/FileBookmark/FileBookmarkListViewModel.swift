@@ -9,25 +9,32 @@ import Foundation
 import AppKit
 import Combine
 
-final class FileBookmarkListViewModel: ObservableObject, ControllSubjectBindable, VmPassSubjectBindable {
+final class FileBookmarkListViewModel: ObservableObject, ControllSubjectBindable, VmPassSubjectBindable, FolderSubjectBindable {
+    
     var usecase: FileBookmarkUseCase
     var controllSubject: PassthroughSubject<ControllerMessage, Never>
     var vmPassSubject: PassthroughSubject<VmPassMessage, Never>
+    var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     var cancellables: Set<AnyCancellable> = []
     
+    @Published var selectedFolder: Folder?
     @Published var items: [FileBookmarkItem]
     
     init(
         items: [FileBookmarkItem] = [],
         usecase: FileBookmarkUseCase,
         controllSubject: PassthroughSubject<ControllerMessage, Never>,
-        vmPassSubject: PassthroughSubject<VmPassMessage, Never>
+        vmPassSubject: PassthroughSubject<VmPassMessage, Never>,
+        selectedFolderSubject:CurrentValueSubject<Folder?, Never>
     ) {
         self.items = items
         self.usecase = usecase
         self.controllSubject = controllSubject
         self.vmPassSubject = vmPassSubject
+        self.selectedFolderSubject = selectedFolderSubject
+        
         vmPassMessageBinding()
+        setupSelectedFolderBindings()
     }
     
     func deleteCheckedItem() {
@@ -67,6 +74,7 @@ extension FileBookmarkListViewModel {
 extension FileBookmarkListViewModel {
     func addFileOrFolder() {
         guard let urls = selectFileOrFolder() else { return }
+        guard let folderId = selectedFolder?.id else { return }
                 
         for url in urls {
             /// Security-Scoped Bookmark 생성(macOS 정책)
@@ -80,6 +88,7 @@ extension FileBookmarkListViewModel {
             let fileIcon = workspace.icon(forFile: url.path)
             
             let newItem = FileBookmarkItem(
+                folderId: folderId,
                 name: url.lastPathComponent,
                 type: itemType,
                 bookmarkData: bookmarkData,

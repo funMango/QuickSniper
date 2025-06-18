@@ -36,6 +36,7 @@ struct FileBookmarkRowView: View {
 #Preview {
     @Injected var viewModelContainer: ViewModelContainer
     let mockedItem = FileBookmarkItem(
+        folderId: "A358B#6",
         name: "bookmark",
         type: .file
     )
