@@ -19,6 +19,7 @@ final class ViewModelContainer {
     private let snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
     private let serviceSubject: CurrentValueSubject<ServiceMessage?, Never>
     private let hotCornerSubject: CurrentValueSubject<HotCornerMessage?, Never>
+    private let fileBookmarkSubject: CurrentValueSubject<FileBookmarkMessage?, Never>
     
     private var snippetCardViewModelCache: [String: SnippetCardViewModel] = [:]
     
@@ -41,17 +42,19 @@ final class ViewModelContainer {
         selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
         snippetSubject: CurrentValueSubject<SnippetMessage?, Never>,
         serviceSubject: CurrentValueSubject<ServiceMessage?, Never>,
-        hotCornerSubject: CurrentValueSubject<HotCornerMessage?, Never>
+        hotCornerSubject: CurrentValueSubject<HotCornerMessage?, Never>,
+        fileBookmarkSubject: CurrentValueSubject<FileBookmarkMessage?, Never>
     ){
         self.modelContext = modelContext
         self.controllerSubject = controllerSubject
-        self.vmPassSubject = vmPassSubject
+        self.vmPassSubject = vmPassSubject        
         self.folderSubject = folderSubject
         self.folderEditSubject = folderEditSubject
         self.selectedFolderSubject = selectedFolderSubject
         self.snippetSubject = snippetSubject
         self.serviceSubject = serviceSubject
         self.hotCornerSubject = hotCornerSubject
+        self.fileBookmarkSubject = fileBookmarkSubject
     }
     
     //MARK: - Snippet
@@ -171,6 +174,11 @@ final class ViewModelContainer {
         selectedFolderSubject: selectedFolderSubject
     )
     
+    lazy var fileBookmarkDeleteButtonViewModel = FileBookmarkDeleteButtonViewModel(
+        usecase: fileBookmarkUseCase,
+        fileBookmarkSubject: fileBookmarkSubject
+    )
+    
     func getFileBookmarkRowViewModel(item: FileBookmarkItem) -> FileBookmarkRowViewModel{
         FileBookmarkRowViewModel(
             item: item,
@@ -181,7 +189,8 @@ final class ViewModelContainer {
     func getFileBookmarkCardViewModel(item: FileBookmarkItem) -> FileBookmarkCardViewModel{
         FileBookmarkCardViewModel(
             item: item,
-            controllSubject: controllerSubject
+            controllSubject: controllerSubject,
+            fileBookmarkSubject: fileBookmarkSubject
         )
     }
             

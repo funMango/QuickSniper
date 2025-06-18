@@ -17,6 +17,18 @@ struct FileBookmarkCardView: View {
     
     var body: some View {
         card
+            .onDoubleClick {
+                viewModel.sendSelectedFileBookmarkItemMesssage()
+            }
+            .onClick {
+                viewModel.sendSelectedFileBookmarkItemMesssage()
+            }
+            .onRightClick {
+                viewModel.sendSelectedFileBookmarkItemMesssage()
+            }
+            .contextMenu{
+                FileBookmarkOptionMenuView()
+            }
     }
     
     private var card: some View {
@@ -47,6 +59,10 @@ struct FileBookmarkCardView: View {
                 }
             }
         }
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(viewModel.isSelected ? Color.accentColor : Color.clear, lineWidth: 2)
+        )
     }
 }
 

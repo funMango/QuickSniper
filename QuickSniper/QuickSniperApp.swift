@@ -82,17 +82,19 @@ struct QuickSniperApp: App {
             let snippetSubject = CurrentValueSubject<SnippetMessage?, Never>(nil)
             let serviceSubject = CurrentValueSubject<ServiceMessage?, Never>(nil)
             let hotCornerSubject = CurrentValueSubject<HotCornerMessage?, Never>(nil)
+            let fileBookmarkSubject = CurrentValueSubject<FileBookmarkMessage?, Never>(nil)
                         
             let viewModelContainer = ViewModelContainer(
                 modelContext: context,
                 controllerSubject: controllerSubject,
-                vmPassSubject: vmPassSubject,
+                vmPassSubject: vmPassSubject,                
                 folderSubject: folderSubject,
                 folderEditSubject: folderEditSubject,
                 selectedFolderSubject: selectedFolderSubject,                
                 snippetSubject: snippetSubject,
                 serviceSubject: serviceSubject,
-                hotCornerSubject: hotCornerSubject
+                hotCornerSubject: hotCornerSubject,
+                fileBookmarkSubject: fileBookmarkSubject
             )
             
             let controllerConntainer = ControllerContainer(

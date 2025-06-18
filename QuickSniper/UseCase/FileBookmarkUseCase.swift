@@ -62,7 +62,7 @@ final class DefaultFileBookmarkUseCase: FileBookmarkUseCase {
     }
     
     func delete(_ item: FileBookmarkItem) throws {
-        
+        try repository.delete(item)
     }
     
     func deleteAll() throws {

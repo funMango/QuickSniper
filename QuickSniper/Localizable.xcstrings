@@ -126,6 +126,23 @@
         }
       }
     },
+    "deleteBookmark" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Bookmark"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "북마크 삭제"
+          }
+        }
+      }
+    },
     "deleteFolder" : {
       "extractionState" : "manual",
       "localizations" : {
