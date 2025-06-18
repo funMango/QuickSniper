@@ -38,6 +38,7 @@ final class DefaultFileBookmarkRepository: FileBookmarkRepository {
             )
         }
         
+        existing.folderId = item.folderId
         existing.name = item.name
         existing.type = item.type
         existing.bookmarkData = item.bookmarkData

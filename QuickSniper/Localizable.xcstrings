@@ -92,6 +92,23 @@
         }
       }
     },
+    "confirm" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Confirm"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "확인"
+          }
+        }
+      }
+    },
     "copy" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -122,6 +139,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "스니펫 복사"
+          }
+        }
+      }
+    },
+    "delete" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "삭제"
           }
         }
       }
@@ -205,6 +239,40 @@
         }
       }
     },
+    "fileAccessAlert" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The file or folder could not be accessed."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "파일 또는 폴더에 접근할 수 없습니다."
+          }
+        }
+      }
+    },
+    "fileAccessAlertContent" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This item contains an invalid bookmark. Would you like to delete it?"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 항목은 더 이상 유효하지 않은 북마크를 가지고 있습니다. 삭제하시겠습니까?"
+          }
+        }
+      }
+    },
     "fileBookmark" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -218,6 +286,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "파일 즐겨찾기"
+          }
+        }
+      }
+    },
+    "fileChangedAlert" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "File chagned"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "파일이 변경되었습니다"
+          }
+        }
+      }
+    },
+    "fileChangedAlertContent" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The file or folder for this item has been moved or the access data is outdated. Would you like to update the bookmark?"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 항목의 파일이나 폴더가 이동되었거나 권한 정보가 만료되었습니다. 북마크를 갱신하시겠습니까?"
           }
         }
       }
@@ -476,6 +578,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "오른쪽 상단"
+          }
+        }
+      }
+    },
+    "update" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Update"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "업데이트"
           }
         }
       }

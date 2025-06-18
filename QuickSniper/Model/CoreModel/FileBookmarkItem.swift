@@ -48,6 +48,18 @@ class FileBookmarkItem: Identifiable, Codable, CoreModel {
         self.order = order
     }
     
+    func update(
+        name: String,
+        type: FileBookmarkType,
+        bookmarkData: Data,
+        image: NSImage
+    ) {
+        self.name = name
+        self.type = type
+        self.bookmarkData = bookmarkData
+        setIcon(image)
+    }
+    
     // MARK: - Codable Implementation
     enum CodingKeys: String, CodingKey {
         case id, folderId, name, type, bookmarkData, iconData, order

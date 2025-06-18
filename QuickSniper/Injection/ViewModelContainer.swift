@@ -189,6 +189,7 @@ final class ViewModelContainer {
     func getFileBookmarkCardViewModel(item: FileBookmarkItem) -> FileBookmarkCardViewModel{
         FileBookmarkCardViewModel(
             item: item,
+            usecase: fileBookmarkUseCase,
             controllSubject: controllerSubject,
             fileBookmarkSubject: fileBookmarkSubject
         )

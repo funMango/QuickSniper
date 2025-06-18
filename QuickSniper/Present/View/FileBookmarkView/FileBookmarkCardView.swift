@@ -9,6 +9,7 @@ import SwiftUI
 import Resolver
 
 struct FileBookmarkCardView: View {
+    @Environment(\.openURL) private var openURL
     @StateObject var viewModel: FileBookmarkCardViewModel
     
     init(viewModel: FileBookmarkCardViewModel) {
@@ -19,6 +20,7 @@ struct FileBookmarkCardView: View {
         card
             .onDoubleClick {
                 viewModel.sendSelectedFileBookmarkItemMesssage()
+                viewModel.openFile()
             }
             .onClick {
                 viewModel.sendSelectedFileBookmarkItemMesssage()
