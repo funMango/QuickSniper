@@ -40,7 +40,7 @@ struct SnippetCardView: View {
     }
     
     private var card: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        ItemCardView {
             Text(viewModel.snippet.title)
                 .font(.title3)
                 .foregroundStyle(.mainText)
@@ -48,14 +48,10 @@ struct SnippetCardView: View {
             Text(viewModel.snippet.body)
                 .foregroundColor(.subText)
         }
-        .padding()
-        .frame(width: 200, height: 150, alignment: .topLeading)
-        .background(VisualEffectView.panelWithOverlay)
-        .cornerRadius(10)
         .overlay(
             RoundedRectangle(cornerRadius: 10)
                 .stroke(viewModel.isSelected ? Color.accentColor : Color.clear, lineWidth: 2)
-        )
+        )        
     }
 }
     

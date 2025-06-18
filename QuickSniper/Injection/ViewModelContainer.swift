@@ -177,6 +177,13 @@ final class ViewModelContainer {
             vmPassSubject: vmPassSubject
         )
     }
+    
+    func getFileBookmarkCardViewModel(item: FileBookmarkItem) -> FileBookmarkCardViewModel{
+        FileBookmarkCardViewModel(
+            item: item,
+            controllSubject: controllerSubject
+        )
+    }
             
     //MARK: - else
     lazy var appMenuBarViewModel = AppMenuBarViewModel(

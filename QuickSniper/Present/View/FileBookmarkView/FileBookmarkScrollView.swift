@@ -20,8 +20,10 @@ struct FileBookmarkScrollView: View {
     
     var body: some View {
         Group {
-            ForEach(viewModel.items, id: \.id) { items in
-                Text(items.name)
+            ForEach(viewModel.items, id: \.id) { item in
+                FileBookmarkCardView(
+                    viewModel: viewModelContainer.getFileBookmarkCardViewModel(item: item)
+                )
             }
             
             VStack {
@@ -39,7 +41,7 @@ struct FileBookmarkScrollView: View {
         .hStackContainer(itemCount: viewModel.items.count)
         .syncQuery(
             viewModel: self.viewModel, items: fileBookmarkItems
-        )        
+        )
     }
 }
 
