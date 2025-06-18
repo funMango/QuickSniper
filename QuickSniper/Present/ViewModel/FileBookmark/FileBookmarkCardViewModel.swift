@@ -89,7 +89,7 @@ extension FileBookmarkCardViewModel {
             
         } catch {
             print("[ERROR]: FileBookmarkCardViewModel-openFile: \(error)")
-            showMissingBookmarkAlert()            
+            showMissingBookmarkAlert()
         }
     }
     
@@ -142,12 +142,13 @@ extension FileBookmarkCardViewModel {
         ) {
             do {
                 try usecase.delete(self.item)
-                DispatchQueue.main.async { [weak self] in
-                    self?.controllSubject.send(.openPanel)
-                }
             } catch {
                 print("[ERROR]: FileBookmarkCardViewModel-showMissingBookmarkAlert: \(error)")
             }
+        }
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.controllSubject.send(.openPanel)
         }
     }
     
@@ -159,12 +160,13 @@ extension FileBookmarkCardViewModel {
         ) {
             do {
                 try updateFile(from: url)
-                DispatchQueue.main.async { [weak self] in
-                    self?.controllSubject.send(.openPanel)
-                }
             } catch {
                 print("[ERROR]: FileBookmarkCardViewModel-showUpdateBookmarkAlert: \(error)")
             }
         }
-    }            
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.controllSubject.send(.openPanel)
+        }
+    }
 }
