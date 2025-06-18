@@ -41,7 +41,7 @@ struct FolderScrollView: View, DraggableView {
         .fixedSize()
         .frame(height: 40)
         .background(Color.clear)
-        .syncQuey(
+        .syncQuery(
             viewModel: viewModel,
             items: folders
         )

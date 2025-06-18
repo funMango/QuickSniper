@@ -7,12 +7,23 @@
 
 import SwiftUI
 import Resolver
+import SwiftData
 
 struct FileBookmarkScrollView: View {
     @Injected var viewModelContainer: ViewModelContainer
+    @StateObject var viewModel: FileBookmarkScrollViewModel
+    @Query var fileBookmarkItems: [FileBookmarkItem]
+    
+    init(viewModel: FileBookmarkScrollViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
+    }
     
     var body: some View {
         Group {
+            ForEach(viewModel.items, id: \.id) { items in
+                Text(items.name)
+            }
+            
             VStack {
                 Spacer()
                 ItemPlusButtonView(
@@ -23,8 +34,12 @@ struct FileBookmarkScrollView: View {
                 Spacer()
             }
             .padding(.leading, 10)
+            
         }
-        
+        .hStackContainer(itemCount: viewModel.items.count)
+        .syncQuery(
+            viewModel: self.viewModel, items: fileBookmarkItems
+        )        
     }
 }
 

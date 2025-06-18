@@ -20,9 +20,13 @@ struct ItemScrollView: View {
         ScrollView(.horizontal, showsIndicators: false) {
             switch viewModel.selectedFolder?.type {
             case .snippet:
-                SnippetScrollView(viewModel: viewModelContainer.snippetScrollViewModel)
+                SnippetScrollView(
+                    viewModel: viewModelContainer.snippetScrollViewModel
+                )
             case .fileBookmark:
-                FileBookmarkScrollView()
+                FileBookmarkScrollView(
+                    viewModel: viewModelContainer.fileBookmarkScrollViewModel
+                )
            
             case .none:
                 Text("")

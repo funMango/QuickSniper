@@ -11,8 +11,7 @@ import SwiftData
 import AppKit
 import UniformTypeIdentifiers
 
-struct SnippetScrollView: View, DraggableView {
-    @Injected var container: ControllerContainer
+struct SnippetScrollView: View, DraggableView {    
     @Injected var viewModelContainer: ViewModelContainer
     @StateObject var viewModel: SnippetScrollViewModel
     @State var draggingItem: String?
@@ -52,7 +51,7 @@ struct SnippetScrollView: View, DraggableView {
             .padding(.leading, 10)
         }
         .hStackContainer(itemCount: viewModel.items.count) // HStack + 스타일링 한번에!
-        .syncQuey(
+        .syncQuery(
             viewModel: self.viewModel,
             items: snippets
         )

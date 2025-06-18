@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 extension View {
-    func syncQuey<VM: QuerySyncableObject>(
+    func syncQuery<VM: QuerySyncableObject>(
         viewModel: VM,
         items: [VM.Item]
     ) -> some View {

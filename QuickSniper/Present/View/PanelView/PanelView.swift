@@ -50,7 +50,7 @@ struct PanelView: View {
             )
             .cornerRadius(10)
             .clipped()
-            .syncQuey(viewModel: viewModel, items: users)                                                
+            .syncQuery(viewModel: viewModel, items: users)                                                
         }
     }
 }

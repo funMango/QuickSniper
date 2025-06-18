@@ -30,7 +30,7 @@ struct SnippetMoveButtonView: View {
         } label: {
             OptionButtonStyle(systemName: "arrowshape.turn.up.forward", title: "moveFolder")
         }
-        .syncQuey(
+        .syncQuery(
             viewModel: viewModel,
             items: folders
         )

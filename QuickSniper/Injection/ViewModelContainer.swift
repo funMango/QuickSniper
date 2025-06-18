@@ -167,6 +167,10 @@ final class ViewModelContainer {
         vmPassSubject: vmPassSubject
     )
     
+    lazy var fileBookmarkScrollViewModel = FileBookmarkScrollViewModel(
+        selectedFolderSubject: selectedFolderSubject
+    )
+    
     func getFileBookmarkRowViewModel(item: FileBookmarkItem) -> FileBookmarkRowViewModel{
         FileBookmarkRowViewModel(
             item: item,
