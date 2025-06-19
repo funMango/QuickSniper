@@ -12,16 +12,19 @@ final class FolderCreateViewModel: ObservableObject {
     @Published var folderName: String    
     @Published var selectedFolderType: FolderType = .snippet
     private var useCase: FolderUseCase
-    private var subject: PassthroughSubject<ControllerMessage, Never>
+    private var controllSubject: PassthroughSubject<ControllerMessage, Never>
+    private var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     
     init(
         folderName: String = "",
         useCase: FolderUseCase,
-        subject:PassthroughSubject<ControllerMessage, Never>
+        controllSubject:PassthroughSubject<ControllerMessage, Never>,
+        selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     ) {
         self.folderName = folderName
         self.useCase = useCase
-        self.subject = subject
+        self.controllSubject = controllSubject
+        self.selectedFolderSubject = selectedFolderSubject
     }
         
     func selectFolderType(_ type: FolderType) {
@@ -30,16 +33,25 @@ final class FolderCreateViewModel: ObservableObject {
     
     func createFolder() {
         do {
-            try useCase.createFolder(name: folderName, type: selectedFolderType)
+            let newFolder = Folder(
+                name: folderName,
+                type: selectedFolderType,
+                order: 0
+            )
+            try useCase.createFolder(newFolder)
             reset()
             hide()
+            
+            DispatchQueue.main.async { [weak self] in
+                self?.selectedFolderSubject.send(newFolder)
+            }
         } catch {
             print("[Error]: \(error)")
         }
     }
     
     func hide() {
-        subject.send(.escapePressed)
+        controllSubject.send(.escapePressed)
     }
     
     private func reset() {

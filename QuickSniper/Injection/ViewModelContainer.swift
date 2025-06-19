@@ -117,7 +117,8 @@ final class ViewModelContainer {
     //MARK: - Folder
     lazy var createFolderViewModel = FolderCreateViewModel(
         useCase: folderUseCase,
-        subject: controllerSubject
+        controllSubject: controllerSubject,
+        selectedFolderSubject: selectedFolderSubject
     )
     
     lazy var folderButtonViewModel = FolderButtonViewModel(

@@ -8,7 +8,7 @@
 import Foundation
 
 protocol FolderUseCase {
-    func createFolder(name: String, type: FolderType) throws
+    func createFolder(_ folder: Folder) throws
     func updateFolder(_ folder: Folder) throws
     func updateAllFolders(_ folders: [Folder]) throws
     func deleteFolder(_ folder: Folder) throws
@@ -22,10 +22,10 @@ final class DefaultFolderUseCase: FolderUseCase {
         self.repository = repository
     }
 
-    func createFolder(name: String, type: FolderType) throws {
+    func createFolder(_ folder: Folder) throws {
         do {
-            let order = try repository.fetchAll().count
-            let folder = getFolder(name: name, type: type, order: order)
+            let order = try repository.fetchAll().count + 1
+            folder.updateOrder(order)
             try repository.save(folder)
         } catch {
             print("[Error]: Failed to get Folder order")

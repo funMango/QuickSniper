@@ -52,7 +52,8 @@ struct FolderCreateView: View {
                 HStack {
                     ReturnButton(type: .cancel, action: viewModel.hide)
                     
-                    ReturnButton(type: .save, action: viewModel.createFolder)                                        
+                    ReturnButton(type: .save, action: viewModel.createFolder)
+                        .disabled(viewModel.folderName.isEmpty)
                 }
             }
         }

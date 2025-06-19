@@ -55,7 +55,7 @@ final class FileBookmarkMoveButtonViewModel: ObservableObject, QuerySyncableObje
             }
         } catch {
             print("[ERROR]: FileBookmarkMoveButtonViewModel-moveToFolder: \(error)")
-        }        
+        }
     }
     
     private func setupSelectedFileBookmarkItem() {
