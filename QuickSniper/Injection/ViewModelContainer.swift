@@ -171,7 +171,9 @@ final class ViewModelContainer {
     )
     
     lazy var fileBookmarkScrollViewModel = FileBookmarkScrollViewModel(
-        selectedFolderSubject: selectedFolderSubject
+        usecase: fileBookmarkUseCase,
+        selectedFolderSubject: selectedFolderSubject,
+        fileBookmarkSubject: fileBookmarkSubject
     )
     
     lazy var fileBookmarkDeleteButtonViewModel = FileBookmarkDeleteButtonViewModel(

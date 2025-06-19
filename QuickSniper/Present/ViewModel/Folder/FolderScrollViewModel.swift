@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-final class FolderScrollViewModel: FolderBindableViewModel, DragabbleObject, QuerySyncableObject {
+final class FolderScrollViewModel: FolderBindableViewModel, DragabbleObject, QuerySyncableObject {        
     typealias Item = Folder
     @Published var items: [Folder] = []
     @Published var allItems: [Folder] = []
@@ -30,16 +30,21 @@ final class FolderScrollViewModel: FolderBindableViewModel, DragabbleObject, Que
         }
     }
     
+    func selectItem(_ itemId: String) {
+        let item = items.filter{ $0.id == itemId }.first
+        if let item = item {
+            selectedFolderSubject.send(item)
+        }
+    }
+    
     func updateItems() {
-        for (i, s) in items.enumerated() {
-            s.order = i
-        }
-        
-        do {
-            try self.useCase.updateAllFolders(items)
-        } catch {
-            print("[ERROR]: FolderScrollViewModel-updateItems \(error)")
-        }
+        saveChangedItems(as: Folder.self) { changedItems in
+            do {
+                try self.useCase.updateAllFolders(changedItems)
+            } catch {
+                print("[ERROR]: FolderScrollViewModel-updateItems \(error)")
+            }
+        }                                                       
     }
     
     private func setSelectedFolder() {

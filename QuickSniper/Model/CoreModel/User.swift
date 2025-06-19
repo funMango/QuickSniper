@@ -13,6 +13,7 @@ import CoreTransferable
 class User: Equatable, Codable, Identifiable, CoreModel {
     var id: String
     var hotCornerPosition: HotCornerPosition
+    var order = 0
     
     init (
         id: String = UUID().uuidString,
@@ -24,6 +25,10 @@ class User: Equatable, Codable, Identifiable, CoreModel {
     
     func updateHotCornerPosition(_ position: HotCornerPosition) {
         self.hotCornerPosition = position
+    }
+    
+    func updateOrder(_ newOrder: Int) {
+        
     }
     
     // MARK: - Codable Implementation

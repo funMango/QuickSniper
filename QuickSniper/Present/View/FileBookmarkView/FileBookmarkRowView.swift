@@ -38,7 +38,8 @@ struct FileBookmarkRowView: View {
     let mockedItem = FileBookmarkItem(
         folderId: "A358B#6",
         name: "bookmark",
-        type: .file
+        type: .file,
+        order: 1
     )
         
     FileBookmarkRowView(

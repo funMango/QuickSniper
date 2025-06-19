@@ -9,9 +9,10 @@ import SwiftUI
 import Resolver
 import SwiftData
 
-struct FileBookmarkScrollView: View {
+struct FileBookmarkScrollView: View, DraggableView {
     @Injected var viewModelContainer: ViewModelContainer
     @StateObject var viewModel: FileBookmarkScrollViewModel
+    @State var draggingItem: String?
     @Query var fileBookmarkItems: [FileBookmarkItem]
     
     init(viewModel: FileBookmarkScrollViewModel) {
@@ -23,6 +24,15 @@ struct FileBookmarkScrollView: View {
             ForEach(viewModel.items, id: \.id) { item in
                 FileBookmarkCardView(
                     viewModel: viewModelContainer.getFileBookmarkCardViewModel(item: item)
+                )                
+                .transition(.asymmetric(
+                    insertion: .scale.combined(with: .opacity),
+                    removal: .scale.combined(with: .opacity)
+                ))
+                .dragDrop(
+                    viewModel: viewModel,
+                    draggingItemId: $draggingItem,
+                    itemId: item.id
                 )
             }
             
@@ -42,6 +52,12 @@ struct FileBookmarkScrollView: View {
         .syncQuery(
             viewModel: self.viewModel, items: fileBookmarkItems
         )
+    }
+}
+
+extension FileBookmarkScrollView {
+    func getDraggingBinding() -> Binding<String?> {
+        return $draggingItem
     }
 }
 

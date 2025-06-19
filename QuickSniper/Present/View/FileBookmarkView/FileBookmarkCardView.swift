@@ -27,7 +27,7 @@ struct FileBookmarkCardView: View {
             }
             .onRightClick {
                 viewModel.sendSelectedFileBookmarkItemMesssage()
-            }
+            }            
             .contextMenu{
                 FileBookmarkOptionMenuView()
             }
@@ -85,7 +85,8 @@ extension FileBookmarkItem {
     let item = FileBookmarkItem(
         folderId: "AB$C12DO*#",
         name: "Test Item",
-        type: .folder
+        type: .folder,
+        order: 1
     )
     
     FileBookmarkCardView(viewModel: viewModelContainer.getFileBookmarkCardViewModel(item: item))

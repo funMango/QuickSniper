@@ -32,6 +32,10 @@ class Folder: Equatable, Codable, Identifiable, CoreModel {
         self.name = name
     }
     
+    func updateOrder(_ newOrder: Int) {
+        self.order = newOrder
+    }
+    
     // MARK: - Codable Implementation
     enum CodingKeys: String, CodingKey {
         case id

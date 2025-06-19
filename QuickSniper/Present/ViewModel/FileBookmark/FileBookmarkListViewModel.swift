@@ -92,7 +92,8 @@ extension FileBookmarkListViewModel {
                 name: url.lastPathComponent,
                 type: itemType,
                 bookmarkData: bookmarkData,
-                image: fileIcon
+                image: fileIcon,
+                order: 0
             )
             
             items.append(newItem)

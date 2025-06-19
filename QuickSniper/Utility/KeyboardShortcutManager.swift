@@ -35,8 +35,8 @@ final class KeyboardShortcutManager {
     private lazy var shortcutConfigs: [ShortcutConfig] = [
         ShortcutConfig(
             name: .toggleQuickSniper,
-            defaultKey: .upArrow,
-            defaultModifiers: [.command],
+            defaultKey: .z,
+            defaultModifiers: [.control],
             message: .togglePanel
         ),
         ShortcutConfig(
@@ -78,6 +78,5 @@ final class KeyboardShortcutManager {
 
 extension KeyboardShortcuts.Name {
     static let toggleQuickSniper = Self("toggleQuickSniper")
-    static let escapedPressed = Self("escapedPressed")
-    static let copySnippet = Self("copySnippet")
+    static let escapedPressed = Self("escapedPressed")    
 }

@@ -9,17 +9,26 @@ import Foundation
 import SwiftData
 import Combine
 
-final class FileBookmarkScrollViewModel: ObservableObject, QuerySyncableObject, FolderSubjectBindable {
+final class FileBookmarkScrollViewModel: ObservableObject, DragabbleObject, QuerySyncableObject, FolderSubjectBindable {
     typealias Item = FileBookmarkItem
     @Published var items: [FileBookmarkItem] = []
     @Published var allItems: [FileBookmarkItem] = []
     @Published var selectedFolder: Folder?
     
+    var usecase: FileBookmarkUseCase
     var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
+    var fileBookmarkSubject: CurrentValueSubject<FileBookmarkMessage?, Never>
     var cancellables: Set<AnyCancellable> = []
     
-    init(selectedFolderSubject: CurrentValueSubject<Folder?, Never>) {
+    init(
+        usecase: FileBookmarkUseCase,
+        selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
+        fileBookmarkSubject: CurrentValueSubject<FileBookmarkMessage?, Never>
+        
+    ) {
+        self.usecase = usecase
         self.selectedFolderSubject = selectedFolderSubject
+        self.fileBookmarkSubject = fileBookmarkSubject
         
         setupSelectedFolderBindings()
         setupItemsBinding()
@@ -29,16 +38,33 @@ final class FileBookmarkScrollViewModel: ObservableObject, QuerySyncableObject, 
         self.allItems = items
     }
     
+    func updateItems() {
+        saveChangedItems(as: FileBookmarkItem.self) { changedItems in
+            do {
+                try self.usecase.updateAll(changedItems)
+            } catch {
+                print("[ERROR]: FileBookmarkScrollViewModel-updateItems: \(error)")
+            }
+        }
+    }
+    
+    func selectItem(_ itemId: String) {
+        let item = items.first(where: { $0.id == itemId })
+        if let item = item {
+            fileBookmarkSubject.send(.sendSelectedItem(item))
+        }
+    }
+    
     private func setupItemsBinding() {
         Publishers.CombineLatest($allItems, $selectedFolder)
             .map { items, folder -> [FileBookmarkItem] in
                 guard let folder = folder else { return [] }
                 return items.filter { $0.folderId == folder.id }
-                            .sorted { $0.order ?? 0 < $1.order ?? 0 }
+                    .sorted { $0.order < $1.order }
             }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newItems in
-                self?.items = newItems
+                self?.items = newItems                
             }
             .store(in: &cancellables)
     }
