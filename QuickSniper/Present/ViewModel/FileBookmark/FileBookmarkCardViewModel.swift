@@ -32,14 +32,16 @@ final class FileBookmarkCardViewModel: ObservableObject, ControllSubjectBindable
     }
     
     func sendSelectedFileBookmarkItemMesssage() {
-        fileBookmarkSubject.send(.sendSelectedItem(item))
+        fileBookmarkSubject.send(.switchSelectedBookmarkItem(item))
     }
     
     func fileBookmarkMessageBindings() {
         fileBookmarkMessageBindings { [weak self] message in
             switch message {
-            case .sendSelectedItem(let item):
+            case .switchSelectedBookmarkItem(let item):
                 self?.isSelected = item.id == self?.item.id
+            default:
+                break
             }
         }
     }

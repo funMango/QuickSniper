@@ -1,20 +1,18 @@
 //
-//  SnippetMoveButtonView.swift
+//  FileBookmarkMoveButtonView.swift
 //  QuickSniper
 //
-//  Created by 이민호 on 6/9/25.
+//  Created by 이민호 on 6/19/25.
 //
 
 import SwiftUI
-import Resolver
 import SwiftData
 
-
-struct SnippetMoveButtonView: View {
-    @StateObject var viewModel: SnippetMoveButtonViewModel
+struct FileBookmarkMoveButtonView: View {
+    @StateObject var viewModel: FileBookmarkMoveButtonViewModel
     @Query var folders: [Folder]
     
-    init(viewModel: SnippetMoveButtonViewModel) {
+    init(viewModel: FileBookmarkMoveButtonViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
@@ -31,3 +29,4 @@ struct SnippetMoveButtonView: View {
         )
     }
 }
+

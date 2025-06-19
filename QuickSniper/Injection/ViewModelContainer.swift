@@ -181,6 +181,11 @@ final class ViewModelContainer {
         fileBookmarkSubject: fileBookmarkSubject
     )
     
+    lazy var fileBookmarkMoveButtonViewModel = FileBookmarkMoveButtonViewModel(
+        usecase: fileBookmarkUseCase,
+        fileBookmarkSubject: fileBookmarkSubject
+    )
+            
     func getFileBookmarkRowViewModel(item: FileBookmarkItem) -> FileBookmarkRowViewModel{
         FileBookmarkRowViewModel(
             item: item,

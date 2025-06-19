@@ -426,6 +426,23 @@
         }
       }
     },
+    "noMoveFolder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No folders available"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이동할 폴더가 없습니다."
+          }
+        }
+      }
+    },
     "openShifty" : {
       "extractionState" : "manual",
       "localizations" : {

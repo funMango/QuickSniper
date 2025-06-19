@@ -8,5 +8,6 @@
 import Foundation
 
 enum FileBookmarkMessage {
-    case sendSelectedItem(FileBookmarkItem)
+    case switchSelectedBookmarkItem(FileBookmarkItem)
+    case refreshBookmarkItems
 }

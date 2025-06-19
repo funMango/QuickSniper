@@ -9,7 +9,7 @@ import Foundation
 import SwiftData
 import Combine
 
-final class FileBookmarkScrollViewModel: ObservableObject, DragabbleObject, QuerySyncableObject, FolderSubjectBindable {
+final class FileBookmarkScrollViewModel: ObservableObject, DragabbleObject, QuerySyncableObject, FolderSubjectBindable, FileBookmarkSubjectBindable {
     typealias Item = FileBookmarkItem
     @Published var items: [FileBookmarkItem] = []
     @Published var allItems: [FileBookmarkItem] = []
@@ -31,6 +31,7 @@ final class FileBookmarkScrollViewModel: ObservableObject, DragabbleObject, Quer
         self.fileBookmarkSubject = fileBookmarkSubject
         
         setupSelectedFolderBindings()
+        setupFileBookmarkMessageBindings()
         setupItemsBinding()
     }
         
@@ -51,15 +52,35 @@ final class FileBookmarkScrollViewModel: ObservableObject, DragabbleObject, Quer
     func selectItem(_ itemId: String) {
         let item = items.first(where: { $0.id == itemId })
         if let item = item {
-            fileBookmarkSubject.send(.sendSelectedItem(item))
+            fileBookmarkSubject.send(.switchSelectedBookmarkItem(item))
         }
+    }
+    
+    private func setupFileBookmarkMessageBindings() {
+        fileBookmarkMessageBindings { [weak self] message in
+            switch message {
+            case .refreshBookmarkItems:
+                self?.refreshItems()
+            default:
+                break
+            }
+        }
+    }
+    
+    func refreshItems() {
+        guard let selectedFolder = self.selectedFolder else { return }
+        
+        self.items = allItems
+            .filter { $0.folderId == selectedFolder.id}
+            .sorted { $0.order < $1.order }
     }
     
     private func setupItemsBinding() {
         Publishers.CombineLatest($allItems, $selectedFolder)
             .map { items, folder -> [FileBookmarkItem] in
                 guard let folder = folder else { return [] }
-                return items.filter { $0.folderId == folder.id }
+                return items
+                    .filter { $0.folderId == folder.id }
                     .sorted { $0.order < $1.order }
             }
             .receive(on: DispatchQueue.main)

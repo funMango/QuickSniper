@@ -8,20 +8,33 @@
 import Foundation
 import Combine
 
-final class SnippetMoveButtonViewModel: ObservableObject, QuerySyncableObject {
+final class SnippetMoveButtonViewModel: ObservableObject, QuerySyncableObject, FolderMovable {
     typealias Item = Folder
+    typealias MovableItem = Snippet  // FolderMovable용 타입 지정
+    
     @Published var items: [Item] = []
     @Published var allItems: [Item] = []
     @Published private var snippet: Snippet?
     
+    // FolderMovable 프로토콜 요구사항 구현
+    var allItemsPublisher: AnyPublisher<[Folder], Never> {
+        $allItems.eraseToAnyPublisher()
+    }
+    
+    var selectedItemPublisher: AnyPublisher<Snippet?, Never> {
+        $snippet.eraseToAnyPublisher()
+    }
+    
+    var cancellables: Set<AnyCancellable> = []  // private 제거
+    
     private var snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
     private var snippetUseCase: SnippetUseCase
-    private var cancellables: Set<AnyCancellable> = []
     
     init(snippetSubject: CurrentValueSubject<SnippetMessage?, Never>, snippetUseCase: SnippetUseCase) {
         self.snippetSubject = snippetSubject
         self.snippetUseCase = snippetUseCase
         setUpHoveringSnippetBindings()
+        setupFolderFiltering()
     }
     
     func getItems(_ items: [Item]) {
@@ -32,8 +45,8 @@ final class SnippetMoveButtonViewModel: ObservableObject, QuerySyncableObject {
     
     func moveToFolder(_ folder: Item) {
         guard let snippet else { return }
-        
         snippet.updateFolderId(folder.id)
+        
         do {
             try snippetUseCase.updateSnippetFolder(snippet)
             DispatchQueue.main.async { [weak self] in
@@ -53,18 +66,6 @@ final class SnippetMoveButtonViewModel: ObservableObject, QuerySyncableObject {
                 default:
                     break
                 }
-            }
-            .store(in: &cancellables)
-        
-        Publishers.CombineLatest($allItems, $snippet)
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] allFolders, snippet in
-                guard snippet != nil else { return }
-                let tagetFolder = allFolders.filter {$0.id == snippet?.folderId}.first
-                self?.items = allFolders.filter {$0.id != snippet?.folderId }
-                                       .filter {$0.type == tagetFolder?.type}
-                                       .sorted { $0.order < $1.order }
-            
             }
             .store(in: &cancellables)
     }

@@ -12,6 +12,7 @@ protocol FileBookmarkUseCase {
     func save(_ item: FileBookmarkItem) throws
     func saveItems(_ items: [FileBookmarkItem]) throws
     func update(_ item: FileBookmarkItem) throws
+    func updateFolder(_ item: FileBookmarkItem) throws
     func updateAll(_ items: [FileBookmarkItem]) throws
     func delete(_ item: FileBookmarkItem) throws
     func deleteAll() throws
@@ -60,6 +61,16 @@ final class DefaultFileBookmarkUseCase: FileBookmarkUseCase {
     
     func update(_ item: FileBookmarkItem) throws {
         try repository.update(item)
+    }
+    
+    func updateFolder(_ item: FileBookmarkItem) throws {
+        do {
+            let order = try repository.fetchAll().filter { $0.folderId == item.folderId }.count + 1
+            item.updateOrder(order)
+            try update(item)            
+        } catch {
+            print("[ERROR]: DefaultFileBookmarkUseCase-updateFolder: \(error)")
+        }
     }
     
     func updateAll(_ items: [FileBookmarkItem]) throws {

@@ -13,7 +13,7 @@ import UniformTypeIdentifiers
 
 
 @Model
-class Snippet: Codable, Identifiable, Equatable, CoreModel, Hashable{
+class Snippet: Codable, Identifiable, Equatable, CoreModel, Hashable, FolderMovableItem{
     var id: String
     var folderId: String
     var title: String

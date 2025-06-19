@@ -15,5 +15,9 @@ struct FileBookmarkOptionMenuView: View {
         FileBookmarkDeleteButtonView(
             viewModel: viewModelContainer.fileBookmarkDeleteButtonViewModel
         )
+        
+        FileBookmarkMoveButtonView(
+            viewModel: viewModelContainer.fileBookmarkMoveButtonViewModel
+        )
     }
 }

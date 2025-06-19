@@ -16,7 +16,7 @@ enum FileBookmarkType: String, Codable, Equatable, Hashable {
 }
 
 @Model
-class FileBookmarkItem: Codable, Identifiable, Equatable, CoreModel, Hashable {    
+class FileBookmarkItem: Codable, Identifiable, Equatable, CoreModel, Hashable, FolderMovableItem {    
     var id: String
     var folderId: String
     var name: String
@@ -62,6 +62,10 @@ class FileBookmarkItem: Codable, Identifiable, Equatable, CoreModel, Hashable {
     
     func updateOrder(_ order: Int) {
         self.order = order
+    }
+    
+    func updateFolderId(_ folderId: String) {
+        self.folderId = folderId
     }
     
     // MARK: - Codable Implementation

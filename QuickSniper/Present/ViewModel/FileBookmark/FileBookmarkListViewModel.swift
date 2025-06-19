@@ -75,7 +75,7 @@ extension FileBookmarkListViewModel {
         controllMessageBindings { [weak self] message in
             switch message {
             case .didHideFileBookmarkCreateView:
-                self?.items = []                
+                self?.items = []
             default:
                 return
             }

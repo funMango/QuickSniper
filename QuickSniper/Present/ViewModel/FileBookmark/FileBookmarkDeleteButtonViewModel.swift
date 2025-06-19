@@ -37,12 +37,13 @@ final class FileBookmarkDeleteButtonViewModel: ObservableObject, FileBookmarkSub
         }
     }
     
-    
     func fileBookmarkMessageBindings() {
         fileBookmarkMessageBindings { message in
             switch message {
-            case .sendSelectedItem(let item):
+            case .switchSelectedBookmarkItem(let item):
                 self.selectedItem = item
+            default:
+                break
             }
         }
     }        
