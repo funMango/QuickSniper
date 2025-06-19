@@ -36,6 +36,7 @@ final class PageManager {
         if pages.isEmpty { return }
         let page = pages.removeLast()
         controllSubject.send(page.getHideMessage())
+        notifyDidHideMessage(from: page)
         
         sendFocus()
     }
@@ -46,6 +47,7 @@ final class PageManager {
 
         if let index = pages.firstIndex(of: page) {
             pages.remove(at: index)
+            notifyDidHideMessage(from: page)
         }
         
         sendFocus()                
@@ -57,6 +59,12 @@ final class PageManager {
         }
     }
     
+    private func notifyDidHideMessage(from page: Page) {
+        if let message = page.getDidHideMessage() {
+            controllSubject.send(message)
+        }
+    }
+    
     func controllMessageBindings() {
         controllSubject
             .sink { [weak self] message in
@@ -65,7 +73,7 @@ final class PageManager {
                 switch message {
                 case .switchPage(let page):
                     savePage(page)
-                case .AutoHidePage(let page):
+                case .AutoHidePage(let page):                    
                     autoClosePage(page)
                 case .escapePressed:
                     closePage()

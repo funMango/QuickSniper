@@ -31,8 +31,7 @@ struct FileBookmarkListView: View {
                         ForEach(viewModel.items, id: \.id) { item in
                             FileBookmarkRowView(
                                 viewModel: viewModelcontainer.getFileBookmarkRowViewModel(item: item)
-                            )
-                            Divider()
+                            )                            
                         }
                     }
                 }

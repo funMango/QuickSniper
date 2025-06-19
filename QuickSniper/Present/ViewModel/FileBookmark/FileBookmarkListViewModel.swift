@@ -9,8 +9,7 @@ import Foundation
 import AppKit
 import Combine
 
-final class FileBookmarkListViewModel: ObservableObject, ControllSubjectBindable, VmPassSubjectBindable, FolderSubjectBindable {
-    
+final class FileBookmarkListViewModel: ObservableObject, ControllSubjectBindable, VmPassSubjectBindable, FolderSubjectBindable {    
     var usecase: FileBookmarkUseCase
     var controllSubject: PassthroughSubject<ControllerMessage, Never>
     var vmPassSubject: PassthroughSubject<VmPassMessage, Never>
@@ -35,6 +34,7 @@ final class FileBookmarkListViewModel: ObservableObject, ControllSubjectBindable
         
         vmPassMessageBinding()
         setupSelectedFolderBindings()
+        setupControllMessageBindings()
     }
     
     func deleteCheckedItem() {
@@ -66,6 +66,19 @@ extension FileBookmarkListViewModel {
             try usecase.saveItems(items)
         } catch {
             print("FileBookmarkListViewModel-saveBookmarkItems: \(error)")
+        }
+    }
+}
+
+extension FileBookmarkListViewModel {
+    func setupControllMessageBindings() {
+        controllMessageBindings { [weak self] message in
+            switch message {
+            case .didHideFileBookmarkCreateView:
+                self?.items = []                
+            default:
+                return
+            }
         }
     }
 }

@@ -16,19 +16,23 @@ struct FileBookmarkRowView: View {
     }
     
     var body: some View {
-        HStack {
-            PlainButton(
-                content: Image(systemName: viewModel.isSelected ? "checkmark.square" : "square"),
-                action: { viewModel.isSelected.toggle() }
-            )                        
+        VStack {
+            HStack {
+                PlainButton(
+                    content: Image(systemName: viewModel.isSelected ? "checkmark.square" : "square"),
+                    action: { viewModel.isSelected.toggle() }
+                )
+                
+                Text(viewModel.item.name)
+                
+                Spacer()
+                
+                Text(viewModel.item.type.rawValue)
+                    .foregroundStyle(.gray)
+            }
             
-            Text(viewModel.item.name)
-            
-            Spacer()
-            
-            Text(viewModel.item.type.rawValue)
-                .foregroundStyle(.gray)
-        }
+            Divider()
+        }        
         .background(.clear)
     }
 }

@@ -11,8 +11,6 @@ import SwiftUI
 
 
 final class SnippetScrollViewModel: ObservableObject, DragabbleObject, QuerySyncableObject {
-    
-    
     typealias Item = Snippet
     @Published var items: [Snippet] = []
     @Published var allItems: [Snippet] = []
@@ -57,7 +55,7 @@ final class SnippetScrollViewModel: ObservableObject, DragabbleObject, QuerySync
             } catch {
                 print("[ERROR]: SnippetScrollViewModel-updateItems \(error)")
             }
-        }                
+        }
     }
     
     private func setupSelectedFolderBindings() {
@@ -76,7 +74,6 @@ final class SnippetScrollViewModel: ObservableObject, DragabbleObject, QuerySync
             .sink { [weak self] newItems in
                 self?.items = newItems
                 self?.updateItems()
-                self?.selectFirstSnippet()
             }
             .store(in: &cancellables)
     }
@@ -100,11 +97,5 @@ final class SnippetScrollViewModel: ObservableObject, DragabbleObject, QuerySync
     private func getFilterdSnippets(snippets: [Snippet], folderId: String) -> [Snippet] {
         return snippets.filter { $0.folderId == folderId }
                        .sorted { $0.order < $1.order }
-    }
-    
-    private func selectFirstSnippet() {
-        if let selected = self.items.first {            
-            snippetSubject.send(.snippetSelected(selected))
-        }
-    }
+    }        
 }

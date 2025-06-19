@@ -51,6 +51,7 @@ enum ControllerMessage: Equatable {
     case hideFileBookmarkCreateView
     case openFileBookmarkCreateView
     case showFileBookmarkCreateView
+    case didHideFileBookmarkCreateView
     
     // MARK: - Page
     case stopPageAutohide

@@ -49,4 +49,13 @@ enum Page: Equatable {
             return .hideFileBookmarkCreateView
         }
     }
+    
+    func getDidHideMessage() -> ControllerMessage? {
+        switch self {
+        case .fileBookmark:
+            return .didHideFileBookmarkCreateView
+        default:
+            return nil
+        }
+    }
 }
