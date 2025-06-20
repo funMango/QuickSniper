@@ -150,7 +150,7 @@ final class ViewModelContainer {
         )
     }
     
-    func getRenameableButtonViewModel(folder: Folder) ->  FolderButtonContentViewModel{
+    func getFolderButtonContentViewModel(folder: Folder) ->  FolderButtonContentViewModel{
         return FolderButtonContentViewModel(
             folder: folder,
             folderUseCase: folderUseCase,

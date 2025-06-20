@@ -41,6 +41,15 @@ enum FolderType: String, CaseIterable, Identifiable, Codable {
         }
     }
     
+    func getSymbol() -> String {
+        switch self {
+        case .snippet:
+            return "text.page"
+        case .fileBookmark:
+            return "folder"
+        }
+    }
+    
     func getMyShortcuts() -> [LocalShortcut] {
         return Self.localShortcutStorage.shortcuts.filter { shortcut in
             relatedActions.contains(shortcut.action)

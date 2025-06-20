@@ -41,11 +41,10 @@ extension FolderButtonView {
     private var content: some View {
         HStack(spacing: 10) {
             FolderButtonContentView(
-                viewModel: viewModelContainer.getRenameableButtonViewModel(
+                viewModel: viewModelContainer.getFolderButtonContentViewModel(
                     folder: viewModel.folder
                 ),
-                isSelected: viewModel.isSelected,
-                title: viewModel.folder.name
+                isSelected: viewModel.isSelected                
             )
         }
         .padding(.horizontal, 8)

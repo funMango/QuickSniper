@@ -6,22 +6,19 @@
 //
 
 import SwiftUI
+import Resolver
 
 struct FolderButtonContentView: View {
     @StateObject var viewModel: FolderButtonContentViewModel
     @FocusState private var isTextFieldFocused: Bool
-    
     var isSelected: Bool
-    var title: String
     
     init(
         viewModel: FolderButtonContentViewModel,
         isSelected: Bool,
-        title: String,
     ) {
         _viewModel = StateObject(wrappedValue: viewModel)
         self.isSelected = isSelected
-        self.title = title        
     }
         
     var body: some View {
@@ -43,19 +40,30 @@ struct FolderButtonContentView: View {
                         viewModel.cancelRenaming()
                     }
             } else {
-                Text(viewModel.folder.name)
-                    .lineLimit(1)
-                    .padding(.vertical, 8)
-                    .foregroundColor(Color.subText)
-                    .contentShape(Rectangle())
-                    .onTapGesture {
-                        viewModel.selectFolder()
-                    }
+                HStack {
+                    Image(systemName: viewModel.folder.type.getSymbol())
+                    
+                    Text(viewModel.folder.name)
+                        .lineLimit(1)
+                        .padding(.vertical, 8)
+                        .foregroundColor(Color.subText)
+                        .contentShape(Rectangle())
+                        .onTapGesture {
+                            viewModel.selectFolder()
+                        }
+                }
             }
         }
     }
 }
 
-//#Preview {
-//    RenameableButton(isRenaming: .constant(false))
-//}
+#Preview {
+    @Injected var viewModelContainer: ViewModelContainer
+    let folder = Folder(name: "스니펫-1", type: .snippet, order: 0)
+    
+    FolderButtonContentView(
+        viewModel: viewModelContainer.getFolderButtonContentViewModel(folder: folder),
+        isSelected: false        
+    )
+    .frame(width: 300, height: 200)
+}
