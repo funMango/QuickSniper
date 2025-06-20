@@ -11,45 +11,47 @@ import Resolver
 struct FolderButtonView: View {
     @Injected var controllerContainer: ControllerContainer
     @Injected var viewModelContainer: ViewModelContainer
-    @ObservedObject private var viewModel: FolderButtonViewModel
+    @StateObject private var viewModel: FolderButtonViewModel
     @State private var isHovered = false
-    @State private var globalFrame: CGRect = .zero
-    @State private var isRenaming = false
-    private var folder: Folder
-    
-    private var isSelected: Bool
-    private var title: String
-    private var onTap: () -> Void
-        
-    private let minWidth: CGFloat = 100
-    private let maxWidth: CGFloat = 200
-        
-    init(
-        viewModel: FolderButtonViewModel,
-        title: String,
-        isSelected: Bool = false,
-        folder: Folder,
-        onTap: @escaping () -> Void
-    ) {
-        self.viewModel = viewModel
-        self.title = title
-        self.isSelected = isSelected
-        self.folder = folder
-        self.onTap = onTap
+                    
+    init(viewModel: FolderButtonViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     var body: some View {
+        content
+            .onHover { hovering in
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    isHovered = hovering
+                }
+            }
+            .onClick {
+                viewModel.changeSelectedFolder()
+            }
+            .onRightClick {
+                viewModel.changeSelectedFolder()
+            }
+            .contextMenu{
+                FolderOptionView()
+            }
+    }
+}
+
+extension FolderButtonView {
+    private var content: some View {
         HStack(spacing: 10) {
             FolderButtonContentView(
-                viewModel: viewModelContainer.getRenameableButtonViewModel(folder: folder),
-                isSelected: isSelected,
-                title: title
+                viewModel: viewModelContainer.getRenameableButtonViewModel(
+                    folder: viewModel.folder
+                ),
+                isSelected: viewModel.isSelected,
+                title: viewModel.folder.name
             )
         }
         .padding(.horizontal, 8)
         .background {
             Group {
-                if isSelected {
+                if viewModel.isSelected {
                     VisualEffectView.panelWithOverlay
                 } else if isHovered {
                     Color.buttonHover
@@ -59,27 +61,15 @@ struct FolderButtonView: View {
             }
         }
         .cornerRadius(10)
-        .onHover { hovering in
-            withAnimation(.easeInOut(duration: 0.2)) {
-                isHovered = hovering
-                viewModel.setFolder(hovering ? folder : nil)                
-            }
-        }
-        .contextMenu{
-            FolderOptionView()
-        }        
     }
 }
 
 #Preview {
     @Injected var viewModelContainer: ViewModelContainer
+    let folder = Folder(name: "folder", type: .fileBookmark, order: 0)
     
     FolderButtonView(
-        viewModel: viewModelContainer.folderButtonViewModel,
-        title: "Folder1",
-        isSelected: false,
-        folder: Folder(name: "", type: .snippet, order: 1),
-        onTap: {}
+        viewModel: viewModelContainer.getFolderButtonViewModel(folder: folder)
     )
     .frame(width: 200, height: 50)
 }

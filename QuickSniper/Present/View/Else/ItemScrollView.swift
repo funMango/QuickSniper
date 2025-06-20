@@ -29,7 +29,9 @@ struct ItemScrollView: View {
                 )
            
             case .none:
-                Text("")
+                Text(String(localized: "selectOrCreateFolder"))
+                    .foregroundStyle(.gray)
+                    .padding()
             }
         }
         .frame(height: 160)

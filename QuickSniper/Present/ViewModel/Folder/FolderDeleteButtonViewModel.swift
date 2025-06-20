@@ -8,34 +8,49 @@
 import Foundation
 import Combine
 
-final class FolderDeleteButtonViewModel: ObservableObject {
-    private var folderSubject: CurrentValueSubject<Folder?, Never>
-    private var folderUseCase: FolderUseCase
-    private var cancellables = Set<AnyCancellable>()
-    private var folder: Folder?
+final class FolderDeleteButtonViewModel: ObservableObject, FolderSubjectBindable {
+    var selectedFolder: Folder?
+    var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
+    var folderMessageSubject: CurrentValueSubject<FolderMessage?, Never>
+    var folderUseCase: FolderUseCase
+    var cancellables: Set<AnyCancellable> = []
     
-    init(folderSubject: CurrentValueSubject<Folder?, Never>, folderUseCase: FolderUseCase) {
-        self.folderSubject = folderSubject
+    init(
+        selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
+        folderMessageSubject: CurrentValueSubject<FolderMessage?, Never>,
+        folderUseCase: FolderUseCase,
+    ) {
+        self.selectedFolderSubject = selectedFolderSubject
+        self.folderMessageSubject = folderMessageSubject
         self.folderUseCase = folderUseCase
-        setupBindings()
+        setupSelectedFolderBindings()
     }
     
     func deleteFolder() {
-        guard let folder = folder else {            
+        guard let selectedfolder = selectedFolder else {
             return
         }
+        
         do {
-            try folderUseCase.deleteFolder(folder)
+            try self.folderUseCase.deleteFolder(selectedfolder)
         } catch {
             print("[Error] deleteFolder error:" + error.localizedDescription)
         }
-    }
-    
-    private func setupBindings() {
-        folderSubject
-            .sink { [weak self] folder in
-                self?.folder = folder
-            }
-            .store(in: &cancellables)
+                
+        DispatchQueue.main.async { [weak self] in
+            self?.folderMessageSubject.send(.deleteFolderItems(selectedfolder.id))
+        }
+    }   
+}
+
+extension FolderDeleteButtonViewModel {
+    func showDeleteFolderAlert() {
+        AlertManager.showTwoButtonAlert(
+            messageText: "deleteFolderConfirm",
+            informativeText: "deleteFolderWarning",
+            confirmButtonText: "delete",
+        ) {
+            deleteFolder()
+        }
     }
 }

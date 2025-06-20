@@ -24,11 +24,7 @@ struct FolderScrollView: View, DraggableView {
             LazyHStack(spacing: 10) {
                 ForEach(viewModel.items, id: \.id) { folder in
                     FolderButtonView(
-                        viewModel: viewModelContainer.folderButtonViewModel,
-                        title: folder.name,
-                        isSelected: viewModel.selectedFolder == folder,
-                        folder: folder,
-                        onTap: { viewModel.selectedFolder = folder }
+                        viewModel: viewModelContainer.getFolderButtonViewModel(folder: folder)
                     )
                     .dragDrop(
                         viewModel: viewModel,

@@ -16,6 +16,7 @@ final class ViewModelContainer {
     private let folderSubject: CurrentValueSubject<Folder?, Never>
     private let folderEditSubject: PassthroughSubject<Folder, Never>
     private let selectedFolderSubject: CurrentValueSubject<Folder?, Never>
+    private let folderMessageSubject: CurrentValueSubject<FolderMessage?, Never>
     private let snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
     private let serviceSubject: CurrentValueSubject<ServiceMessage?, Never>
     private let hotCornerSubject: CurrentValueSubject<HotCornerMessage?, Never>
@@ -40,6 +41,7 @@ final class ViewModelContainer {
         folderSubject: CurrentValueSubject<Folder?, Never>,
         folderEditSubject:PassthroughSubject<Folder, Never>,
         selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
+        folderMessageSubject: CurrentValueSubject<FolderMessage?, Never>,
         snippetSubject: CurrentValueSubject<SnippetMessage?, Never>,
         serviceSubject: CurrentValueSubject<ServiceMessage?, Never>,
         hotCornerSubject: CurrentValueSubject<HotCornerMessage?, Never>,
@@ -51,6 +53,7 @@ final class ViewModelContainer {
         self.folderSubject = folderSubject
         self.folderEditSubject = folderEditSubject
         self.selectedFolderSubject = selectedFolderSubject
+        self.folderMessageSubject = folderMessageSubject
         self.snippetSubject = snippetSubject
         self.serviceSubject = serviceSubject
         self.hotCornerSubject = hotCornerSubject
@@ -83,7 +86,8 @@ final class ViewModelContainer {
         snippetUseCase: snippetUseCase,
         selectedFolderSubject: selectedFolderSubject,
         controllerSubject: controllerSubject,
-        snippetSubject: snippetSubject
+        snippetSubject: snippetSubject,
+        folderMessageSubject: folderMessageSubject
     )
     
     lazy var snippetCopyButtonViewModel = SnippetCopyButtonViewModel(
@@ -119,26 +123,31 @@ final class ViewModelContainer {
         useCase: folderUseCase,
         controllSubject: controllerSubject,
         selectedFolderSubject: selectedFolderSubject
-    )
-    
-    lazy var folderButtonViewModel = FolderButtonViewModel(
-        folderSubject: folderSubject
-    )
+    )        
     
     lazy var folderDeleteButtonViewModel = FolderDeleteButtonViewModel(
-        folderSubject: folderSubject,
+        selectedFolderSubject: selectedFolderSubject,
+        folderMessageSubject: folderMessageSubject,
         folderUseCase: folderUseCase,
     )
     
     lazy var editFolderViewModel = FolderEditViewModel(
-        folderSubject: folderSubject,
+        selectedFolderSubject: selectedFolderSubject,
         folderEditSubject: folderEditSubject
     )
     
     lazy var folderViewModel = FolderScrollViewModel(
-        useCase: folderUseCase,
-        selectedFolderSubject: selectedFolderSubject
+        folderUsecase: folderUseCase,
+        selectedFolderSubject: selectedFolderSubject,
+        folderMessageSubject: folderMessageSubject
     )
+    
+    func getFolderButtonViewModel(folder: Folder) -> FolderButtonViewModel {
+        return FolderButtonViewModel(
+            folder: folder,
+            selectedFolderSubject: selectedFolderSubject
+        )
+    }
     
     func getRenameableButtonViewModel(folder: Folder) ->  FolderButtonContentViewModel{
         return FolderButtonContentViewModel(
@@ -173,8 +182,10 @@ final class ViewModelContainer {
     
     lazy var fileBookmarkScrollViewModel = FileBookmarkScrollViewModel(
         usecase: fileBookmarkUseCase,
+        controllSubject: controllerSubject,
         selectedFolderSubject: selectedFolderSubject,
-        fileBookmarkSubject: fileBookmarkSubject
+        fileBookmarkSubject: fileBookmarkSubject,
+        folderMessageSubject: folderMessageSubject
     )
     
     lazy var fileBookmarkDeleteButtonViewModel = FileBookmarkDeleteButtonViewModel(

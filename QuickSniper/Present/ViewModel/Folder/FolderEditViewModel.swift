@@ -8,35 +8,27 @@
 import Foundation
 import Combine
 
-class FolderEditViewModel: ObservableObject {
-    private var folderSubject: CurrentValueSubject<Folder?, Never>
-    private var folderEditSubject: PassthroughSubject<Folder, Never>
-    private var cancellables = Set<AnyCancellable>()
-    private var folder: Folder?
-    
+class FolderEditViewModel: ObservableObject, FolderSubjectBindable {
+    var selectedFolder: Folder?
+    var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
+    var folderEditSubject: PassthroughSubject<Folder, Never>
+    var cancellables = Set<AnyCancellable>()
+        
     init(
-        folderSubject: CurrentValueSubject<Folder?, Never>,
+        selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
         folderEditSubject: PassthroughSubject<Folder, Never>
     ) {
-        self.folderSubject = folderSubject
+        self.selectedFolderSubject = selectedFolderSubject
         self.folderEditSubject = folderEditSubject
-        setupBindings()
+        setupSelectedFolderBindings()
     }
     
     func folderEdit() {
-        guard let folder = folder else {
+        guard let selectedFolder = selectedFolder else {
             print("folder is nil")
             return
         }
         
-        folderEditSubject.send(folder)
-    }
-    
-    private func setupBindings() {
-        folderSubject
-            .sink { [weak self] folder in
-                self?.folder = folder
-            }
-            .store(in: &cancellables)
-    }
+        folderEditSubject.send(selectedFolder)
+    }    
 }

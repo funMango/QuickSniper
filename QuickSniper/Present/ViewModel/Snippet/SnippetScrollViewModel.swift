@@ -10,31 +10,36 @@ import Combine
 import SwiftUI
 
 
-final class SnippetScrollViewModel: ObservableObject, DragabbleObject, QuerySyncableObject {
+final class SnippetScrollViewModel: ObservableObject, DragabbleObject, QuerySyncableObject, FolderSubjectBindable, FolderMessageSubjectBindable {
     typealias Item = Snippet
     @Published var items: [Snippet] = []
     @Published var allItems: [Snippet] = []
-    @Published private var selectedFolder: Folder?
+    @Published var selectedFolder: Folder?
     
-    private var snippetUseCase: SnippetUseCase
-    private var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
-    private var controllerSubject: PassthroughSubject<ControllerMessage, Never>
-    private var snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
-    private var cancellables: Set<AnyCancellable> = []
+    var snippetUseCase: SnippetUseCase
+    var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
+    var controllerSubject: PassthroughSubject<ControllerMessage, Never>
+    var snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
+    var folderMessageSubject: CurrentValueSubject<FolderMessage?, Never>
+    var cancellables: Set<AnyCancellable> = []
         
     init(
         snippetUseCase: SnippetUseCase,
         selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
         controllerSubject: PassthroughSubject<ControllerMessage, Never>,
-        snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
+        snippetSubject: CurrentValueSubject<SnippetMessage?, Never>,
+        folderMessageSubject: CurrentValueSubject<FolderMessage?, Never>
     ) {
         self.snippetUseCase = snippetUseCase
         self.selectedFolderSubject = selectedFolderSubject
         self.controllerSubject = controllerSubject
         self.snippetSubject = snippetSubject
+        self.folderMessageSubject = folderMessageSubject
         
         setupSelectedFolderBindings()
+        setupFilteredSnippetsBindings()
         setupSnippetMessageBindings()
+        setupFolderMessageBindings()
     }
     
     func getItems(_ items: [Item]) {
@@ -58,10 +63,34 @@ final class SnippetScrollViewModel: ObservableObject, DragabbleObject, QuerySync
         }
     }
     
-    private func setupSelectedFolderBindings() {
-        selectedFolderSubject
-            .assign(to: &$selectedFolder)
-
+    func deleteFolderItems(folderId: String) {
+        let filtered = allItems.filter { $0.folderId == folderId }
+        for snippet in filtered {
+            do {
+                try snippetUseCase.deleteSnippet(snippet)
+            } catch {
+                print("[ERROR]: SnippetScrollViewModel-deleteFolderItems: \(error)")
+            }
+        }
+        
+        DispatchQueue.main.async { [weak self] in
+            self?.controllerSubject.send(.openPanel)
+            self?.folderMessageSubject.send(.switchFirstFolder)
+        }
+    }
+    
+    private func setupFolderMessageBindings() {
+        folderMessageBindings{ [weak self] message in
+            switch message {
+            case .deleteFolderItems(let folderId):
+                self?.deleteFolderItems(folderId: folderId)
+            default:
+                return
+            }
+        }
+    }
+            
+    private func setupFilteredSnippetsBindings() {
         Publishers.CombineLatest($allItems, $selectedFolder)
             .map { snippets, folder -> [Snippet] in
                 guard let folder = folder else { return [] }

@@ -28,9 +28,7 @@ final class ServiceContainer {
         self.snippetSubject = snippetSubject
         
         serviceMessageBindings()
-    }
-    
-    
+    }    
 }
 
 extension ServiceContainer {

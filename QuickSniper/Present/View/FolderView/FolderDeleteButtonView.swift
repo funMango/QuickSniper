@@ -13,7 +13,7 @@ struct FolderDeleteButtonView: View {
             
     var body: some View {
         Button {            
-            viewModel.deleteFolder()
+            viewModel.showDeleteFolderAlert()
         } label: {
             OptionButtonStyle(
                 systemName: "trash",

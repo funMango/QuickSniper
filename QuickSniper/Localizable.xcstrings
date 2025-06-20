@@ -194,6 +194,40 @@
         }
       }
     },
+    "deleteFolderConfirm" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Delete Folder?"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "폴더를 삭제하시겠습니까?"
+          }
+        }
+      }
+    },
+    "deleteFolderWarning" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deleting this folder will permanently remove all data inside it. This action cannot be undone.\""
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "폴더를 삭제하면 폴더 안의 모든 데이터가 영구 삭제됩니다. 삭제된 데이터는 복구할 수 없습니다."
+          }
+        }
+      }
+    },
     "deleteSnippet" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -490,6 +524,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "저장"
+          }
+        }
+      }
+    },
+    "selectOrCreateFolder" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Select or create a folder"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "폴더를 선택하거나 추가하세요"
           }
         }
       }

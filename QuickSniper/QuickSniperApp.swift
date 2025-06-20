@@ -79,6 +79,7 @@ struct QuickSniperApp: App {
             let folderSubject = CurrentValueSubject<Folder?, Never>(nil)
             let folderEditSubject = PassthroughSubject<Folder, Never>()
             let selectedFolderSubject = CurrentValueSubject<Folder?, Never>(nil)
+            let folderMessageSubjec = CurrentValueSubject<FolderMessage?, Never>(nil)
             let snippetSubject = CurrentValueSubject<SnippetMessage?, Never>(nil)
             let serviceSubject = CurrentValueSubject<ServiceMessage?, Never>(nil)
             let hotCornerSubject = CurrentValueSubject<HotCornerMessage?, Never>(nil)
@@ -90,7 +91,8 @@ struct QuickSniperApp: App {
                 vmPassSubject: vmPassSubject,                
                 folderSubject: folderSubject,
                 folderEditSubject: folderEditSubject,
-                selectedFolderSubject: selectedFolderSubject,                
+                selectedFolderSubject: selectedFolderSubject,
+                folderMessageSubject: folderMessageSubjec,
                 snippetSubject: snippetSubject,
                 serviceSubject: serviceSubject,
                 hotCornerSubject: hotCornerSubject,

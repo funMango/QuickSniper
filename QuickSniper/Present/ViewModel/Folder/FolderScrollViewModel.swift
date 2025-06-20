@@ -8,19 +8,28 @@
 import Foundation
 import Combine
 
-final class FolderScrollViewModel: FolderBindableViewModel, DragabbleObject, QuerySyncableObject {        
+final class FolderScrollViewModel: FolderSubjectBindable, DragabbleObject, QuerySyncableObject, FolderMessageSubjectBindable {
+        
     typealias Item = Folder
     @Published var items: [Folder] = []
     @Published var allItems: [Folder] = []
-    private var useCase: FolderUseCase
+    @Published var selectedFolder: Folder?
+    var folderUsecase: FolderUseCase
+    var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
+    var folderMessageSubject: CurrentValueSubject<FolderMessage?, Never>
+    var cancellables: Set<AnyCancellable> = []
     
     init(
-        useCase: FolderUseCase,
-        selectedFolderSubject: CurrentValueSubject<Folder?, Never>
+        folderUsecase: FolderUseCase,
+        selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
+        folderMessageSubject: CurrentValueSubject<FolderMessage?, Never>
     ){
-        self.useCase = useCase
-        super.init(selectedFolderSubject: selectedFolderSubject)
+        self.folderUsecase = folderUsecase
+        self.selectedFolderSubject = selectedFolderSubject
+        self.folderMessageSubject = folderMessageSubject
+        
         setupSelectedFolderBindings()
+        setupFolderMessageBindings()
         setSelectedFolder()
     }
     
@@ -40,22 +49,32 @@ final class FolderScrollViewModel: FolderBindableViewModel, DragabbleObject, Que
     func updateItems() {
         saveChangedItems(as: Folder.self) { changedItems in
             do {
-                try self.useCase.updateAllFolders(changedItems)
+                try self.folderUsecase.updateAllFolders(changedItems)
             } catch {
                 print("[ERROR]: FolderScrollViewModel-updateItems \(error)")
             }
         }                                                       
     }
     
+    private func setupFolderMessageBindings() {
+        folderMessageBindings{ [weak self] message in
+            switch message {
+            case .switchFirstFolder:
+                self?.setSelectedFolder()
+            default:
+                break
+            }
+        }
+    }
+    
     private func setSelectedFolder() {
         do {
-            let folder = try useCase.getFirstFolder()
-            self.selectedFolder = folder
+            let folder = try folderUsecase.getFirstFolder()            
             DispatchQueue.main.async { [weak self] in
                 self?.selectedFolderSubject.send(folder)
             }
         } catch {
-            print("[ERROR]: FolderViewModel - setSelectedFolder: \(error)")
+            print("[ERROR]: FolderViewModel-setSelectedFolder: \(error)")
         }
     }
 }

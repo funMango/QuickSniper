@@ -8,24 +8,34 @@
 import Foundation
 import Combine
 
-final class FolderButtonViewModel: ObservableObject {
-    @Published var hoveredFolder: Folder?
-    private var folderSubject: CurrentValueSubject<Folder?, Never>
+final class FolderButtonViewModel: ObservableObject, FolderSubjectBindable {
+    @Published var selectedFolder: Folder?
+    @Published var isSelected: Bool = false
+    var folder: Folder
+    var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
+    var cancellables: Set<AnyCancellable> = []
     
     init(
-        hoveredFolder: Folder? = nil,
-        folderSubject: CurrentValueSubject<Folder?, Never>        
+        folder: Folder,
+        selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
     ) {
-        self.hoveredFolder = hoveredFolder
-        self.folderSubject = folderSubject
+        self.folder = folder
+        self.selectedFolderSubject = selectedFolderSubject
+                
+        setupSelectedFolderBindings()
     }
     
-    func setFolder(_ folder: Folder?) {
-        self.hoveredFolder = folder
-        sendHoveredFolder()
+    func setupSelectedFolderBindings() {
+        selectedFolderSubject
+            .sink { [weak self] folder in
+                guard let self = self else { return }
+                self.selectedFolder = folder
+                self.isSelected = self.selectedFolder?.id == self.folder.id
+            }
+            .store(in: &cancellables)
     }
-    
-    private func sendHoveredFolder() {        
-        folderSubject.send(hoveredFolder)
+            
+    func changeSelectedFolder() {
+        selectedFolderSubject.send(folder)
     }
 }
