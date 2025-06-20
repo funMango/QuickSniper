@@ -12,13 +12,12 @@ final class FolderButtonContentViewModel: ObservableObject {
     @Published var hoverFolder: Folder?
     @Published var buttonText: String = ""
     @Published var isRenaming: Bool = false
-        
+    var folder: Folder
     private var folderUseCase: FolderUseCase
     private var folderEditSubject: PassthroughSubject<Folder, Never>
     private var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     private var cancellables = Set<AnyCancellable>()
-    var folder: Folder
-    
+        
     init(
         folder: Folder,
         folderUseCase: FolderUseCase,

@@ -44,6 +44,9 @@ struct FolderCreateView: View {
                             viewModel.folderName = String(newValue.prefix(20))
                         }
                     }
+                    .onSubmit {
+                        viewModel.createFolder()
+                    }
             }
             
             HStack {
