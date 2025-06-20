@@ -30,6 +30,7 @@ final class ClipboardService {
         
         DispatchQueue.main.async{ [weak self] in
             self?.controllSubject.send(.openToast(snippet.title))
+            self?.controllSubject.send(.escapePressed)
         }
     }
     
