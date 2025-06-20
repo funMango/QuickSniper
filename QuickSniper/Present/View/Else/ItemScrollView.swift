@@ -26,12 +26,9 @@ struct ItemScrollView: View {
             case .fileBookmark:
                 FileBookmarkScrollView(
                     viewModel: viewModelContainer.fileBookmarkScrollViewModel
-                )
-           
+                )           
             case .none:
-                Text(String(localized: "selectOrCreateFolder"))
-                    .foregroundStyle(.gray)
-                    .padding()
+                Text("")
             }
         }
         .frame(height: 160)

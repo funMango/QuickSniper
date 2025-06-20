@@ -21,6 +21,12 @@ struct FileBookmarkScrollView: View, DraggableView {
     
     var body: some View {
         Group {
+            if viewModel.items.isEmpty {
+                Text(String(localized: "createFileBookmark"))
+                    .foregroundStyle(.gray)
+                    .padding()
+            }
+            
             ForEach(viewModel.items, id: \.id) { item in
                 FileBookmarkCardView(
                     viewModel: viewModelContainer.getFileBookmarkCardViewModel(item: item)

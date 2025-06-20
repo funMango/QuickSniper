@@ -23,6 +23,12 @@ struct SnippetScrollView: View, DraggableView {
     
     var body: some View {
         Group {
+            if viewModel.items.isEmpty {
+                Text(String(localized: "createSnippet"))
+                    .foregroundStyle(.gray)
+                    .padding()
+            }
+            
             ForEach(viewModel.items, id: \.id) { snippet in
                 SnippetCardView(
                     viewModel: viewModelContainer.getSnippetCardViewModel(snippet: snippet)

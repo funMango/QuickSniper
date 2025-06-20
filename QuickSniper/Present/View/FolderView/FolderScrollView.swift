@@ -22,6 +22,11 @@ struct FolderScrollView: View, DraggableView {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             LazyHStack(spacing: 10) {
+                if viewModel.items.isEmpty {
+                    Text(String(localized: "createFolder"))
+                        .foregroundStyle(.gray)
+                }
+                
                 ForEach(viewModel.items, id: \.id) { folder in
                     FolderButtonView(
                         viewModel: viewModelContainer.getFolderButtonViewModel(folder: folder)
