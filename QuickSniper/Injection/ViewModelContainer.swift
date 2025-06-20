@@ -112,7 +112,8 @@ final class ViewModelContainer {
         let viewModel = SnippetCardViewModel(
             snippet: snippet,
             controllSubject: controllerSubject,
-            snippetSubject: snippetSubject
+            snippetSubject: snippetSubject,
+            selectedFolderSubject: selectedFolderSubject
         )
         snippetCardViewModelCache[snippet.id] = viewModel
         return viewModel
@@ -210,7 +211,8 @@ final class ViewModelContainer {
             item: item,
             usecase: fileBookmarkUseCase,
             controllSubject: controllerSubject,
-            fileBookmarkSubject: fileBookmarkSubject
+            fileBookmarkSubject: fileBookmarkSubject,
+            selectedFolderSubject: selectedFolderSubject
         )
     }
             

@@ -8,22 +8,27 @@
 import Foundation
 import Combine
 
-final class SnippetCardViewModel: ObservableObject {
+final class SnippetCardViewModel: ObservableObject, ItemSelectionResettable {
     @Published var snippet: Snippet
     @Published var isSelected: Bool = false
+    var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
+    var cancellables = Set<AnyCancellable>()
     private let controllSubject: PassthroughSubject<ControllerMessage, Never>
     private let snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
-    private var cancellables = Set<AnyCancellable>()
         
     init(
         snippet: Snippet,
         controllSubject: PassthroughSubject<ControllerMessage, Never>,
-        snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
+        snippetSubject: CurrentValueSubject<SnippetMessage?, Never>,
+        selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     ) {
         self.snippet = snippet
         self.controllSubject = controllSubject
         self.snippetSubject = snippetSubject
+        self.selectedFolderSubject = selectedFolderSubject
+        
         selectedSnippetBindings()
+        setupItemSelectionReset()
     }
     
     func openSnippetEditor() {        

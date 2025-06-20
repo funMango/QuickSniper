@@ -8,27 +8,31 @@
 import AppKit
 import Combine
 
-final class FileBookmarkCardViewModel: ObservableObject, ControllSubjectBindable, FileBookmarkSubjectBindable {
+final class FileBookmarkCardViewModel: ObservableObject, ControllSubjectBindable, FileBookmarkSubjectBindable, ItemSelectionResettable {    
+    
     @Published var item: FileBookmarkItem
     @Published var isSelected: Bool = false
-    
     var usecase: FileBookmarkUseCase
     var controllSubject: PassthroughSubject<ControllerMessage, Never>
     var fileBookmarkSubject: CurrentValueSubject<FileBookmarkMessage?, Never>
+    var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     var cancellables: Set<AnyCancellable> = []
     
     init(
         item: FileBookmarkItem,
         usecase: FileBookmarkUseCase,
         controllSubject: PassthroughSubject<ControllerMessage, Never>,
-        fileBookmarkSubject: CurrentValueSubject<FileBookmarkMessage?, Never>
+        fileBookmarkSubject: CurrentValueSubject<FileBookmarkMessage?, Never>,
+        selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     ) {
         self.item = item
         self.usecase = usecase
         self.controllSubject = controllSubject
         self.fileBookmarkSubject = fileBookmarkSubject
+        self.selectedFolderSubject = selectedFolderSubject
         
-        fileBookmarkMessageBindings()        
+        fileBookmarkMessageBindings()
+        setupItemSelectionReset()
     }
     
     func sendSelectedFileBookmarkItemMesssage() {

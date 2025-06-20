@@ -24,7 +24,6 @@ struct FileBookmarkScrollView: View, DraggableView {
             if viewModel.items.isEmpty {
                 Text(String(localized: "createFileBookmark"))
                     .foregroundStyle(.gray)
-                    .padding()
             }
             
             ForEach(viewModel.items, id: \.id) { item in
