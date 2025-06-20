@@ -20,13 +20,16 @@ struct FolderButtonView: View {
     
     var body: some View {
         content
+            .simultaneousGesture(
+                TapGesture()
+                    .onEnded { _ in
+                        viewModel.changeSelectedFolder()
+                    }
+                )
             .onHover { hovering in
                 withAnimation(.easeInOut(duration: 0.2)) {
                     isHovered = hovering
                 }
-            }
-            .onClick {
-                viewModel.changeSelectedFolder()
             }
             .onRightClick {
                 viewModel.changeSelectedFolder()

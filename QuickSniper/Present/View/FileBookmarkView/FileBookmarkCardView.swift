@@ -18,13 +18,19 @@ struct FileBookmarkCardView: View {
     
     var body: some View {
         card
-            .onDoubleClick {
-                viewModel.sendSelectedFileBookmarkItemMesssage()
-                viewModel.openFile()
-            }
-            .onClick {
-                viewModel.sendSelectedFileBookmarkItemMesssage()
-            }
+            .simultaneousGesture(
+                TapGesture()
+                    .onEnded { _ in
+                        viewModel.sendSelectedFileBookmarkItemMesssage()
+                    }
+                )
+            .simultaneousGesture(
+                TapGesture(count: 2)
+                    .onEnded { _ in
+                        viewModel.sendSelectedFileBookmarkItemMesssage()
+                        viewModel.openFile()
+                    }
+            )           
             .onRightClick {
                 viewModel.sendSelectedFileBookmarkItemMesssage()
             }            

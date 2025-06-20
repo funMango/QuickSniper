@@ -44,6 +44,8 @@ class CustomHostingView<Content: View>: NSHostingView<Content> {
     init(rootView: Content, onRightClick: @escaping () -> Void) {
         self.onRightClick = onRightClick
         super.init(rootView: rootView)
+        
+        self.translatesAutoresizingMaskIntoConstraints = false
     }
     
     @available(*, unavailable)

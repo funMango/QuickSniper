@@ -17,7 +17,7 @@ struct ItemScrollView: View {
     }
     
     var body: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
+        HorizontalScrollViewWithVerticalWheel {
             switch viewModel.selectedFolder?.type {
             case .snippet:
                 SnippetScrollView(
@@ -26,7 +26,7 @@ struct ItemScrollView: View {
             case .fileBookmark:
                 FileBookmarkScrollView(
                     viewModel: viewModelContainer.fileBookmarkScrollViewModel
-                )           
+                )
             case .none:
                 Text("")
             }
