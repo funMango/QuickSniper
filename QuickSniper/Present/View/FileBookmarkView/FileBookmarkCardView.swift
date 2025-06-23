@@ -24,7 +24,7 @@ struct FileBookmarkCardView: View {
     var body: some View {
         card            
             .onClick(
-                perform: {
+                perform: {                    
                     viewModel.sendSelectedFileBookmarkItemMesssage()
                 },
                 onDoubleClick: {

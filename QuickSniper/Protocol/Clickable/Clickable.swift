@@ -30,6 +30,12 @@ extension View {
         onDoubleClick doubleAction: @escaping () -> Void
     ) -> some View {
         self.modifier(ClickModifier(onClick: action, onDoubleClick: doubleAction, onRightClick: nil))
+            .simultaneousGesture(
+                TapGesture(count: 2)
+                    .onEnded { _ in
+                        doubleAction()
+                    }
+            )
     }
     
     func onClick(
@@ -45,6 +51,12 @@ extension View {
         onRightClick rightAction: @escaping () -> Void
     ) -> some View {
         self.modifier(ClickModifier(onClick: action, onDoubleClick: doubleAction, onRightClick: rightAction))
+            .simultaneousGesture(
+                TapGesture(count: 2)
+                    .onEnded { _ in
+                        doubleAction()
+                    }
+            )
     }
 }
 
@@ -73,8 +85,6 @@ class CustomClickHostingView<Content: View>: NSHostingView<Content> {
     let onClick: () -> Void
     let onDoubleClick: (() -> Void)?
     let onRightClick: (() -> Void)?
-    private var clickTimer: Timer?
-    private var clickCount = 0
     
     init(rootView: Content, onClick: @escaping () -> Void, onDoubleClick: (() -> Void)? = nil, onRightClick: (() -> Void)? = nil) {
         self.onClick = onClick
@@ -87,47 +97,29 @@ class CustomClickHostingView<Content: View>: NSHostingView<Content> {
     
     @available(*, unavailable)
     required init(rootView: Content) {
-        fatalError("init(rootView:) has not been implemented")
+        self.onClick = { }
+        self.onDoubleClick = nil
+        self.onRightClick = nil
+        super.init(rootView: rootView)
     }
     
     required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func mouseDown(with event: NSEvent) {
-        handleClick()
-        super.mouseDown(with: event)
+        self.onClick = { }
+        self.onDoubleClick = nil
+        self.onRightClick = nil
+        super.init(coder: coder)
     }
     
     override func rightMouseDown(with event: NSEvent) {
         onRightClick?()
-        super.rightMouseDown(with: event) // contextMenu도 실행되도록
+        super.rightMouseDown(with: event)
     }
     
-    private func handleClick() {
-        clickCount += 1
+    override func mouseDown(with event: NSEvent) {
+        // 더블클릭은 SwiftUI simultaneousGesture가 처리
+        // 여기서는 싱글클릭만 처리 (즉시 실행)
+        onClick()
         
-        if let onDoubleClick = onDoubleClick {
-            // 더블클릭 지원 모드
-            if clickCount == 1 {
-                // 첫 번째 클릭 - 0.3초 대기
-                clickTimer = Timer.scheduledTimer(withTimeInterval: 0.3, repeats: false) { [weak self] _ in
-                    if self?.clickCount == 1 {
-                        // 싱글 클릭
-                        self?.onClick()
-                    }
-                    self?.clickCount = 0
-                }
-            } else if clickCount == 2 {
-                // 더블 클릭
-                clickTimer?.invalidate()
-                onDoubleClick()
-                clickCount = 0
-            }
-        } else {
-            // 싱글클릭만 지원
-            onClick()
-            clickCount = 0
-        }
+        super.mouseDown(with: event)
     }
 }
