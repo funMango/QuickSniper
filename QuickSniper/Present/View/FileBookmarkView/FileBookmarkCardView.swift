@@ -11,32 +11,33 @@ import Resolver
 struct FileBookmarkCardView: View {
     @Environment(\.openURL) private var openURL
     @StateObject var viewModel: FileBookmarkCardViewModel
+    @State var draggingItemId: String?
+    @State private var isDragPressed = false
     
-    init(viewModel: FileBookmarkCardViewModel) {
+    
+    init(
+        viewModel: FileBookmarkCardViewModel
+    ) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
     var body: some View {
-        card
-            .simultaneousGesture(
-                TapGesture()
-                    .onEnded { _ in
-                        viewModel.sendSelectedFileBookmarkItemMesssage()
-                    }
-                )
-            .simultaneousGesture(
-                TapGesture(count: 2)
-                    .onEnded { _ in
-                        viewModel.sendSelectedFileBookmarkItemMesssage()
-                        viewModel.openFile()
-                    }
-            )           
-            .onRightClick {
-                viewModel.sendSelectedFileBookmarkItemMesssage()
-            }            
+        card            
+            .onClick(
+                perform: {
+                    viewModel.sendSelectedFileBookmarkItemMesssage()
+                },
+                onDoubleClick: {
+                    viewModel.sendSelectedFileBookmarkItemMesssage()
+                    viewModel.openFile()
+                },
+                onRightClick: {
+                    viewModel.sendSelectedFileBookmarkItemMesssage()
+                }
+            )
             .contextMenu{
                 FileBookmarkOptionMenuView()
-            }
+            }                        
     }
     
     private var card: some View {
@@ -95,5 +96,7 @@ extension FileBookmarkItem {
         order: 1
     )
     
-    FileBookmarkCardView(viewModel: viewModelContainer.getFileBookmarkCardViewModel(item: item))
+    FileBookmarkCardView(
+        viewModel: viewModelContainer.getFileBookmarkCardViewModel(item: item)
+    )
 }

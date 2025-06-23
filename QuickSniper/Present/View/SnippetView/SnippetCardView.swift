@@ -19,27 +19,23 @@ struct SnippetCardView: View {
         
     var body: some View {
         card
-            .simultaneousGesture(
-                TapGesture()
-                    .onEnded { _ in
-                        viewModel.sendSelectedSnippetMessage()
-                    }
-                )
-            .simultaneousGesture(
-                TapGesture(count: 2)
-                    .onEnded { _ in
-                        viewModel.sendSelectedSnippetMessage()
-                        viewModel.openSnippetEditor()
-                    }
-            )
+            .onClick(
+                perform: {
+                    viewModel.sendSelectedSnippetMessage()
+                },
+                onDoubleClick: {
+                    viewModel.sendSelectedSnippetMessage()
+                    viewModel.openSnippetEditor()
+                },
+                onRightClick: {
+                    viewModel.sendSelectedSnippetMessage()
+                }
+            )            
             .onHover { hovering in
                 if hovering {
                     viewModel.sendSelectedSnippet()
                 }
             }
-            .onRightClick {
-                viewModel.sendSelectedSnippetMessage()
-            }            
             .contextMenu{
                 SnippetOptionMenuView()                                    
             }

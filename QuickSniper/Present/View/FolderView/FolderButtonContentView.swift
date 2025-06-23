@@ -48,7 +48,7 @@ struct FolderButtonContentView: View {
                         .padding(.vertical, 8)
                         .foregroundColor(Color.subText)
                         .contentShape(Rectangle())
-                        .onTapGesture {
+                        .onClick {
                             viewModel.selectFolder()
                         }
                 }

@@ -47,7 +47,7 @@ struct QuickSniperApp: App {
     var body: some Scene {
         MenuBarExtra(
             "shifty",
-            systemImage: "arrow.up.circle.fill"
+            image: "menubarIcon"
         ) {
             AppMenuBarView(
                 viewModel: viewModelContainer.appMenuBarViewModel
