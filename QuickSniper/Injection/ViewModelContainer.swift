@@ -232,6 +232,8 @@ final class ViewModelContainer {
     
     lazy var panelViewModel = PanelViewModel(
         userUseCase: userUseCase,
+        folderUseCase: folderUseCase,
+        snippetUseCase: snippetUseCase,
         serviceSubject: serviceSubject,
         hotCornerSubject: hotCornerSubject
     )

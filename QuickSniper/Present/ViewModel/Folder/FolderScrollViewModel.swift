@@ -36,6 +36,10 @@ final class FolderScrollViewModel: FolderSubjectBindable, DragabbleObject, Query
     func getItems(_ items: [Folder]) {
         DispatchQueue.main.async { [weak self] in
             self?.items = items.sorted { $0.order < $1.order }
+            if self?.items.count == 1 {
+                let itemId = self?.items[0].id ?? ""
+                self?.selectItem(itemId)
+            }
         }
     }
     

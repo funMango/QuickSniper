@@ -17,21 +17,24 @@ final class PanelViewModel: ObservableObject, QuerySyncableObject {
     @Published var toast: ToastMessage?
     @Published var isToastVisible = false
     private let userUseCase: UserUseCase
+    private let folderUseCase: FolderUseCase
+    private let snippetUseCase: SnippetUseCase
     private let serviceSubject: CurrentValueSubject<ServiceMessage?, Never>
     private let hotCornerSubject: CurrentValueSubject<HotCornerMessage?, Never>
     private var cancellables: Set<AnyCancellable> = []
     
     init(
         userUseCase: UserUseCase,
+        folderUseCase: FolderUseCase,
+        snippetUseCase: SnippetUseCase,
         serviceSubject: CurrentValueSubject<ServiceMessage?, Never>,
         hotCornerSubject: CurrentValueSubject<HotCornerMessage?, Never>
     ) {
         self.userUseCase = userUseCase
+        self.folderUseCase = folderUseCase
+        self.snippetUseCase = snippetUseCase
         self.serviceSubject = serviceSubject
         self.hotCornerSubject = hotCornerSubject
-                                
-        setupUserBindings()
-        setupControllMessageBindings()
     }
     
     func getItems(_ items: [Item]) {
@@ -39,6 +42,7 @@ final class PanelViewModel: ObservableObject, QuerySyncableObject {
                         
         guard let firstItem = allItems.first else {
             createUser()
+            createWelcomeFolder()
             return
         }
         self.user = firstItem
@@ -58,46 +62,29 @@ final class PanelViewModel: ObservableObject, QuerySyncableObject {
         }
     }
     
-    private func updateHotCornerPosition(_ position: HotCornerPosition) {
-        guard let user = user else { return }
-                        
-        user.updateHotCornerPosition(position)
+    private func createWelcomeFolder() {
+        let folder = Folder(name: String(localized: "guide"), type: .snippet, order: 0)
         
         do {
-            try userUseCase.updateUser(user)
+            try folderUseCase.createFolder(folder)
+            createWelcomeSnippet(folderId: folder.id)
         } catch {
-            print("[ERROR]: AppMenuBarViewModel-updateUser")
+            print("[ERROR]: PanelViewModel-createWelcomeFolder \(error)")
         }
-    }        
+    }
+    
+    private func createWelcomeSnippet(folderId: String) {
+        DispatchQueue.main.async{ [weak self] in
+            self?.snippetUseCase.createSnippet(
+                folderId: folderId,
+                title: String(localized: "welcome"),
+                body: WelcomeContext.current
+            )
+        }
+    }
 }
 
 //MARK: - Combine Bidnings
 extension PanelViewModel {
-    private func setupUserBindings() {
-        $user
-            .compactMap { $0 }
-            .first()
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] user in
-                guard let self = self else { return }
-                                
-                self.hotCornerSubject.send(.setupHotCornerPosition(user.hotCornerPosition))
-            }
-            .store(in: &cancellables)
-    }
-    
-    private func setupControllMessageBindings() {
-        hotCornerSubject
-            .sink { [weak self] message in
-                guard let self = self else { return }
-                
-                switch message {
-                case .changeHotCornerPosition(let position):
-                    self.updateHotCornerPosition(position)
-                default:
-                    break
-                }
-            }
-            .store(in: &cancellables)
-    }
+
 }

@@ -27,6 +27,7 @@ class User: Equatable, Codable, Identifiable, CoreModel {
         self.hotCornerPosition = position
     }
     
+    // for CoreModel
     func updateOrder(_ newOrder: Int) {
         
     }
