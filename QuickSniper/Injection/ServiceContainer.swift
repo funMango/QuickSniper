@@ -31,7 +31,8 @@ final class ServiceContainer {
         self.selectedFolderSubject = selectedFolderSubject
         
         serviceMessageBindings()
-    }    
+        setupSnippetMessageBindings()
+    }
 }
 
 extension ServiceContainer {
@@ -56,7 +57,27 @@ extension ServiceContainer {
                 }
             }
             .store(in: &cancellables)
-    }        
+    }
+    
+    private func setupSnippetMessageBindings() {
+        snippetSubject
+            .sink { [weak self] message in
+                guard let self else { return }
+                
+                switch message {
+                case .snippetSelected(let snippet):
+                    if localShortcutService == nil {
+                        localShortcutServiceInit()
+                        DispatchQueue.main.async{ [weak self] in
+                            self?.snippetSubject.send(.snippetSelected(snippet))
+                        }
+                    }
+                default:
+                    break
+                }
+            }
+            .store(in: &cancellables)
+    }
 }
 
 extension ServiceContainer {

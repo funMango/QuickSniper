@@ -51,9 +51,10 @@ extension LocalShortcutService {
     }
     
     private func handleCopyCommand() {
-        guard let snippet = snippet else {
+        guard let snippet = self.snippet else {
             return
         }
+                
         serviceSubject.send(.copySnippet(snippet))
     }
 }
@@ -85,7 +86,7 @@ extension LocalShortcutService {
         serviceSubject
             .sink { [weak self] message in
                 switch message {
-                case .handleKeyEvent(let event):
+                case .handleKeyEvent(let event):                    
                     self?.handleKeyEvent(event)
                 default:
                     break
