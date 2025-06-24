@@ -129,6 +129,7 @@ final class ViewModelContainer {
     lazy var folderDeleteButtonViewModel = FolderDeleteButtonViewModel(
         selectedFolderSubject: selectedFolderSubject,
         folderMessageSubject: folderMessageSubject,
+        controllSubject: controllerSubject,
         folderUseCase: folderUseCase,
     )
     

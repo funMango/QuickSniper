@@ -125,8 +125,7 @@ struct QuickSniperApp: App {
             
             /// System init function
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                controllerSubject.send(.openPanel)
-                // controllerSubject.send(.openHotCorner)
+                controllerSubject.send(.openPanel)                
             }
 
             return (container, context, viewModelContainer, controllerConntainer, keyboardShortcutManager, pageManager, serviceContainer)

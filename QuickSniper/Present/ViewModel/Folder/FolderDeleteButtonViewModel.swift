@@ -8,20 +8,26 @@
 import Foundation
 import Combine
 
-final class FolderDeleteButtonViewModel: ObservableObject, FolderSubjectBindable {
+final class FolderDeleteButtonViewModel: ObservableObject, FolderSubjectBindable, ControllSubjectBindable {
+    
+    
     var selectedFolder: Folder?
     var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     var folderMessageSubject: CurrentValueSubject<FolderMessage?, Never>
+    var controllSubject: PassthroughSubject<ControllerMessage, Never>
     var folderUseCase: FolderUseCase
     var cancellables: Set<AnyCancellable> = []
     
     init(
+        
         selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
         folderMessageSubject: CurrentValueSubject<FolderMessage?, Never>,
+        controllSubject: PassthroughSubject<ControllerMessage, Never>,
         folderUseCase: FolderUseCase,
     ) {
         self.selectedFolderSubject = selectedFolderSubject
         self.folderMessageSubject = folderMessageSubject
+        self.controllSubject = controllSubject
         self.folderUseCase = folderUseCase
         setupSelectedFolderBindings()
     }
@@ -49,8 +55,12 @@ extension FolderDeleteButtonViewModel {
             messageText: "deleteFolderConfirm",
             informativeText: "deleteFolderWarning",
             confirmButtonText: "delete",
-        ) {
-            deleteFolder()
-        }
+            onConfirm: {
+                deleteFolder()
+            },
+            onCancel: { [weak self] in
+                self?.controllSubject.send(.openPanel)
+            }
+        )
     }
 }

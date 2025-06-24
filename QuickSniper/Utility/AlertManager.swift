@@ -14,6 +14,7 @@ struct AlertManager {
         confirmButtonText: String,
         cancelButtonText: String = "cancel",
         onConfirm: () -> Void,
+        onCancel: (() -> Void)? = nil
     ) {
         let alert = NSAlert()
         alert.messageText = NSLocalizedString(messageText, comment: "")
@@ -30,6 +31,8 @@ struct AlertManager {
         let response = alert.runModal()
         if response == .alertFirstButtonReturn {
             onConfirm()
+        } else if response == .alertSecondButtonReturn {
+            onCancel?()  // 이 줄 추가!
         }
     }
     
