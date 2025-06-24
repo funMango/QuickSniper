@@ -13,6 +13,7 @@ final class ServiceContainer {
     private let serviceSubject: CurrentValueSubject<ServiceMessage?, Never>
     private let controllSubject: PassthroughSubject<ControllerMessage, Never>
     private let snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
+    private let selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     private var cancellables = Set<AnyCancellable>()
     
     private var clipboardService: ClipboardService?
@@ -21,11 +22,13 @@ final class ServiceContainer {
     init(
         serviceSubject: CurrentValueSubject<ServiceMessage?, Never>,
         controllSubject: PassthroughSubject<ControllerMessage, Never>,
-        snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
+        snippetSubject: CurrentValueSubject<SnippetMessage?, Never>,
+        selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     ) {
         self.serviceSubject = serviceSubject
         self.controllSubject = controllSubject
         self.snippetSubject = snippetSubject
+        self.selectedFolderSubject = selectedFolderSubject
         
         serviceMessageBindings()
     }    
@@ -70,7 +73,8 @@ extension ServiceContainer {
         if localShortcutService == nil {
             self.localShortcutService = LocalShortcutService(
                 snippetSubject: snippetSubject,
-                serviceSubject: serviceSubject
+                serviceSubject: serviceSubject,
+                selectedFolderSubject: selectedFolderSubject
             )
         }
     }

@@ -113,7 +113,8 @@ struct QuickSniperApp: App {
             let serviceContainer = ServiceContainer(
                 serviceSubject: serviceSubject,
                 controllSubject: controllerSubject,
-                snippetSubject: snippetSubject
+                snippetSubject: snippetSubject,
+                selectedFolderSubject: selectedFolderSubject
             )
                 
             Resolver.register { controllerConntainer }.scope(.application)

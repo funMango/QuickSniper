@@ -9,21 +9,27 @@ import Foundation
 import Combine
 import AppKit
 
-final class LocalShortcutService {
-    private let snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
-    private let serviceSubject: CurrentValueSubject<ServiceMessage?, Never>
-    private var cancellables: Set<AnyCancellable> = []
-    private var shorcutStorage = LocalShortcutStorage()
-    private var snippet: Snippet?
+final class LocalShortcutService: FolderSubjectBindable {
+    let snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
+    let serviceSubject: CurrentValueSubject<ServiceMessage?, Never>
+    let selectedFolderSubject: CurrentValueSubject<Folder?, Never>
+    var cancellables: Set<AnyCancellable> = []
+    var shorcutStorage = LocalShortcutStorage()
+    var snippet: Snippet?
+    var selectedFolder: Folder?
         
     init(
         snippetSubject: CurrentValueSubject<SnippetMessage?, Never>,
-        serviceSubject: CurrentValueSubject<ServiceMessage?, Never>
+        serviceSubject: CurrentValueSubject<ServiceMessage?, Never>,
+        selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     ) {
         self.snippetSubject = snippetSubject
         self.serviceSubject = serviceSubject
+        self.selectedFolderSubject = selectedFolderSubject
+        
         setUpSelectedSnippet()
         setupServiceMessage()
+        setupSelectedFolderBindings()
     }
                     
     func handleKeyEvent(_ event: NSEvent) {        
@@ -53,6 +59,15 @@ extension LocalShortcutService {
 }
 
 extension LocalShortcutService {
+    private func setupSelectedFolderBindings() {
+        selectedFolderSubject
+            .sink { [weak self] folder in
+                self?.selectedFolder = folder
+                self?.snippet = nil
+            }
+            .store(in: &cancellables)
+    }
+    
     private func setUpSelectedSnippet() {
         snippetSubject
             .sink { [weak self] message in
