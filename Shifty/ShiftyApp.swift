@@ -13,7 +13,8 @@ import SwiftData
 import Combine
 
 @main
-struct ShiftyApp: App {    
+struct ShiftyApp: App {
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     private let controllerContainer:  ControllerContainer
     private let modelContainer: ModelContainer
     private let modelContext: ModelContext

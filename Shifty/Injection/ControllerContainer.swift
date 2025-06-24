@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 final class ControllerContainer {
-    private let controllSubject: PassthroughSubject<ControllerMessage, Never>
+    let controllSubject: PassthroughSubject<ControllerMessage, Never>
     private let hotCornerSubject: CurrentValueSubject<HotCornerMessage?, Never>
     private var cancellables = Set<AnyCancellable>()
     
