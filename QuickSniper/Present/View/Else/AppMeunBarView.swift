@@ -17,7 +17,9 @@ enum MenuBarItemType {
 
 struct AppMenuBarView: View {
     @State private var hoveredItem: MenuBarItemType? = nil
-    @StateObject var viewModel: AppMenuBarViewModel    
+    @StateObject var viewModel: AppMenuBarViewModel
+    
+    
     
     init(viewModel: AppMenuBarViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
@@ -67,25 +69,22 @@ struct MenuBarItem: View {
     let title: String
     let isHovered: Bool
     let action: () -> Void
+    let blank = "                                                 "
     
     var body: some View {
-        HStack {
-            Text(title)
+        Button(action: action) {
+            Text(title + blank)
                 .foregroundColor(isHovered ? .white : .primary)
                 .font(.system(size: 13))
-            
-            Spacer()
+                .padding(.horizontal, 8)
+                .padding(.vertical, 4)
+                .background(
+                    Rectangle()
+                        .fill(isHovered ? Color.accentColor : Color.clear)
+                        .cornerRadius(4)
+                )
         }
-        .padding(.horizontal, 8)
-        .padding(.vertical, 4)
-        .background(
-            Rectangle()
-                .fill(isHovered ? Color.accentColor : Color.clear)
-                .cornerRadius(4)
-        )
-        .onTapGesture {
-            action()
-        }
+        .buttonStyle(PlainButtonStyle())  // 기본 버튼 스타일 제거
         .animation(.easeInOut(duration: 0.15), value: isHovered)
     }
 }

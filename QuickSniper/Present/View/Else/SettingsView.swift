@@ -42,9 +42,9 @@ struct SettingsView: View {
                 .accentColor(.accentColor)
             }
             
-            HotCornerSettingView(
-                viewModel: viewModelContainer.hotCornerSettingViewModel
-            )
+//            HotCornerSettingView(
+//                viewModel: viewModelContainer.hotCornerSettingViewModel
+//            )
                                                                                             
             Spacer()
         }

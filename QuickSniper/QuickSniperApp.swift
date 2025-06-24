@@ -54,7 +54,7 @@ struct QuickSniperApp: App {
             )
             .environment(\.modelContext, modelContext)
         }
-        .menuBarExtraStyle(.window)
+        .menuBarExtraStyle(.menu)
     }
             
     private static func configureDependencies() -> (

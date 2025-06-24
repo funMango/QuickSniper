@@ -1,11 +1,12 @@
 {
   "images" : [
     {
+      "filename" : "shifty.menu.icon 1.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "shifty.menu.icon_32bit.png",
+      "filename" : "shifty.menu.icon.svg",
       "idiom" : "universal",
       "scale" : "2x"
     },

@@ -116,10 +116,7 @@ class CustomClickHostingView<Content: View>: NSHostingView<Content> {
     }
     
     override func mouseDown(with event: NSEvent) {
-        // 더블클릭은 SwiftUI simultaneousGesture가 처리
-        // 여기서는 싱글클릭만 처리 (즉시 실행)
-        onClick()
-        
+        onClick()        
         super.mouseDown(with: event)
     }
 }

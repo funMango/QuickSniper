@@ -19,6 +19,11 @@ struct AlertManager {
         alert.messageText = NSLocalizedString(messageText, comment: "")
         alert.informativeText = NSLocalizedString(informativeText, comment: "")
         alert.alertStyle = .warning
+        
+        if let appIcon = NSImage(named: "AppIcon") {
+            alert.icon = appIcon
+        }
+        
         alert.addButton(withTitle: NSLocalizedString(confirmButtonText, comment: ""))
         alert.addButton(withTitle: NSLocalizedString(cancelButtonText, comment: ""))
         
@@ -38,6 +43,11 @@ struct AlertManager {
         alert.messageText = NSLocalizedString(messageText, comment: "")
         alert.informativeText = NSLocalizedString(informativeText, comment: "")
         alert.alertStyle = .warning
+        
+        if let appIcon = NSImage(named: "AppIcon") {
+            alert.icon = appIcon
+        }
+        
         alert.addButton(withTitle: NSLocalizedString(confirmButtonText, comment: ""))
 
         let response = alert.runModal()
