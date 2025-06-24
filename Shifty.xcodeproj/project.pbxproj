@@ -29,38 +29,38 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		5A8891162DDB5214002C6D4A /* QuickSniper.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuickSniper.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		5A8891272DDB5215002C6D4A /* QuickSniperTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuickSniperTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		5A8891312DDB5215002C6D4A /* QuickSniperUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = QuickSniperUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5A8891162DDB5214002C6D4A /* Shifty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shifty.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5A8891272DDB5215002C6D4A /* ShiftyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShiftyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5A8891312DDB5215002C6D4A /* ShiftyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShiftyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		5A45248F2DEFE2FD008BE124 /* Exceptions for "QuickSniper" folder in "QuickSniper" target */ = {
+		5A45248F2DEFE2FD008BE124 /* Exceptions for "Shifty" folder in "Shifty" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = 5A8891152DDB5214002C6D4A /* QuickSniper */;
+			target = 5A8891152DDB5214002C6D4A /* Shifty */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		5A8891182DDB5214002C6D4A /* QuickSniper */ = {
+		5A8891182DDB5214002C6D4A /* Shifty */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				5A45248F2DEFE2FD008BE124 /* Exceptions for "QuickSniper" folder in "QuickSniper" target */,
+				5A45248F2DEFE2FD008BE124 /* Exceptions for "Shifty" folder in "Shifty" target */,
 			);
-			path = QuickSniper;
+			path = Shifty;
 			sourceTree = "<group>";
 		};
-		5A88912A2DDB5215002C6D4A /* QuickSniperTests */ = {
+		5A88912A2DDB5215002C6D4A /* ShiftyTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = QuickSniperTests;
+			path = ShiftyTests;
 			sourceTree = "<group>";
 		};
-		5A8891342DDB5215002C6D4A /* QuickSniperUITests */ = {
+		5A8891342DDB5215002C6D4A /* ShiftyUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = QuickSniperUITests;
+			path = ShiftyUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -95,9 +95,9 @@
 		5A88910D2DDB5214002C6D4A = {
 			isa = PBXGroup;
 			children = (
-				5A8891182DDB5214002C6D4A /* QuickSniper */,
-				5A88912A2DDB5215002C6D4A /* QuickSniperTests */,
-				5A8891342DDB5215002C6D4A /* QuickSniperUITests */,
+				5A8891182DDB5214002C6D4A /* Shifty */,
+				5A88912A2DDB5215002C6D4A /* ShiftyTests */,
+				5A8891342DDB5215002C6D4A /* ShiftyUITests */,
 				5AF0FFC62DDC014100906A61 /* Frameworks */,
 				5A8891172DDB5214002C6D4A /* Products */,
 			);
@@ -106,9 +106,9 @@
 		5A8891172DDB5214002C6D4A /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5A8891162DDB5214002C6D4A /* QuickSniper.app */,
-				5A8891272DDB5215002C6D4A /* QuickSniperTests.xctest */,
-				5A8891312DDB5215002C6D4A /* QuickSniperUITests.xctest */,
+				5A8891162DDB5214002C6D4A /* Shifty.app */,
+				5A8891272DDB5215002C6D4A /* ShiftyTests.xctest */,
+				5A8891312DDB5215002C6D4A /* ShiftyUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -123,9 +123,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		5A8891152DDB5214002C6D4A /* QuickSniper */ = {
+		5A8891152DDB5214002C6D4A /* Shifty */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5A88913B2DDB5215002C6D4A /* Build configuration list for PBXNativeTarget "QuickSniper" */;
+			buildConfigurationList = 5A88913B2DDB5215002C6D4A /* Build configuration list for PBXNativeTarget "Shifty" */;
 			buildPhases = (
 				5A3AE1902DE00CAE00751B6B /* ShellScript */,
 				5A8891122DDB5214002C6D4A /* Sources */,
@@ -137,20 +137,20 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				5A8891182DDB5214002C6D4A /* QuickSniper */,
+				5A8891182DDB5214002C6D4A /* Shifty */,
 			);
-			name = QuickSniper;
+			name = Shifty;
 			packageProductDependencies = (
 				5AF0FFC72DDC014100906A61 /* KeyboardShortcuts */,
 				5AE362452DDF43440022BBFC /* Resolver */,
 			);
 			productName = QuickSniper;
-			productReference = 5A8891162DDB5214002C6D4A /* QuickSniper.app */;
+			productReference = 5A8891162DDB5214002C6D4A /* Shifty.app */;
 			productType = "com.apple.product-type.application";
 		};
-		5A8891262DDB5215002C6D4A /* QuickSniperTests */ = {
+		5A8891262DDB5215002C6D4A /* ShiftyTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5A88913E2DDB5215002C6D4A /* Build configuration list for PBXNativeTarget "QuickSniperTests" */;
+			buildConfigurationList = 5A88913E2DDB5215002C6D4A /* Build configuration list for PBXNativeTarget "ShiftyTests" */;
 			buildPhases = (
 				5A8891232DDB5215002C6D4A /* Sources */,
 				5A8891242DDB5215002C6D4A /* Frameworks */,
@@ -162,18 +162,18 @@
 				5A8891292DDB5215002C6D4A /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				5A88912A2DDB5215002C6D4A /* QuickSniperTests */,
+				5A88912A2DDB5215002C6D4A /* ShiftyTests */,
 			);
-			name = QuickSniperTests;
+			name = ShiftyTests;
 			packageProductDependencies = (
 			);
 			productName = QuickSniperTests;
-			productReference = 5A8891272DDB5215002C6D4A /* QuickSniperTests.xctest */;
+			productReference = 5A8891272DDB5215002C6D4A /* ShiftyTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		5A8891302DDB5215002C6D4A /* QuickSniperUITests */ = {
+		5A8891302DDB5215002C6D4A /* ShiftyUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 5A8891412DDB5215002C6D4A /* Build configuration list for PBXNativeTarget "QuickSniperUITests" */;
+			buildConfigurationList = 5A8891412DDB5215002C6D4A /* Build configuration list for PBXNativeTarget "ShiftyUITests" */;
 			buildPhases = (
 				5A88912D2DDB5215002C6D4A /* Sources */,
 				5A88912E2DDB5215002C6D4A /* Frameworks */,
@@ -185,13 +185,13 @@
 				5A8891332DDB5215002C6D4A /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				5A8891342DDB5215002C6D4A /* QuickSniperUITests */,
+				5A8891342DDB5215002C6D4A /* ShiftyUITests */,
 			);
-			name = QuickSniperUITests;
+			name = ShiftyUITests;
 			packageProductDependencies = (
 			);
 			productName = QuickSniperUITests;
-			productReference = 5A8891312DDB5215002C6D4A /* QuickSniperUITests.xctest */;
+			productReference = 5A8891312DDB5215002C6D4A /* ShiftyUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -217,7 +217,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 5A8891112DDB5214002C6D4A /* Build configuration list for PBXProject "QuickSniper" */;
+			buildConfigurationList = 5A8891112DDB5214002C6D4A /* Build configuration list for PBXProject "Shifty" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -236,9 +236,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				5A8891152DDB5214002C6D4A /* QuickSniper */,
-				5A8891262DDB5215002C6D4A /* QuickSniperTests */,
-				5A8891302DDB5215002C6D4A /* QuickSniperUITests */,
+				5A8891152DDB5214002C6D4A /* Shifty */,
+				5A8891262DDB5215002C6D4A /* ShiftyTests */,
+				5A8891302DDB5215002C6D4A /* ShiftyUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -315,12 +315,12 @@
 /* Begin PBXTargetDependency section */
 		5A8891292DDB5215002C6D4A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 5A8891152DDB5214002C6D4A /* QuickSniper */;
+			target = 5A8891152DDB5214002C6D4A /* Shifty */;
 			targetProxy = 5A8891282DDB5215002C6D4A /* PBXContainerItemProxy */;
 		};
 		5A8891332DDB5215002C6D4A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 5A8891152DDB5214002C6D4A /* QuickSniper */;
+			target = 5A8891152DDB5214002C6D4A /* Shifty */;
 			targetProxy = 5A8891322DDB5215002C6D4A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -457,24 +457,25 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = QuickSniper/QuickSniper.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Shifty/Shifty.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"QuickSniper/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Shifty/Preview Content\"";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = QuickSniper/Info.plist;
+				INFOPLIST_FILE = Shifty/Info.plist;
+				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Sample.QuickSniper;
+				PRODUCT_BUNDLE_IDENTIFIER = Sample.Shifty;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -486,24 +487,25 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = QuickSniper/QuickSniper.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Shifty/Shifty.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_ASSET_PATHS = "\"QuickSniper/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"Shifty/Preview Content\"";
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = QuickSniper/Info.plist;
+				INFOPLIST_FILE = Shifty/Info.plist;
+				INFOPLIST_KEY_LSUIElement = YES;
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Sample.QuickSniper;
+				PRODUCT_BUNDLE_IDENTIFIER = Sample.Shifty;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -520,7 +522,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.2;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Sample.QuickSniperTests;
+				PRODUCT_BUNDLE_IDENTIFIER = Sample.ShiftyTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -538,7 +540,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 15.2;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Sample.QuickSniperTests;
+				PRODUCT_BUNDLE_IDENTIFIER = Sample.ShiftyTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -554,7 +556,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Sample.QuickSniperUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = Sample.ShiftyUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -570,7 +572,7 @@
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = Sample.QuickSniperUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = Sample.ShiftyUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
@@ -581,7 +583,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		5A8891112DDB5214002C6D4A /* Build configuration list for PBXProject "QuickSniper" */ = {
+		5A8891112DDB5214002C6D4A /* Build configuration list for PBXProject "Shifty" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5A8891392DDB5215002C6D4A /* Debug */,
@@ -590,7 +592,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5A88913B2DDB5215002C6D4A /* Build configuration list for PBXNativeTarget "QuickSniper" */ = {
+		5A88913B2DDB5215002C6D4A /* Build configuration list for PBXNativeTarget "Shifty" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5A88913C2DDB5215002C6D4A /* Debug */,
@@ -599,7 +601,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5A88913E2DDB5215002C6D4A /* Build configuration list for PBXNativeTarget "QuickSniperTests" */ = {
+		5A88913E2DDB5215002C6D4A /* Build configuration list for PBXNativeTarget "ShiftyTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5A88913F2DDB5215002C6D4A /* Debug */,
@@ -608,7 +610,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		5A8891412DDB5215002C6D4A /* Build configuration list for PBXNativeTarget "QuickSniperUITests" */ = {
+		5A8891412DDB5215002C6D4A /* Build configuration list for PBXNativeTarget "ShiftyUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				5A8891422DDB5215002C6D4A /* Debug */,

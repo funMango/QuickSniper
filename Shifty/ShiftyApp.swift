@@ -1,6 +1,6 @@
 //
-//  QuickSniperApp.swift
-//  QuickSniper
+//  ShiftyApp.swift
+//  Shifty
 //
 //  Created by 이민호 on 5/19/25.
 //
@@ -13,7 +13,7 @@ import SwiftData
 import Combine
 
 @main
-struct QuickSniperApp: App {    
+struct ShiftyApp: App {    
     private let controllerContainer:  ControllerContainer
     private let modelContainer: ModelContainer
     private let modelContext: ModelContext
@@ -31,7 +31,7 @@ struct QuickSniperApp: App {
             keyboardShortcutManager,
             pageManger,
             serviceContainer
-        ) = QuickSniperApp.configureDependencies() {
+        ) = ShiftyApp.configureDependencies() {
             self.modelContainer = modelContainer
             self.modelContext = modelContext
             self.viewModelContainer = viewModelContainer

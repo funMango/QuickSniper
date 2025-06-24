@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleIdentifier</key>
+	<string>Shifty</string>
+	<key>CFBundleName</key>
+	<string>Shifty</string>
 	<key>CFBundleIconFile</key>
 	<string>AppIcon</string>
 	<key>UTExportedTypeDeclarations</key>
@@ -22,9 +26,5 @@
 		</dict>
 		<dict/>
 	</array>
-	<key>CFBundleIdentifier</key>
-	<string></string>
-	<key>LSUIElement</key>
-	<true/>
 </dict>
 </plist>
