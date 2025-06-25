@@ -34,11 +34,7 @@ struct FileBookmarkScrollView: View, DraggableView {
                     viewModel: viewModel,
                     draggingItemId: $draggingItem,
                     itemId: item.id,
-                )
-                .transition(.asymmetric(
-                    insertion: .scale.combined(with: .opacity),
-                    removal: .scale.combined(with: .opacity)
-                ))                
+                )              
             }
             
             VStack {

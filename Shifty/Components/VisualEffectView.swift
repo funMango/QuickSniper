@@ -8,9 +8,6 @@
 import SwiftUI
 import AppKit
 
-import SwiftUI
-import AppKit
-
 struct VisualEffectView: NSViewRepresentable {
     var material: NSVisualEffectView.Material
     var blendingMode: NSVisualEffectView.BlendingMode = .behindWindow // 기본값 제공
@@ -27,7 +24,6 @@ struct VisualEffectView: NSViewRepresentable {
 }
 
 // MARK: - Presets (for reuse)
-
 extension VisualEffectView {
     
     /// 기본 HUD 패널 스타일

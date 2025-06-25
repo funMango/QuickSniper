@@ -38,8 +38,7 @@ struct FolderScrollView: View, DraggableView {
                     )
                 }
             }
-        }
-        .fixedSize()
+        }        
         .frame(height: 40)
         .background(Color.clear)
         .syncQuery(

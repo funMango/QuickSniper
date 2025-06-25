@@ -36,7 +36,6 @@ extension View {
 }
 
 struct DragDropModifier<VM: DragabbleObject>: ViewModifier {
-    @State private var isDragPressed = false
     @State private var lastTargetedItem: String? = nil
     @Binding var draggingItemId: String?
     var viewModel: VM
@@ -45,10 +44,6 @@ struct DragDropModifier<VM: DragabbleObject>: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .overlay(
-                Rectangle()
-                    .fill(Color.black.opacity(isDragPressed ? 0.3 : 0))
-            )
             .clipShape(RoundedRectangle(cornerRadius: 10))
             .onDrag {
                 draggingItemId = itemId
@@ -59,10 +54,6 @@ struct DragDropModifier<VM: DragabbleObject>: ViewModifier {
                 Rectangle()
                     .fill(Color.clear)
                     .frame(width: 0, height: 0)
-            }
-            .onLongPressGesture(minimumDuration: 0.5, maximumDistance: 10) {                
-            } onPressingChanged: { pressing in
-                isDragPressed = pressing
             }
             .dropDestination(for: String.self) { items, location in
                 if let draggingItemId = draggingItemId {

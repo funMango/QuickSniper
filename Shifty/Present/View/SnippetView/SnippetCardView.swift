@@ -30,12 +30,7 @@ struct SnippetCardView: View {
                 onRightClick: {
                     viewModel.sendSelectedSnippetMessage()
                 }
-            )            
-            .onHover { hovering in
-                if hovering {
-                    viewModel.sendSelectedSnippet()
-                }
-            }
+            )                        
             .contextMenu{
                 SnippetOptionMenuView()                                    
             }

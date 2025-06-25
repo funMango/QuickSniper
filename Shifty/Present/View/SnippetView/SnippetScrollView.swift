@@ -33,10 +33,6 @@ struct SnippetScrollView: View, DraggableView {
                 SnippetCardView(
                     viewModel: viewModelContainer.getSnippetCardViewModel(snippet: snippet)
                 )
-                .transition(.asymmetric(
-                    insertion: .scale.combined(with: .opacity),
-                    removal: .scale.combined(with: .opacity)
-                ))
                 .dragDrop(
                     viewModel: viewModel,
                     draggingItemId: $draggingItem,

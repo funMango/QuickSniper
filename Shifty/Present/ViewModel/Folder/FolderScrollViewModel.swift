@@ -18,6 +18,7 @@ final class FolderScrollViewModel: FolderSubjectBindable, DragabbleObject, Query
     var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     var folderMessageSubject: CurrentValueSubject<FolderMessage?, Never>
     var cancellables: Set<AnyCancellable> = []
+    private var itemsById: [String: Folder] = [:]
     
     init(
         folderUsecase: FolderUseCase,
@@ -36,6 +37,10 @@ final class FolderScrollViewModel: FolderSubjectBindable, DragabbleObject, Query
     func getItems(_ items: [Folder]) {
         DispatchQueue.main.async { [weak self] in
             self?.items = items.sorted { $0.order < $1.order }
+            
+            // Dictionary 캐시 생성 (O(1) 조회)
+            self?.itemsById = Dictionary(uniqueKeysWithValues: items.map { ($0.id, $0) })
+            
             if self?.items.count == 1 {
                 let itemId = self?.items[0].id ?? ""
                 self?.selectItem(itemId)
@@ -44,10 +49,11 @@ final class FolderScrollViewModel: FolderSubjectBindable, DragabbleObject, Query
     }
     
     func selectItem(_ itemId: String) {
-        let item = items.filter{ $0.id == itemId }.first
-        if let item = item {
-            selectedFolderSubject.send(item)
+        guard let item = itemsById[itemId],
+              selectedFolderSubject.value?.id != itemId else {
+            return // 중복 선택 방지
         }
+        selectedFolderSubject.send(item)
     }
     
     func updateItems() {

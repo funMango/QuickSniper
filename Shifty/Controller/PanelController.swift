@@ -5,7 +5,6 @@ import Resolver
 import SwiftData
 
 class PanelController: NSWindowController, NSWindowDelegate {
-
     @Injected var viewModelContainer: ViewModelContainer
     private var allowAutoHide: Bool = true
     private var isPanelVisible = false
@@ -14,21 +13,44 @@ class PanelController: NSWindowController, NSWindowDelegate {
     private var isManualHide: Bool = false
 
     private var dockObserver: NSObjectProtocol?
+    
+    // 캐시된 프레임 정보
+    private var calculatedFrame: NSRect?
+    private var currentScreen: NSScreen?
+    
+    // 업데이트 중복 방지 및 애니메이션 상태 추적
+    private var isUpdating = false
+    private var isAnimating = false
+    
+    // 간단한 디바운싱 (타이머 없이)
+    private var lastActionTime: Date = Date.distantPast
 
     init(subject: PassthroughSubject<ControllerMessage, Never>) {
         self.subject = subject
         super.init(window: nil)
 
+        print("PanelController init 시작")
+        
         let hosting = makeHostingView()
-        let contentHeight = hosting.fittingSize.height
+        print("HostingView 생성 완료")
+        
+        // fittingSize 대신 안전한 기본값 사용
+        let contentHeight: CGFloat = 264 // 기본 높이
+        print("높이 설정: \(contentHeight)")
+        
         let initialFrame = PanelController.makeInitialFrame(height: contentHeight)
+        print("초기 프레임: \(initialFrame)")
+        
         let panel = PanelController.makePanel(with: hosting, frame: initialFrame)
+        print("패널 생성 완료")
 
         self.window = panel
         panel.delegate = self
         configurePanel(panel)
         setupBindings()
         setupDockObserver()
+        
+        print("PanelController init 완료")
     }
 
     required init?(coder: NSCoder) {
@@ -47,56 +69,116 @@ class PanelController: NSWindowController, NSWindowDelegate {
             object: nil,
             queue: .main
         ) { [weak self] _ in
+            // 화면 변경시에만 캐시 무효화
+            self?.invalidateFrameCache()
+            
             if self?.isPanelVisible == true {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                    self?.updatePanelSizeAndPosition()
-                }
+                self?.performFrameUpdate()
             }
         }
     }
-
-    private func getMaxDockHeight(screen: NSScreen) -> CGFloat {
-        return 100
+    
+    private func invalidateFrameCache() {
+        calculatedFrame = nil
+        currentScreen = nil
     }
 
-    private func getMaxSideDockWidth(screen: NSScreen) -> CGFloat {
-        return 120
+    // 실제 독 높이 계산
+    private func getRealDockHeight(screen: NSScreen) -> CGFloat {
+        let visibleFrame = screen.visibleFrame
+        let fullFrame = screen.frame
+        let bottomDockHeight = visibleFrame.origin.y - fullFrame.origin.y
+        return max(bottomDockHeight, 0)
+    }
+
+    // 실제 독 너비 계산 (좌/우 독)
+    private func getRealDockWidth(screen: NSScreen) -> CGFloat {
+        let visibleFrame = screen.visibleFrame
+        let fullFrame = screen.frame
+        let leftDockWidth = visibleFrame.origin.x - fullFrame.origin.x
+        let rightDockWidth = fullFrame.maxX - visibleFrame.maxX
+        return max(leftDockWidth, rightDockWidth, 0)
     }
 
     private func getSafePanelHeight(screen: NSScreen) -> CGFloat {
-        let maxDockHeight = getMaxDockHeight(screen: screen)
+        let realDockHeight = getRealDockHeight(screen: screen)
+        let minDockHeight: CGFloat = 80 // 독이 숨겨져도 최소 여백 확보
         let extraSafetyMargin: CGFloat = 20
-        return maxDockHeight + extraSafetyMargin
+        return max(realDockHeight, minDockHeight) + extraSafetyMargin
     }
 
     private func getSafePanelWidth(screen: NSScreen) -> CGFloat {
         let fullWidth = screen.frame.width
-        let maxSideDockWidth = getMaxSideDockWidth(screen: screen)
+        let realDockWidth = getRealDockWidth(screen: screen)
+        let minSideDockWidth: CGFloat = 60 // 좌/우 독이 숨겨져도 최소 여백
         let horizontalMargin: CGFloat = 30
         let extraSafetyMargin: CGFloat = 20
-        let safeWidth = fullWidth - (maxSideDockWidth * 2) - (horizontalMargin * 2) - (extraSafetyMargin * 2)
+        
+        let effectiveDockWidth = max(realDockWidth, minSideDockWidth)
+        let safeWidth = fullWidth - (effectiveDockWidth * 2) - (horizontalMargin * 2) - (extraSafetyMargin * 2)
         return max(safeWidth, 600)
     }
 
-    private func updatePanelSizeAndPosition() {
+    private func getOrCalculateFrame(screen: NSScreen) -> NSRect {
+        // 같은 화면이고 캐시된 프레임이 있으면 재사용
+        // 단, 독 상태가 변경될 수 있으므로 visibleFrame도 비교
+        if let cached = calculatedFrame,
+           let cachedScreen = currentScreen,
+           cachedScreen.frame.equalTo(screen.frame) &&
+           cachedScreen.visibleFrame.equalTo(screen.visibleFrame) {
+            return cached
+        }
+        
+        // 새로운 프레임 계산
+        let frame = calculatePanelFrame(screen: screen)
+        calculatedFrame = frame
+        currentScreen = screen
+        return frame
+    }
+
+    private func performFrameUpdate() {
+        // 중복 호출 방지
+        guard !isUpdating else { return }
+        // 애니메이션 중이면 무시 (기존 애니메이션 완료 후 처리)
+        guard !isAnimating else { return }
+        
+        isUpdating = true
+        defer { isUpdating = false }
+        
         guard let window = self.window, isPanelVisible else { return }
         guard let screen = NSScreen.main else { return }
 
-        let targetFrame = calculatePanelFrame(screen: screen)
+        let targetFrame = getOrCalculateFrame(screen: screen)
+        let currentFrame = window.frame
 
-        if abs(window.frame.origin.y - targetFrame.origin.y) > 1 ||
-            abs(window.frame.width - targetFrame.width) > 1 ||
-            abs(window.frame.origin.x - targetFrame.origin.x) > 1 {
-            NSAnimationContext.runAnimationGroup { context in
-                context.duration = 0.2
-                context.timingFunction = CAMediaTimingFunction(name: .easeOut)
-                window.animator().setFrame(targetFrame, display: true)
+        // 프레임이 실제로 변경되었을 때만 업데이트 (임계값 사용)
+        let threshold: CGFloat = 2.0 // 2픽셀 이상 차이날 때만 업데이트
+        if abs(currentFrame.origin.y - targetFrame.origin.y) > threshold ||
+            abs(currentFrame.width - targetFrame.width) > threshold ||
+            abs(currentFrame.origin.x - targetFrame.origin.x) > threshold {
+            
+            isAnimating = true
+            
+            // 간단한 애니메이션으로 변경
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self, let window = self.window else {
+                    self?.isAnimating = false
+                    return
+                }
+                
+                // 직접 setFrame 호출 (애니메이션 없이)
+                window.setFrame(targetFrame, display: true)
+                self.isAnimating = false
             }
         }
     }
 
+    private func updatePanelSizeAndPosition() {
+        performFrameUpdate()
+    }
+
     private func calculatePanelFrame(screen: NSScreen) -> NSRect {
-        let panelHeight = window?.frame.height ?? 100
+        let panelHeight = window?.frame.height ?? 264
         let safeBottomMargin = getSafePanelHeight(screen: screen)
         let safeWidth = getSafePanelWidth(screen: screen)
         let x = (screen.frame.width - safeWidth) / 2
@@ -105,16 +187,30 @@ class PanelController: NSWindowController, NSWindowDelegate {
     }
 
     func toggle() {
+        guard shouldAllowAction() else { return }
         isPanelVisible ? performHidePanel() : showPanel()
     }
 
     func hidePanel() {
+        guard shouldAllowAction() else { return }
         isManualHide = true
         performHidePanel()
     }
 
     func AutoHidePanel() {
+        guard shouldAllowAction() else { return }
         performHidePanel()
+    }
+    
+    private func shouldAllowAction() -> Bool {
+        let now = Date()
+        let timeSinceLastAction = now.timeIntervalSince(lastActionTime)
+        
+        // 0.2초 내의 연속 호출 방지
+        guard timeSinceLastAction > 0.2 else { return false }
+        
+        lastActionTime = now
+        return true
     }
 
     private func showPanel() {
@@ -123,26 +219,21 @@ class PanelController: NSWindowController, NSWindowDelegate {
 
         isManualHide = false
 
-        let targetFrame = calculatePanelFrame(screen: screen)
-        let startFrame = NSRect(
-            x: targetFrame.origin.x,
-            y: targetFrame.origin.y,
-            width: targetFrame.width,
-            height: targetFrame.height
-        )
+        let targetFrame = getOrCalculateFrame(screen: screen)
 
-        window.setFrame(startFrame, display: false)
+        // 단순한 방식으로 변경
+        window.setFrame(targetFrame, display: false)
         window.alphaValue = 0
         window.orderFront(nil)
         window.makeKey()
 
-        NSAnimationContext.runAnimationGroup { context in
+        // 알파 애니메이션만 사용
+        NSAnimationContext.runAnimationGroup({ context in
             context.duration = 0.25
             context.timingFunction = CAMediaTimingFunction(name: .easeOut)
             window.animator().alphaValue = 1
-        }
+        })
 
-        isManualHide = false
         isPanelVisible = true
         allowAutoHide = true
         subject.send(.panelStatus(true))
@@ -151,12 +242,14 @@ class PanelController: NSWindowController, NSWindowDelegate {
     private func performHidePanel() {
         guard let window = self.window, isPanelVisible else { return }
         
+        isAnimating = true
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 0.25
             context.timingFunction = CAMediaTimingFunction(name: .easeIn)
             window.animator().alphaValue = 0
-        }, completionHandler: {
+        }, completionHandler: { [weak self] in
             window.orderOut(nil)
+            self?.isAnimating = false
         })
 
         isPanelVisible = false
@@ -221,20 +314,42 @@ class PanelController: NSWindowController, NSWindowDelegate {
         let modelContext = Resolver.resolve(ModelContext.self)
         let view = PanelView(viewModel: viewModelContainer.panelViewModel)
             .environment(\.modelContext, modelContext)
-        return NSHostingView(rootView: view)
+        
+        let hostingView = NSHostingView(rootView: view)
+        
+        // 가장 안전한 설정: 기본 동작 유지
+        return hostingView
     }
 
     private static func makeInitialFrame(height: CGFloat) -> NSRect {
-        let screen = NSScreen.main?.frame ?? NSRect(x: 0, y: 0, width: 1920, height: 1080)
-        let maxDockHeight: CGFloat = 100
-        let maxSideDockWidth: CGFloat = 120
+        guard let screen = NSScreen.main else {
+            return NSRect(x: 0, y: 0, width: 1000, height: height)
+        }
+        
+        // 실제 독 상태를 반영한 초기 프레임 계산
+        let visibleFrame = screen.visibleFrame
+        let fullFrame = screen.frame
+        
+        let realDockHeight = max(visibleFrame.origin.y - fullFrame.origin.y, 0)
+        let realDockWidth = max(
+            visibleFrame.origin.x - fullFrame.origin.x,
+            fullFrame.maxX - visibleFrame.maxX,
+            0
+        )
+        
+        let minDockHeight: CGFloat = 80
+        let minSideDockWidth: CGFloat = 60
         let extraSafetyMargin: CGFloat = 20
-        let safeBottomMargin = maxDockHeight + extraSafetyMargin
         let horizontalMargin: CGFloat = 30
-        let safeWidth = screen.width - (maxSideDockWidth * 2) - (horizontalMargin * 2) - (extraSafetyMargin * 2)
+        
+        let safeBottomMargin = max(realDockHeight, minDockHeight) + extraSafetyMargin
+        let effectiveDockWidth = max(realDockWidth, minSideDockWidth)
+        let safeWidth = fullFrame.width - (effectiveDockWidth * 2) - (horizontalMargin * 2) - (extraSafetyMargin * 2)
         let finalWidth = max(safeWidth, 600)
-        let x = (screen.width - finalWidth) / 2
+        
+        let x = (fullFrame.width - finalWidth) / 2
         let y = safeBottomMargin
+        
         return NSRect(x: x, y: y, width: finalWidth, height: height)
     }
 
@@ -248,6 +363,7 @@ class PanelController: NSWindowController, NSWindowDelegate {
             backing: .buffered,
             defer: false
         )
+        
         panel.contentView = hosting
         return panel
     }
