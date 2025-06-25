@@ -58,6 +58,23 @@
         }
       }
     },
+    "cancelAnytime" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel anytime"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "언제든 취소 가능"
+          }
+        }
+      }
+    },
     "chooseSaveFiles" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -409,6 +426,40 @@
         }
       }
     },
+    "folderLimit" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folder Limit Reached"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "폴더 개수 제한"
+          }
+        }
+      }
+    },
+    "folderLimitExplain" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You can create up to 3 folders.\\n\\nNeed more folders?\\nPro features are coming soon!\\n\\nAn update with unlimited folder creation\\nand various new features will be released shortly.\\n\\nStay tuned! 🚀"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "더 많은 폴더가 필요하시나요?\\n\nPro 기능을 준비 중입니다!\\n\\n무제한 폴더 생성과 다양한 기능을 제공하는\\n\n업데이트가 곧 출시될 예정입니다.\\n\\n많은 기대 부탁드립니다! 🚀\""
+          }
+        }
+      }
+    },
     "folderName" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -507,6 +558,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "제목을 입력하세요"
+          }
+        }
+      }
+    },
+    "later" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maybe later"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "나중에"
           }
         }
       }
@@ -647,7 +715,44 @@
         }
       }
     },
+    "sevenDaysFree" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "7-day free trial"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "첫 7일 무료 체험"
+          }
+        }
+      }
+    },
+    "sevenDaysTrial" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Start 7-day free trial"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "7일 무료 체험 시작"
+          }
+        }
+      }
+    },
     "shifty" : {
+
+    },
+    "Shifty Pro" : {
 
     },
     "shiftyOpen" : {

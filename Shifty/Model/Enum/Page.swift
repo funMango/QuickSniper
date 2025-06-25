@@ -14,6 +14,7 @@ enum Page: Equatable {
     case shortcutSettings
     case createFolder
     case fileBookmark
+    case subscription
     
     
     func getShowMessage() -> ControllerMessage {
@@ -30,6 +31,8 @@ enum Page: Equatable {
             return .showCreateFolderView
         case .fileBookmark:
             return .showFileBookmarkCreateView
+        case .subscription:
+            return .showSubscriptionView
         }
     }
     
@@ -47,6 +50,8 @@ enum Page: Equatable {
             return .hideCreateFolderView
         case .fileBookmark:
             return .hideFileBookmarkCreateView
+        case .subscription:
+            return .hideSubscriptionView            
         }
     }
     

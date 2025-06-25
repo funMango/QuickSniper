@@ -1,6 +1,6 @@
 //
 //  ControllerContainer.swift
-//  QuickSniper
+//  Shifty
 //
 //  Created by 이민호 on 5/22/25.
 //
@@ -20,6 +20,7 @@ final class ControllerContainer {
     private var hotCornerController: HotCornerController?
     private var toastController: ToastController?
     private var fileBookmakrController: FileBookmarkController?
+    private var subscriptionController: SubscriptionController?
     
     private var panelStatus = false
                 
@@ -55,6 +56,8 @@ extension ControllerContainer {
                     switchCurrentPage(.createFolder)
                 case .openFileBookmarkCreateView:
                     switchCurrentPage(.fileBookmark)
+                case .openSubscriptionView:
+                    switchCurrentPage(.subscription)
                 case .openHotCorner:
                     hotConerConrollerInit()
                     DispatchQueue.main.async { [weak self] in
@@ -111,6 +114,8 @@ extension ControllerContainer {
             createFolderControllerInit()
         case .fileBookmark:
             fileBookmarkControllerInit()
+        case .subscription:
+            subscriptionControllerInit()
         }
         
         DispatchQueue.main.async { [weak self] in            
@@ -153,6 +158,14 @@ extension ControllerContainer {
     private func fileBookmarkControllerInit() {
         if fileBookmakrController == nil {
             self.fileBookmakrController = FileBookmarkController(
+                subject: controllSubject
+            )
+        }
+    }
+    
+    private func subscriptionControllerInit() {
+        if subscriptionController == nil {
+            self.subscriptionController = SubscriptionController(
                 subject: controllSubject
             )
         }

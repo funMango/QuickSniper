@@ -40,7 +40,7 @@ extension VisualEffectView {
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
             .overlay(
                 RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(Color.background.opacity(0.4))
+                    .fill(Color.background.opacity(0.3))
             )
     }
     

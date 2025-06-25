@@ -7,12 +7,14 @@
 
 import SwiftUI
 import Resolver
+import SwiftData
 
 struct PanelHeaderView: View {
     @Injected var controllerContainer: ControllerContainer
     @Injected var viewModelContainer: ViewModelContainer
     @State private var selectedFolder: String = "Documents"
     @StateObject var viewModel: PanelHeaderViewModel
+    @Query var folders: [Folder]
     
     init(viewModel: PanelHeaderViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
@@ -39,10 +41,12 @@ struct PanelHeaderView: View {
                 size: 14
             )
         }
+        .syncQuery(viewModel: viewModel, items: folders)
         .background(
             VisualEffectView.panel
         )
     }
+
 }
 
 //#Preview {

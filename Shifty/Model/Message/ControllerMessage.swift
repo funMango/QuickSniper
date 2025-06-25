@@ -56,6 +56,11 @@ enum ControllerMessage: Equatable {
     // MARK: - Page
     case stopPageAutohide
     case restartPageAutohide
+    
+    // MARK: - Subscription
+    case openSubscriptionView
+    case hideSubscriptionView
+    case showSubscriptionView
         
     // MARK: - else
     case activateAutoHidePanel

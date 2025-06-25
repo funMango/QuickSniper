@@ -2,14 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>LSApplicationCategoryType</key>
-	<string>public.app-category.productivity</string>
-	<key>CFBundleExecutable</key>
-	<string></string>
-	<key>CFBundleIdentifier</key>
-	<string>Shifty</string>
-	<key>CFBundleName</key>
-	<string>Shifty</string>
 	<key>CFBundleIconFile</key>
 	<string>AppIcon</string>
 	<key>UTExportedTypeDeclarations</key>

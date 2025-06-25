@@ -230,6 +230,10 @@ final class ViewModelContainer {
         selectedFolderSubject: selectedFolderSubject
     )
     
+    lazy var subscriptionViewModel = SubscriptionViewModel(
+        controllSubject: controllerSubject
+    )
+    
     lazy var panelViewModel = PanelViewModel(
         userUseCase: userUseCase,
         folderUseCase: folderUseCase,

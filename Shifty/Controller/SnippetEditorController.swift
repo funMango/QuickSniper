@@ -12,7 +12,6 @@ import Resolver
 
 final class SnippetEditorController: ViewWindowControllable {
     @Injected var viewModelContainer: ViewModelContainer
-
     let subject: PassthroughSubject<ControllerMessage, Never>
     let hideMessage: ControllerMessage = .hideSnippetEditorView
     var windowController: BasePanelController<SnippetEditorView>?

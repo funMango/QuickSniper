@@ -110,6 +110,7 @@ struct ShiftyApp: App {
             )
             
             let pageManager = PageManager(controllSubject: controllerSubject)
+            let subscriptionManager = SubscriptionManager()
             
             let serviceContainer = ServiceContainer(
                 serviceSubject: serviceSubject,
@@ -123,6 +124,7 @@ struct ShiftyApp: App {
             Resolver.register { viewModelContainer }.scope(.application)
             Resolver.register { keyboardShortcutManager }.scope(.application)
             Resolver.register { pageManager }.scope(.application)
+            Resolver.register { subscriptionManager }.scope(.application)
             Resolver.register { serviceContainer }.scope(.application)
             
             /// System init function
