@@ -178,12 +178,12 @@ class PanelController: NSWindowController, NSWindowDelegate {
     }
 
     private func calculatePanelFrame(screen: NSScreen) -> NSRect {
-        let panelHeight = window?.frame.height ?? 264
-        let safeBottomMargin = getSafePanelHeight(screen: screen)
-        let safeWidth = getSafePanelWidth(screen: screen)
-        let x = (screen.frame.width - safeWidth) / 2
-        let y = safeBottomMargin
-        return NSRect(x: x, y: y, width: safeWidth, height: panelHeight)
+        let panelHeight = window?.frame.height ?? 264 // 현재 패널의 높이를 유지하거나 기본값 사용
+        let targetWidth = screen.frame.width * 0.8 // 화면 너비의 80%
+        let x = (screen.frame.width - targetWidth) / 2 // 중앙 정렬
+        let y = screen.frame.height * 0.1 // 화면 하단에서 30% 높이
+        
+        return NSRect(x: x, y: y, width: targetWidth, height: panelHeight)
     }
 
     func toggle() {
@@ -259,7 +259,7 @@ class PanelController: NSWindowController, NSWindowDelegate {
     private func forceFocus() {
         guard let window = self.window else { return }
 
-        window.orderFrontRegardless()
+        window.orderFront(nil)
         window.makeKey()
         window.makeMain()
 
@@ -322,35 +322,24 @@ class PanelController: NSWindowController, NSWindowDelegate {
     }
 
     private static func makeInitialFrame(height: CGFloat) -> NSRect {
-        guard let screen = NSScreen.main else {
-            return NSRect(x: 0, y: 0, width: 1000, height: height)
+        guard let screen = NSScreen.screens.first else { // NSScreen.main 대신 첫 번째 화면을 시도
+            // Fallback: Default to a reasonable size centered on a hypothetical screen
+            let defaultScreenSize = NSScreen.main?.frame.size ?? CGSize(width: 1920, height: 1080)
+            let defaultWidth: CGFloat = defaultScreenSize.width * 0.8 // 화면 너비의 80%
+            let defaultX = (defaultScreenSize.width - defaultWidth) / 2
+            let defaultY = defaultScreenSize.height * 0.3 // 화면 하단에서 30% 높이
+            return NSRect(x: defaultX, y: defaultY, width: defaultWidth, height: height)
         }
         
-        // 실제 독 상태를 반영한 초기 프레임 계산
-        let visibleFrame = screen.visibleFrame
+        // 실제 화면 정보를 기반으로 프레임 계산
         let fullFrame = screen.frame
+        let targetWidth: CGFloat = fullFrame.width * 0.8 // 화면 너비의 80%
+        let targetHeight: CGFloat = height // 기존 높이 유지
         
-        let realDockHeight = max(visibleFrame.origin.y - fullFrame.origin.y, 0)
-        let realDockWidth = max(
-            visibleFrame.origin.x - fullFrame.origin.x,
-            fullFrame.maxX - visibleFrame.maxX,
-            0
-        )
+        let x = (fullFrame.width - targetWidth) / 2 // 중앙 정렬
+        let y = fullFrame.height * 0.3 // 화면 하단에서 30% 높이
         
-        let minDockHeight: CGFloat = 80
-        let minSideDockWidth: CGFloat = 60
-        let extraSafetyMargin: CGFloat = 20
-        let horizontalMargin: CGFloat = 30
-        
-        let safeBottomMargin = max(realDockHeight, minDockHeight) + extraSafetyMargin
-        let effectiveDockWidth = max(realDockWidth, minSideDockWidth)
-        let safeWidth = fullFrame.width - (effectiveDockWidth * 2) - (horizontalMargin * 2) - (extraSafetyMargin * 2)
-        let finalWidth = max(safeWidth, 600)
-        
-        let x = (fullFrame.width - finalWidth) / 2
-        let y = safeBottomMargin
-        
-        return NSRect(x: x, y: y, width: finalWidth, height: height)
+        return NSRect(x: x, y: y, width: targetWidth, height: targetHeight)
     }
 
     private static func makePanel(
@@ -371,7 +360,7 @@ class PanelController: NSWindowController, NSWindowDelegate {
 
 class ShiftyPanel: NSPanel {
     override var canBecomeKey: Bool { true }
-    override var canBecomeMain: Bool { true }
+    override var canBecomeMain: Bool { false }
 
     override func keyDown(with event: NSEvent) {
         super.keyDown(with: event)

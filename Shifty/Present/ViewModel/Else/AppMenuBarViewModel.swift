@@ -19,7 +19,7 @@ final class AppMenuBarViewModel: ObservableObject {
     }
     
     func openPanel() {
-        controllerSubject.send(.openPanel)
+        controllerSubject.send(.togglePanel)
     }
     
     func openShortcutSettingsView() {

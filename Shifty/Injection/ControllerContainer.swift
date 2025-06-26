@@ -42,7 +42,7 @@ extension ControllerContainer {
                 guard let self else { return }
                 
                 switch message {
-                case .togglePanel:
+                case .togglePanel:                    
                     togglePanel()
                 case .openPanel:
                     switchCurrentPage(.panel)
