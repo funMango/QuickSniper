@@ -360,7 +360,7 @@ class PanelController: NSWindowController, NSWindowDelegate {
 
 class ShiftyPanel: NSPanel {
     override var canBecomeKey: Bool { true }
-    override var canBecomeMain: Bool { false }
+    override var canBecomeMain: Bool { true }
 
     override func keyDown(with event: NSEvent) {
         super.keyDown(with: event)
