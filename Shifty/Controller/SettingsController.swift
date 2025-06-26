@@ -15,7 +15,7 @@ class SettingsController: NSObject {
     var subject: PassthroughSubject<ControllerMessage, Never>
     var cancellables = Set<AnyCancellable>()
     var shared: NSWindowController?
-    let width: CGFloat = 350
+    let width: CGFloat = 400
     let height: CGFloat = 200
     
     init(subject: PassthroughSubject<ControllerMessage, Never>) {

@@ -41,12 +41,12 @@ struct SettingsView: View {
                 )
                 .accentColor(.accentColor)
             }
-            
-//            HotCornerSettingView(
-//                viewModel: viewModelContainer.hotCornerSettingViewModel
-//            )
-                                                                                            
+                    
             Spacer()
+            
+            Divider()
+            
+            SettingsFooterView()
         }
         .padding()
         .frame(width: width, height: height)
@@ -56,6 +56,6 @@ struct SettingsView: View {
     }
 }
 
-//#Preview {
-//    ShortcutSettingsView()
-//}
+#Preview {
+    SettingsView(width: 400, height: 200)
+}

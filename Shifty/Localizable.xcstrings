@@ -444,21 +444,7 @@
       }
     },
     "folderLimitExplain" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "You can create up to 3 folders.\\n\\nNeed more folders?\\nPro features are coming soon!\\n\\nAn update with unlimited folder creation\\nand various new features will be released shortly.\\n\\nStay tuned! 🚀"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "needs_review",
-            "value" : "더 많은 폴더가 필요하시나요?\\n\nPro 기능을 준비 중입니다!\\n\\n무제한 폴더 생성과 다양한 기능을 제공하는\\n\n업데이트가 곧 출시될 예정입니다.\\n\\n많은 기대 부탁드립니다! 🚀\""
-          }
-        }
-      }
+
     },
     "folderName" : {
       "extractionState" : "manual",
@@ -630,6 +616,23 @@
         }
       }
     },
+    "privacyPolicy" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Policy"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "개인정보보호정책"
+          }
+        }
+      }
+    },
     "renameFolder" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -789,6 +792,23 @@
         }
       }
     },
+    "termsOfService" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terms of Service"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이용약관"
+          }
+        }
+      }
+    },
     "topLeft" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -836,6 +856,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "업데이트"
+          }
+        }
+      }
+    },
+    "website" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Website"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "웹사이트"
           }
         }
       }

@@ -11,7 +11,7 @@ import SwiftData
 
 enum MenuBarItemType {
     case settings
-    case close
+    case close    
     case quit
 }
 
@@ -45,8 +45,9 @@ struct AppMenuBarView: View {
             }
             .onHover { isHovered in
                 hoveredItem = isHovered ? .settings : nil
-            }            
+            }
             
+                        
             Divider()
                 .padding(.vertical, 4)
             
