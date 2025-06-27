@@ -602,6 +602,23 @@
         }
       }
     },
+    "name" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "이름"
+          }
+        }
+      }
+    },
     "noMoveFolder" : {
       "extractionState" : "manual",
       "localizations" : {
