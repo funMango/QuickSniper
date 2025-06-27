@@ -33,7 +33,7 @@ final class ItemPlusButtonViewModel: ObservableObject, FolderSubjectBindable {
         case .fileBookmark:
             controllSubject.send(.openFileBookmarkCreateView)
         case .urlBookmark:
-            print("send openUrlBookmarkCreateView")
+            controllSubject.send(.openUrlBookmarkCreateView)
         }
     }
 }

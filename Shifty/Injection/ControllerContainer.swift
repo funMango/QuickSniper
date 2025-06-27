@@ -21,6 +21,7 @@ final class ControllerContainer {
     private var toastController: ToastController?
     private var fileBookmakrController: FileBookmarkController?
     private var subscriptionController: SubscriptionController?
+    private var urlBookmarkController: UrlBookmarkController?
     
     private var panelStatus = false
                 
@@ -58,6 +59,8 @@ extension ControllerContainer {
                     switchCurrentPage(.fileBookmark)
                 case .openSubscriptionView:
                     switchCurrentPage(.subscription)
+                case .openUrlBookmarkCreateView:
+                    switchCurrentPage(.urlBookmark)
                 case .openHotCorner:
                     hotConerConrollerInit()
                     DispatchQueue.main.async { [weak self] in
@@ -116,6 +119,8 @@ extension ControllerContainer {
             fileBookmarkControllerInit()
         case .subscription:
             subscriptionControllerInit()
+        case .urlBookmark:
+            urlBookmarkControllerInit()
         }
         
         DispatchQueue.main.async { [weak self] in            
@@ -184,6 +189,14 @@ extension ControllerContainer {
         if toastController == nil {
             self.toastController = ToastController(
                 controllSubject: controllSubject
+            )
+        }
+    }
+    
+    private func urlBookmarkControllerInit() {
+        if urlBookmarkController == nil {
+            self.urlBookmarkController = UrlBookmarkController(
+                subject: controllSubject
             )
         }
     }

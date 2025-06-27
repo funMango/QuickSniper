@@ -1,22 +1,22 @@
 //
-//  FileBookmarkController.swift
-//  QuickSniper
+//  UrlBookmarkCreateController.swift
+//  Shifty
 //
-//  Created by 이민호 on 6/15/25.
+//  Created by 이민호 on 6/27/25.
 //
 
 import Foundation
 import Combine
 import Resolver
 
-final class FileBookmarkController: ViewWindowControllable {
+final class UrlBookmarkController: ViewWindowControllable {
     @Injected var viewModelContainer: ViewModelContainer
     
-    let subject: PassthroughSubject<ControllerMessage, Never>
-    let hideMessage: ControllerMessage = .hideFileBookmarkCreateView
-    var windowController: BasePanelController<FileBookmarkCreateView>?
-    var cancellables = Set<AnyCancellable>()
-    var width: CGFloat = 500, height: CGFloat = 300
+    var subject: PassthroughSubject<ControllerMessage, Never>
+    var hideMessage: ControllerMessage = .hideUrlBookmarkCreateView
+    var windowController: BasePanelController<UrlBookmarkCreateView>?
+    var cancellables: Set<AnyCancellable> = []
+    var width: CGFloat = 400, height: CGFloat = 300
     
     init(
         subject: PassthroughSubject<ControllerMessage, Never>
@@ -26,26 +26,26 @@ final class FileBookmarkController: ViewWindowControllable {
         setupBindings()
     }
     
-    func makeView() -> FileBookmarkCreateView {
-        return FileBookmarkCreateView(
-            viewModel: viewModelContainer.fileBookmarkCreateViewModel
+    func makeView() -> UrlBookmarkCreateView {
+        return UrlBookmarkCreateView(
+            viewModel: viewModelContainer.urlBookmarkCreateViewModel
         )
     }
     
     func show() {
         makeWindowController(
             size: CGSize(width: width, height: height),
-            page: .fileBookmark
+            page: .urlBookmark
         )
     }
-            
+    
     func controllMessageBindings() {
         subject
             .sink { [weak self] message in
                 guard let self else { return }
                 
                 switch message {
-                case .showFileBookmarkCreateView:
+                case .showUrlBookmarkCreateView:
                     self.show()
                 default: break
                 }

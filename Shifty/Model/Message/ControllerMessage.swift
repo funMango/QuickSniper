@@ -53,6 +53,12 @@ enum ControllerMessage: Equatable {
     case showFileBookmarkCreateView
     case didHideFileBookmarkCreateView
     
+    // MARK: - UrlBookmark
+    case hideUrlBookmarkCreateView
+    case openUrlBookmarkCreateView
+    case showUrlBookmarkCreateView
+    case didHideUrlBookmarkCreateView
+    
     // MARK: - Page
     case stopPageAutohide
     case restartPageAutohide

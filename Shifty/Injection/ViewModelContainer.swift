@@ -222,7 +222,7 @@ final class ViewModelContainer {
         selectedFolderSubject: selectedFolderSubject
     )
     
-    lazy var urlBookmarkCreateViewModel = UrlBookmarkCreateViewModel()
+    lazy var urlBookmarkCreateViewModel = UrlBookmarkCreateViewModel(controllSubject: controllerSubject)
             
     //MARK: - else
     lazy var appMenuBarViewModel = AppMenuBarViewModel(

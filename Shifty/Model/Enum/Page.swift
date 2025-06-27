@@ -15,6 +15,7 @@ enum Page: Equatable {
     case createFolder
     case fileBookmark
     case subscription
+    case urlBookmark
     
     
     func getShowMessage() -> ControllerMessage {
@@ -33,6 +34,8 @@ enum Page: Equatable {
             return .showFileBookmarkCreateView
         case .subscription:
             return .showSubscriptionView
+        case .urlBookmark:
+            return .showUrlBookmarkCreateView
         }
     }
     
@@ -51,7 +54,9 @@ enum Page: Equatable {
         case .fileBookmark:
             return .hideFileBookmarkCreateView
         case .subscription:
-            return .hideSubscriptionView            
+            return .hideSubscriptionView
+        case .urlBookmark:
+            return .hideUrlBookmarkCreateView
         }
     }
     
@@ -59,6 +64,8 @@ enum Page: Equatable {
         switch self {
         case .fileBookmark:
             return .didHideFileBookmarkCreateView
+        case .urlBookmark:
+            return .didHideUrlBookmarkCreateView
         default:
             return nil
         }

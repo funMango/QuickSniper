@@ -10,8 +10,10 @@ import Resolver
 
 struct UrlBookmarkCreateView: View {
     @StateObject var viewModel: UrlBookmarkCreateViewModel
-    
-    init(viewModel: UrlBookmarkCreateViewModel) {
+        
+    init(
+        viewModel: UrlBookmarkCreateViewModel
+    ) {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
@@ -38,15 +40,21 @@ struct UrlBookmarkCreateView: View {
             
             HStack {
                 Spacer()
-                ReturnButton(type: .cancel, action: {})
-                ReturnButton(type: .save, action: {})
+                
+                ReturnButton(type: .cancel) {
+                    viewModel.cancel()
+                }
+                
+                ReturnButton(type: .save) {
+                    // 저장 함수
+                }
+                .disabled(viewModel.buttonDisabled())
             }
             
-        }
+        }        
         .padding()
-        .background(
-            VisualEffectView.panel
-        )
+        .cornerRadius(10)
+        .background(VisualEffectView.panel)
     }
 }
 

@@ -59,7 +59,7 @@ final class PageManager {
         }
     }
     
-    private func notifyDidHideMessage(from page: Page) {
+    private func notifyDidHideMessage(from page: Page) {        
         if let message = page.getDidHideMessage() {
             controllSubject.send(message)
         }
