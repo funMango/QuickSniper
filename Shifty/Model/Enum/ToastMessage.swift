@@ -40,7 +40,7 @@ struct ToastMessage: Identifiable, Equatable {
     
     static func copySuccess(snippetTitle: String) -> ToastMessage {
         ToastMessage(
-            title: "스니펫이 복사되었습니다",
+            title: String(localized: "copySnippet"),
             message: snippetTitle,
             type: .success,
             duration: 1.5

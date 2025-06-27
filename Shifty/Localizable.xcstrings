@@ -548,6 +548,9 @@
         }
       }
     },
+    "Key" : {
+      "extractionState" : "manual"
+    },
     "later" : {
       "extractionState" : "manual",
       "localizations" : {
