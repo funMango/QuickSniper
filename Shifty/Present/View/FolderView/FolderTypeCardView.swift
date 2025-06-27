@@ -18,7 +18,7 @@ struct FolderTypeCardView: View {
         } label: {
             VStack(spacing: 8) {
                 Spacer()
-                Image(systemName: folderType.icon)
+                Image(systemName: folderType.getSymbol())
                     .font(.system(size: 24, weight: .regular))
                     .frame(width: 24, height: 24)
                     .foregroundColor(.primary)

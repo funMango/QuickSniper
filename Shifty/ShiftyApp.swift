@@ -69,7 +69,7 @@ struct ShiftyApp: App {
     )? {
         do {
             /// SwiftData
-            let container = try ModelContainer(for: Folder.self, Snippet.self, User.self, FileBookmarkItem.self)
+            let container = try ModelContainer(for: Folder.self, Snippet.self, User.self, FileBookmarkItem.self, UrlBookmark.self)
             let context = container.mainContext
             
             /// Core Subject

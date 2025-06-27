@@ -216,6 +216,11 @@ final class ViewModelContainer {
             selectedFolderSubject: selectedFolderSubject
         )
     }
+    
+    //MARK: - UrlBookmark
+    lazy var urlBookmarkScrollViewModel = UrlBookmarkScrollViewModel(
+        selectedFolderSubject: selectedFolderSubject
+    )
             
     //MARK: - else
     lazy var appMenuBarViewModel = AppMenuBarViewModel(

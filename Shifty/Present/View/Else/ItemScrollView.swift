@@ -27,6 +27,10 @@ struct ItemScrollView: View {
                 FileBookmarkScrollView(
                     viewModel: viewModelContainer.fileBookmarkScrollViewModel
                 )
+            case .urlBookmark:
+                UrlBookmarkScrollView(
+                    viewModel: viewModelContainer.urlBookmarkScrollViewModel
+                )
             case .none:
                 Text("")
             }

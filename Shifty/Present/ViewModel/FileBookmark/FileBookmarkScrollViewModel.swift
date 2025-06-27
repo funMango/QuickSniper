@@ -37,6 +37,7 @@ final class FileBookmarkScrollViewModel: ObservableObject, DragabbleObject, Quer
         self.fileBookmarkSubject = fileBookmarkSubject
         self.folderMessageSubject = folderMessageSubject
         
+        /// init function
         setupSelectedFolderBindings()
         setupFileBookmarkMessageBindings()
         setupFolderMessageBindings()
