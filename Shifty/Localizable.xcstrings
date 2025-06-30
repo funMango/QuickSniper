@@ -409,9 +409,6 @@
         }
       }
     },
-    "FileBookmarkDeleteButtonView.swift" : {
-
-    },
     "fileChangedAlert" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -964,9 +961,6 @@
           }
         }
       }
-    },
-    "파일" : {
-
     }
   },
   "version" : "1.0"

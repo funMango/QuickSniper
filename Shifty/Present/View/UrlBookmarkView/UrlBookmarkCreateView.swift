@@ -33,9 +33,7 @@ struct UrlBookmarkCreateView: View {
             
             NameTextField(
                 title: "URL",
-                text: $viewModel.urlString,
-                isValid: $viewModel.isValidURL,
-                alertMessage: String(localized: "invalidURL")
+                text: $viewModel.urlString                
             )
                                                                                                             
             Spacer()
