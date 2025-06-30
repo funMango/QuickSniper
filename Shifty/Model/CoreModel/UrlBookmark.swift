@@ -5,7 +5,7 @@
 //  Created by 이민호 on 6/27/25.
 //
 
-import Foundation
+import AppKit
 import SwiftData
 import CoreTransferable
 import UniformTypeIdentifiers
@@ -33,6 +33,12 @@ class UrlBookmark: Codable, Identifiable, Equatable, CoreModel, Hashable, Folder
         self.url = url
         self.iconData = iconData
         self.order = order
+    }
+    
+    var iconImage: NSImage? {
+        // iconData가 존재하면 NSImage로 변환하여 반환합니다.
+        guard let data = iconData else { return nil }
+        return NSImage(data: data)
     }
     
     func updateOrder(_ newOrder: Int) {

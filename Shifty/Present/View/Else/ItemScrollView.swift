@@ -18,23 +18,22 @@ struct ItemScrollView: View {
     
     var body: some View {
         HorizontalScrollViewWithVerticalWheel {
-            switch viewModel.selectedFolder?.type {
-            case .snippet:
-                SnippetScrollView(
-                    viewModel: viewModelContainer.snippetScrollViewModel
+            HStack {
+                ItemPlusButtonView(
+                    viewModel: viewModelContainer.itemPlusButtonViewModel,
+                    systemName: "plus",
+                    size: 30
                 )
-            case .fileBookmark:
-                FileBookmarkScrollView(
-                    viewModel: viewModelContainer.fileBookmarkScrollViewModel
-                )
-            case .urlBookmark:
-                UrlBookmarkScrollView(
-                    viewModel: viewModelContainer.urlBookmarkScrollViewModel
-                )
-            case .none:
-                Text("")
+                .padding(.leading, 5)
             }
         }
         .frame(height: 160)
     }
+}
+
+#Preview {
+    @Injected var viewModelContainer: ViewModelContainer
+    ItemScrollView(
+        viewModel: viewModelContainer.itemScrollViewModel
+    )
 }

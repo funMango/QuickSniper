@@ -1,0 +1,35 @@
+{
+  "configurations" : [
+    {
+      "id" : "7339B38E-B0AE-4B49-B96E-BC91C2968D3A",
+      "name" : "Test Scheme Action",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:Shifty.xcodeproj",
+      "identifier" : "5A8891262DDB5215002C6D4A",
+      "name" : "ShiftyTests"
+    }
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:Shifty.xcodeproj",
+        "identifier" : "5A8891302DDB5215002C6D4A",
+        "name" : "ShiftyUITests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:Shifty.xcodeproj",
+        "identifier" : "5A8891262DDB5215002C6D4A",
+        "name" : "ShiftyTests"
+      }
+    }
+  ],
+  "version" : 1
+}

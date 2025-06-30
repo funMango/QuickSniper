@@ -409,6 +409,9 @@
         }
       }
     },
+    "FileBookmarkDeleteButtonView.swift" : {
+
+    },
     "fileChangedAlert" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -565,8 +568,22 @@
         }
       }
     },
-    "Key" : {
-      "extractionState" : "manual"
+    "invalidURL" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invalid URL address"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
+            "value" : "유효하지 않는 URL 주소입니다"
+          }
+        }
+      }
     },
     "later" : {
       "extractionState" : "manual",
@@ -947,6 +964,9 @@
           }
         }
       }
+    },
+    "파일" : {
+
     }
   },
   "version" : "1.0"

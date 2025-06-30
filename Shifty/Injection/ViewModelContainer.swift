@@ -28,11 +28,13 @@ final class ViewModelContainer {
     private lazy var snippetRepository = DefaultSnippetRepository(context: modelContext)
     private lazy var userRepository = DefaultUserRepository(context: modelContext)
     private lazy var fileBookmarkRepository = DefaultFileBookmarkRepository(context: modelContext)
+    private lazy var urlBookmarkRepository = DefaultUrlBookmarkRepository(context: modelContext)
     
     private lazy var folderUseCase = DefaultFolderUseCase(repository: folderRepository)
     private lazy var snippetUseCase = DefaultSnippetUseCase(repository: snippetRepository)
     private lazy var userUseCase = DefaultUserUserCase(repository: userRepository)
     private lazy var fileBookmarkUseCase = DefaultFileBookmarkUseCase(repository: fileBookmarkRepository)
+    private lazy var urlBookmarkUseCase = DefaultUrlBookmarkUseCase(repository: urlBookmarkRepository)
             
     init(
         modelContext: ModelContext,
@@ -222,7 +224,11 @@ final class ViewModelContainer {
         selectedFolderSubject: selectedFolderSubject
     )
     
-    lazy var urlBookmarkCreateViewModel = UrlBookmarkCreateViewModel(controllSubject: controllerSubject)
+    lazy var urlBookmarkCreateViewModel = UrlBookmarkCreateViewModel(
+        urlBookmarkUsecase: urlBookmarkUseCase,
+        controllSubject: controllerSubject,
+        selectedFolderSubject: selectedFolderSubject
+    )
             
     //MARK: - else
     lazy var appMenuBarViewModel = AppMenuBarViewModel(

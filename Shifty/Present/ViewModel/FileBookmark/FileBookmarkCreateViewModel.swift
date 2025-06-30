@@ -9,8 +9,6 @@ import Foundation
 import Combine
 
 final class FileBookmarkCreateViewModel: ObservableObject, ControllSubjectBindable, VmPassSubjectBindable {
-    
-    
     var controllSubject: PassthroughSubject<ControllerMessage, Never>
     var vmPassSubject: PassthroughSubject<VmPassMessage, Never>
     var cancellables: Set<AnyCancellable> = []

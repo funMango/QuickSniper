@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5ABC11962E0E880A007A8869 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5ABC11952E0E8809007A8869 /* XCTest.framework */; };
 		5AE2E62F2E0A7C92000DCA49 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE2E62E2E0A7C92000DCA49 /* AppDelegate.swift */; };
 		5AE362462DDF43440022BBFC /* Resolver in Frameworks */ = {isa = PBXBuildFile; productRef = 5AE362452DDF43440022BBFC /* Resolver */; };
 		5AF0FFC82DDC014100906A61 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 5AF0FFC72DDC014100906A61 /* KeyboardShortcuts */; };
@@ -33,6 +34,8 @@
 		5A8891162DDB5214002C6D4A /* Shifty.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Shifty.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A8891272DDB5215002C6D4A /* ShiftyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShiftyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5A8891312DDB5215002C6D4A /* ShiftyUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ShiftyUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		5ABC11952E0E8809007A8869 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/MacOSX.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		5ABC119E2E0E898F007A8869 /* Shifty.xctestplan */ = {isa = PBXFileReference; lastKnownFileType = text; path = Shifty.xctestplan; sourceTree = "<group>"; };
 		5AE2E62E2E0A7C92000DCA49 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -44,6 +47,13 @@
 			);
 			target = 5A8891152DDB5214002C6D4A /* Shifty */;
 		};
+		5ABC11A22E0E8B6D007A8869 /* Exceptions for "Shifty" folder in "ShiftyTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Utility/FaviconManager.swift,
+			);
+			target = 5A8891262DDB5215002C6D4A /* ShiftyTests */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -51,6 +61,7 @@
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
 				5A45248F2DEFE2FD008BE124 /* Exceptions for "Shifty" folder in "Shifty" target */,
+				5ABC11A22E0E8B6D007A8869 /* Exceptions for "Shifty" folder in "ShiftyTests" target */,
 			);
 			path = Shifty;
 			sourceTree = "<group>";
@@ -81,6 +92,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5ABC11962E0E880A007A8869 /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -97,6 +109,7 @@
 		5A88910D2DDB5214002C6D4A = {
 			isa = PBXGroup;
 			children = (
+				5ABC119E2E0E898F007A8869 /* Shifty.xctestplan */,
 				5AE2E62E2E0A7C92000DCA49 /* AppDelegate.swift */,
 				5A8891182DDB5214002C6D4A /* Shifty */,
 				5A88912A2DDB5215002C6D4A /* ShiftyTests */,
@@ -119,6 +132,7 @@
 		5AF0FFC62DDC014100906A61 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5ABC11952E0E8809007A8869 /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -212,6 +226,7 @@
 					};
 					5A8891262DDB5215002C6D4A = {
 						CreatedOnToolsVersion = 16.2;
+						LastSwiftMigration = 1630;
 						TestTargetID = 5A8891152DDB5214002C6D4A;
 					};
 					5A8891302DDB5215002C6D4A = {
@@ -524,17 +539,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Sample.ShiftyTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/QuickSniper.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/QuickSniper";
+				TEST_HOST = "";
 			};
 			name = Debug;
 		};
@@ -542,17 +560,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				MACOSX_DEPLOYMENT_TARGET = 15.2;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Sample.ShiftyTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/QuickSniper.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/QuickSniper";
+				TEST_HOST = "";
 			};
 			name = Release;
 		};

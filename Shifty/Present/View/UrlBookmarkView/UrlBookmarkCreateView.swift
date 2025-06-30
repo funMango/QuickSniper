@@ -33,9 +33,11 @@ struct UrlBookmarkCreateView: View {
             
             NameTextField(
                 title: "URL",
-                text: $viewModel.urlString
+                text: $viewModel.urlString,
+                isValid: $viewModel.isValidURL,
+                alertMessage: String(localized: "invalidURL")
             )
-                                                                        
+                                                                                                            
             Spacer()
             
             HStack {
@@ -49,8 +51,7 @@ struct UrlBookmarkCreateView: View {
                     // 저장 함수
                 }
                 .disabled(viewModel.buttonDisabled())
-            }
-            
+            }            
         }        
         .padding()
         .cornerRadius(10)

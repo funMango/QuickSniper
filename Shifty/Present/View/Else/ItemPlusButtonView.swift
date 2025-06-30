@@ -42,9 +42,9 @@ struct ItemPlusButtonView: View {
                     }
                 }
         }
-        .buttonStyle(PlainButtonStyle())
+        .buttonStyle(.plain)
         .onHover { hovering in
-            withAnimation(.easeInOut(duration: 0.2)) {
+            withAnimation {
                 isHovered = hovering
             }
         }
