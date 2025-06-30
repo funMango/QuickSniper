@@ -48,13 +48,8 @@ struct PanelView: View {
             .background(
                 VisualEffectView.panel
             )
-            .cornerRadius(10)
-            .clipped()
-            .syncQuery(viewModel: viewModel, items: users)                                                
+            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+            .syncQuery(viewModel: viewModel, items: users)
         }        
     }
 }
-
-//#Preview {
-//    PanelView()
-//}
