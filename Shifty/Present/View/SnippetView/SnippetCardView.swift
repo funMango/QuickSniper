@@ -37,18 +37,24 @@ struct SnippetCardView: View {
     }
     
     private var card: some View {
-        ItemCardView {
-            Text(viewModel.snippet.title)
-                .font(.title3)
-                .foregroundStyle(.mainText)
-                .padding(.bottom, 7)
-            Text(viewModel.snippet.body)
-                .foregroundColor(.subText)
+        VStack {
+            HStack {
+                Text(viewModel.snippet.title)
+                    .font(.title3)
+                    .foregroundStyle(.mainText)
+                    .padding(.bottom, 7)
+                Spacer()
+            }
+            
+            HStack {
+                Text(viewModel.snippet.body)
+                    .foregroundColor(.subText)
+                Spacer()
+            }
+            
+            Spacer()
         }
-        .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(viewModel.isSelected ? Color.accentColor : Color.clear, lineWidth: 2)
-        )        
+        .cardBackground(isSelected: $viewModel.isSelected, color: Color.block)                      
     }
 }
     
@@ -61,4 +67,5 @@ struct SnippetCardView: View {
             snippet: Snippet(folderId: "", title: "", body: "", order: 1),
         )        
     )
+    .frame(width: 400, height: 400)
 }

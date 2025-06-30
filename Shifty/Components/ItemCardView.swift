@@ -15,13 +15,17 @@ struct ItemCardView<Content: View>: View {
     }
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
-            content
-        }
-        .padding()
-        .frame(width: 200, height: 150, alignment: .topLeading)
-        .background(VisualEffectView.panelWithOverlay)
-        .cornerRadius(10)
+//        CardBackground {
+//            VStack(alignment: .leading, spacing: 4) {
+//                content
+//            }
+//        }                
     }
 }
 
+#Preview {
+    ItemCardView {
+        
+    }
+    .frame(width: 400, height: 400)
+}

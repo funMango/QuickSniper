@@ -47,7 +47,7 @@ extension FolderButtonView {
             ),
             isSelected: viewModel.isSelected
         )
-        .pillStyleBackground(isSelected: $viewModel.isSelected, color: .folderButton)
+        .pillStyleBackground(isSelected: $viewModel.isSelected, color: .block)
     }
 }
 

@@ -41,37 +41,32 @@ struct FileBookmarkCardView: View {
     }
     
     private var card: some View {
-        ItemCardView {
-            VStack {
-                HStack(alignment: .top) {
-                    if let image = viewModel.item.icon {
-                        Image(nsImage: image)
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                    }
-                    
-                    Text(viewModel.item.name)
-                        .font(.system(size: 16))
-                        .lineLimit(2)
-                        .truncationMode(.tail)
-                    
-                    Spacer()
+        VStack {
+            HStack(alignment: .top) {
+                if let image = viewModel.item.icon {
+                    Image(nsImage: image)
+                        .resizable()
+                        .frame(width: 20, height: 20)
                 }
+                
+                Text(viewModel.item.name)
+                    .font(.system(size: 16))
+                    .lineLimit(2)
+                    .truncationMode(.tail)
                 
                 Spacer()
+            }
+            
+            Spacer()
+            
+            HStack {
+                Text(viewModel.item.type.rawValue)
+                    .foregroundStyle(.gray)
                 
-                HStack {
-                    Text(viewModel.item.type.rawValue)
-                        .foregroundStyle(.gray)
-                    
-                    Spacer()
-                }
+                Spacer()
             }
         }
-        .overlay(
-            RoundedRectangle(cornerRadius: 10)
-                .stroke(viewModel.isSelected ? Color.accentColor : Color.clear, lineWidth: 2)
-        )
+        .cardBackground(isSelected: $viewModel.isSelected, color: Color.block)
     }
 }
 
