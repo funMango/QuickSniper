@@ -39,20 +39,15 @@ struct FolderButtonContentView: View {
                         viewModel.updateFolderName()
                         viewModel.cancelRenaming()
                     }
-            } else {
-                HStack {
-                    Image(systemName: viewModel.folder.type.getSymbol())
-                        .foregroundStyle(isSelected ? .black : .primary)
-                    
-                    Text(viewModel.folder.name)
-                        .lineLimit(1)
-                        .padding(.vertical, 8)
-                        .foregroundColor(isSelected ? .black : .primary)
-                        .contentShape(Rectangle())
-                        .onClick {
-                            viewModel.selectFolder()
-                        }
-                }
+            } else {                                                       
+                Text(viewModel.folder.name)
+                    .lineLimit(1)
+                    .padding(.vertical, 8)
+                    .foregroundColor(isSelected ? .black : .primary)
+                    .contentShape(Rectangle())
+                    .onClick {
+                        viewModel.selectFolder()
+                    }
             }
         }
     }

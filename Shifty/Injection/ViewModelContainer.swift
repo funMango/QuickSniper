@@ -14,7 +14,7 @@ final class ViewModelContainer {
     private let controllerSubject: PassthroughSubject<ControllerMessage, Never>
     private let vmPassSubject: PassthroughSubject<VmPassMessage, Never>
     private let folderSubject: CurrentValueSubject<Folder?, Never>
-    private let folderEditSubject: PassthroughSubject<Folder, Never>
+    private let folderEditSubject: CurrentValueSubject<Folder?, Never>
     private let selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     private let folderMessageSubject: CurrentValueSubject<FolderMessage?, Never>
     private let snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
@@ -39,7 +39,7 @@ final class ViewModelContainer {
         controllerSubject: PassthroughSubject<ControllerMessage, Never>,
         vmPassSubject: PassthroughSubject<VmPassMessage, Never>,
         folderSubject: CurrentValueSubject<Folder?, Never>,
-        folderEditSubject:PassthroughSubject<Folder, Never>,
+        folderEditSubject:CurrentValueSubject<Folder?, Never>,
         selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
         folderMessageSubject: CurrentValueSubject<FolderMessage?, Never>,
         snippetSubject: CurrentValueSubject<SnippetMessage?, Never>,
@@ -124,7 +124,13 @@ final class ViewModelContainer {
         useCase: folderUseCase,
         controllSubject: controllerSubject,
         selectedFolderSubject: selectedFolderSubject
-    )        
+    )
+    
+    lazy var folderCreateButtonViewModel = FolderCreateButtonViewModel(
+        selectedFolderSubject: selectedFolderSubject,
+        folderEditSubject: folderEditSubject,
+        folderUsecase: folderUseCase
+    )
     
     lazy var folderDeleteButtonViewModel = FolderDeleteButtonViewModel(
         selectedFolderSubject: selectedFolderSubject,

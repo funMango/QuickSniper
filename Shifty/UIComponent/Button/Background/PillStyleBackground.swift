@@ -33,7 +33,6 @@ private struct PillStyleBackgroundModifier: ViewModifier {
         content // 이 부분이 HStack의 내용을 의미합니다.
             .padding(.horizontal)
             .frame(height: 30)
-            .frame(minWidth: 80)
             .background {
                 if isSelected {
                     Color.white

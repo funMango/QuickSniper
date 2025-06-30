@@ -14,14 +14,14 @@ final class FolderButtonContentViewModel: ObservableObject {
     @Published var isRenaming: Bool = false
     var folder: Folder
     private var folderUseCase: FolderUseCase
-    private var folderEditSubject: PassthroughSubject<Folder, Never>
+    private var folderEditSubject: CurrentValueSubject<Folder?, Never>
     private var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     private var cancellables = Set<AnyCancellable>()
         
     init(
         folder: Folder,
         folderUseCase: FolderUseCase,
-        folderEditSubject: PassthroughSubject<Folder, Never>,
+        folderEditSubject: CurrentValueSubject<Folder?, Never>,
         selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     ) {
         self.folder = folder
@@ -42,24 +42,33 @@ final class FolderButtonContentViewModel: ObservableObject {
     
     func updateFolderName() {
         folder.changeName(buttonText)
-        do {
-            try folderUseCase.updateFolder(folder)
-        } catch {
-            print("[ERROR]: folder name update error: \(error)")
+        
+        /// 메인 스레드에서 update해야 UI충돌이 나지 않음
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            do {
+                try self.folderUseCase.updateFolder(folder)
+            } catch {
+                print("[ERROR]: folder name update error: \(error)")
+            }
         }
     }
     
     private func setupBindings() {
         folderEditSubject
             .sink { [weak self] folder in
-                if self?.isSameFolder(folder) == true {                    
+                if self?.isSameFolder(folder) == true {
                     self?.isRenaming = true
                 }
             }
             .store(in: &cancellables)
     }
     
-    private func isSameFolder(_ target: Folder) -> Bool {
-        return target.id == folder.id
+    private func isSameFolder(_ target: Folder?) -> Bool {
+        if let target = target {
+            return target.id == folder.id
+        }
+        return false        
     }    
 }

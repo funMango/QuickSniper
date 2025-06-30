@@ -24,12 +24,7 @@ struct PanelHeaderView: View {
         HStack {
             FolderScrollView(viewModel: viewModelContainer.folderViewModel)
                                         
-            HoverIconButton(
-                onTap: {
-                    viewModel.openCreateFolderView()
-                },
-                systemName: "plus"
-            )
+            FolderCreateButtonView(viewModel: viewModelContainer.folderCreateButtonViewModel)
             
             Spacer()
             

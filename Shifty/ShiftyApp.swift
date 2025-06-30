@@ -78,7 +78,7 @@ struct ShiftyApp: App {
             
             /// Option Subject
             let folderSubject = CurrentValueSubject<Folder?, Never>(nil)
-            let folderEditSubject = PassthroughSubject<Folder, Never>()
+            let folderEditSubject = CurrentValueSubject<Folder?, Never>(nil)
             let selectedFolderSubject = CurrentValueSubject<Folder?, Never>(nil)
             let folderMessageSubjec = CurrentValueSubject<FolderMessage?, Never>(nil)
             let snippetSubject = CurrentValueSubject<SnippetMessage?, Never>(nil)

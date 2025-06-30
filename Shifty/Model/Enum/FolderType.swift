@@ -11,6 +11,7 @@ enum FolderType: String, CaseIterable, Identifiable, Codable {
     static let localShortcutStorage = LocalShortcutStorage()
     case snippet = "snippet"
     case fileBookmark = "fileBookmark"
+    case all = "all"
     
     var id: String { self.rawValue }
     
@@ -20,6 +21,8 @@ enum FolderType: String, CaseIterable, Identifiable, Codable {
             String(localized: "snippet")
         case .fileBookmark:
             String(localized: "fileBookmark")
+        case .all:
+            ""
         }
     }
     
@@ -29,6 +32,8 @@ enum FolderType: String, CaseIterable, Identifiable, Codable {
             return "doc.text"
         case .fileBookmark:
             return "folder"
+        case .all:
+            return ""
         }
     }        
     
@@ -37,6 +42,8 @@ enum FolderType: String, CaseIterable, Identifiable, Codable {
         case .snippet:
             return [.copySnippet]
         case .fileBookmark:
+            return []
+        case .all:
             return []
         }
     }
@@ -47,6 +54,8 @@ enum FolderType: String, CaseIterable, Identifiable, Codable {
             return "text.page"
         case .fileBookmark:
             return "folder"
+        case .all:
+            return ""
         }
     }
     

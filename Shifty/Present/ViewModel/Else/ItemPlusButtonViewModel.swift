@@ -32,6 +32,8 @@ final class ItemPlusButtonViewModel: ObservableObject, FolderSubjectBindable {
             controllSubject.send(.openSnippetEditor)
         case .fileBookmark:
             controllSubject.send(.openFileBookmarkCreateView)
+        default:
+            break
         }
     }
 }
