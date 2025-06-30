@@ -41,6 +41,9 @@
         }
       }
     },
+    "button" : {
+
+    },
     "cancel" : {
       "extractionState" : "manual",
       "localizations" : {

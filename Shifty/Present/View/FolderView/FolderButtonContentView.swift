@@ -42,11 +42,12 @@ struct FolderButtonContentView: View {
             } else {
                 HStack {
                     Image(systemName: viewModel.folder.type.getSymbol())
+                        .foregroundStyle(isSelected ? .black : .primary)
                     
                     Text(viewModel.folder.name)
                         .lineLimit(1)
                         .padding(.vertical, 8)
-                        .foregroundColor(Color.subText)
+                        .foregroundColor(isSelected ? .black : .primary)
                         .contentShape(Rectangle())
                         .onClick {
                             viewModel.selectFolder()

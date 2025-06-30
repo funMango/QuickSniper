@@ -41,27 +41,13 @@ struct FolderButtonView: View {
 
 extension FolderButtonView {
     private var content: some View {
-        HStack(spacing: 10) {
-            FolderButtonContentView(
-                viewModel: viewModelContainer.getFolderButtonContentViewModel(
-                    folder: viewModel.folder
-                ),
-                isSelected: viewModel.isSelected                
-            )
-        }
-        .padding(.horizontal, 8)
-        .background {
-            Group {
-                if viewModel.isSelected {
-                    VisualEffectView.panelWithOverlay
-                } else if isHovered {
-                    Color.buttonHover
-                } else {
-                    Color.clear
-                }
-            }
-        }
-        .cornerRadius(10)
+        FolderButtonContentView(
+            viewModel: viewModelContainer.getFolderButtonContentViewModel(
+                folder: viewModel.folder
+            ),
+            isSelected: viewModel.isSelected
+        )
+        .pillStyleBackground(isSelected: $viewModel.isSelected, color: .folderButton)
     }
 }
 

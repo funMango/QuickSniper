@@ -44,7 +44,8 @@ struct DragDropModifier<VM: DragabbleObject>: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .clipShape(RoundedRectangle(cornerRadius: 10))
+            .padding(.vertical)
+            .padding(.horizontal, 3)
             .onDrag {
                 draggingItemId = itemId
                 viewModel.selectItem(itemId)

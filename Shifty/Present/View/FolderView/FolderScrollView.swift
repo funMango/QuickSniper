@@ -21,7 +21,7 @@ struct FolderScrollView: View, DraggableView {
 
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
-            LazyHStack(spacing: 10) {
+            HStack {
                 if viewModel.items.isEmpty {
                     Text(String(localized: "createFolder"))
                         .foregroundStyle(.gray)
@@ -38,7 +38,7 @@ struct FolderScrollView: View, DraggableView {
                     )
                 }
             }
-        }
+        }        
         .fixedSize()
         .frame(height: 40)
         .background(Color.clear)
@@ -58,4 +58,5 @@ extension FolderScrollView {
 #Preview {
     @Injected var viewModelContainer: ViewModelContainer
     FolderScrollView(viewModel: viewModelContainer.folderViewModel)
+        .frame(width: 400, height: 100)
 }
