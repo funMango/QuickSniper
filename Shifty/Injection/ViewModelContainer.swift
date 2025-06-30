@@ -127,6 +127,7 @@ final class ViewModelContainer {
     )
     
     lazy var folderCreateButtonViewModel = FolderCreateButtonViewModel(
+        controllerSubject: controllerSubject,
         selectedFolderSubject: selectedFolderSubject,
         folderEditSubject: folderEditSubject,
         folderUsecase: folderUseCase
@@ -153,7 +154,8 @@ final class ViewModelContainer {
     func getFolderButtonViewModel(folder: Folder) -> FolderButtonViewModel {
         return FolderButtonViewModel(
             folder: folder,
-            selectedFolderSubject: selectedFolderSubject
+            selectedFolderSubject: selectedFolderSubject,
+            folderEditSubject: folderEditSubject
         )
     }
     

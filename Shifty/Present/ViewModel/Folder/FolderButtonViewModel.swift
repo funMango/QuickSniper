@@ -13,17 +13,19 @@ final class FolderButtonViewModel: ObservableObject, FolderSubjectBindable {
     @Published var isSelected: Bool = false
     var folder: Folder
     var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
+    var folderEditSubject: CurrentValueSubject<Folder?, Never>
     var cancellables: Set<AnyCancellable> = []
     
     init(
         folder: Folder,
         selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
+        folderEditSubject: CurrentValueSubject<Folder?, Never>
     ) {
         self.folder = folder
         self.selectedFolderSubject = selectedFolderSubject
-                
+        self.folderEditSubject = folderEditSubject
         setupSelectedFolderBindings()
-    }
+    }        
     
     func setupSelectedFolderBindings() {
         selectedFolderSubject

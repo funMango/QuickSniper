@@ -28,7 +28,7 @@ extension VisualEffectView {
     
     /// 기본 HUD 패널 스타일
     static var panel: VisualEffectView {
-        VisualEffectView(material: .menu, blendingMode: .behindWindow)
+        VisualEffectView(material: .fullScreenUI, blendingMode: .behindWindow)
     }
     
     static var panelWithOverlay: some View {

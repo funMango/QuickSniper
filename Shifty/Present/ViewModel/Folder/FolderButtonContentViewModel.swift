@@ -40,19 +40,16 @@ final class FolderButtonContentViewModel: ObservableObject {
         selectedFolderSubject.send(folder)
     }
     
+    /// 메인 스레드에서 update해야 UI충돌이 나지 않음
+    @MainActor
     func updateFolderName() {
         folder.changeName(buttonText)
-        
-        /// 메인 스레드에서 update해야 UI충돌이 나지 않음
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
             
-            do {
-                try self.folderUseCase.updateFolder(folder)
-            } catch {
-                print("[ERROR]: folder name update error: \(error)")
-            }
-        }
+        do {
+            try self.folderUseCase.updateFolder(folder)
+        } catch {
+            print("[ERROR]: folder name update error: \(error)")
+        }        
     }
     
     private func setupBindings() {

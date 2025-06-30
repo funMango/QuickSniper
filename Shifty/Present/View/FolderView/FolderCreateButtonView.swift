@@ -7,9 +7,11 @@
 
 import SwiftUI
 import Resolver
+import SwiftData
 
 struct FolderCreateButtonView: View {
     @StateObject var viewModel: FolderCreateButtonViewModel
+    @Query var folders: [Folder]
     
     init(viewModel: FolderCreateButtonViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
@@ -18,10 +20,11 @@ struct FolderCreateButtonView: View {
     var body: some View {
         HoverIconButton(
             onTap: {
-                viewModel.createFolder()
+                viewModel.validFolderCount()
             },
             systemName: "plus"
         )
+        .syncQuery(viewModel: viewModel, items: folders)
     }
 }
 

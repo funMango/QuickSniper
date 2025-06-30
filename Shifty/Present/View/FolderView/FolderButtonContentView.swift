@@ -26,6 +26,7 @@ struct FolderButtonContentView: View {
             if viewModel.isRenaming {
                 TextField("", text: $viewModel.buttonText)
                     .textFieldStyle(.roundedBorder)
+                    .foregroundStyle(.black)
                     .focused($isTextFieldFocused)
                     .frame(width: 100)
                     .onAppear {
@@ -39,7 +40,7 @@ struct FolderButtonContentView: View {
                         viewModel.updateFolderName()
                         viewModel.cancelRenaming()
                     }
-            } else {                                                       
+            } else {
                 Text(viewModel.folder.name)
                     .lineLimit(1)
                     .padding(.vertical, 8)
@@ -47,7 +48,7 @@ struct FolderButtonContentView: View {
                     .contentShape(Rectangle())
                     .onClick {
                         viewModel.selectFolder()
-                    }
+                    }                    
             }
         }
     }
