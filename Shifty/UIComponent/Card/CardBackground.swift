@@ -28,6 +28,7 @@ struct CardBackgroundTestView: View {
 private struct CardBackgroundModifier: ViewModifier {
     @Binding var isSelected: Bool
     let color: Color
+    let cornerRadius: CGFloat = 16
 
     func body(content: Content) -> some View {
         content
@@ -40,18 +41,19 @@ private struct CardBackgroundModifier: ViewModifier {
                         color.opacity(0.1)
                     )
             }
-            .clipShape(RoundedRectangle(cornerRadius: 30, style: .continuous))
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius, style: .continuous))
             .shadow(color: .black.opacity(0.15), radius: 3, x: 0, y: 2)
             .overlay(
-                RoundedRectangle(cornerRadius: 30, style: .continuous)
+                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                     .stroke(Color.white.opacity(0.2), lineWidth: 0.3)
             )
             .overlay(
-                RoundedRectangle(cornerRadius: 30, style: .continuous)
+                RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
                     .stroke(isSelected ? Color.accentColor : Color.clear, lineWidth: 2)
             )
     }
 }
+
 
 extension View {
     func cardBackground(isSelected: Binding<Bool>, color: Color) -> some View {
