@@ -17,23 +17,43 @@ struct ItemScrollView: View {
     }
     
     var body: some View {
-        HorizontalScrollViewWithVerticalWheel {
-            switch viewModel.selectedFolder?.type {
-            case .snippet:
-                SnippetScrollView(
-                    viewModel: viewModelContainer.snippetScrollViewModel
+        HStack {
+            CoreModelScrollView(
+                viewModel: viewModelContainer.coreModelScrollViewModel
+            )
+            
+            VStack {
+                Spacer()
+                ItemPlusButtonView(
+                    viewModel: viewModelContainer.itemPlusButtonViewModel,
+                    systemName: "plus",
+                    size: 30
                 )
-            case .fileBookmark:
-                FileBookmarkScrollView(
-                    viewModel: viewModelContainer.fileBookmarkScrollViewModel
-                )
-            case .all:
-                Text("all")
-                
-            case .none:
-                Text("")                
+                Spacer()
             }
-        }
-        .frame(height: 160)
+            .padding(.trailing)
+            
+            Spacer()
+        }        
+        .frame(height: 150)
     }
 }
+
+
+//        HStack {
+//            switch viewModel.selectedFolder?.type {
+//            case .snippet:
+//                SnippetScrollView(
+//                    viewModel: viewModelContainer.snippetScrollViewModel
+//                )
+//            case .fileBookmark:
+//                FileBookmarkScrollView(
+//                    viewModel: viewModelContainer.fileBookmarkScrollViewModel
+//                )
+//            case .all:
+//                CoreModelScrollView()
+//
+//            case .none:
+//                Text("")
+//            }
+//        }

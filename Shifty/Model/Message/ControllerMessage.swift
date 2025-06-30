@@ -68,5 +68,5 @@ enum ControllerMessage: Equatable {
     case AutoHidePage(Page)
     case copySnippet
     case allPageClose
-    
+    case switchPanelWidth(CGFloat)    
 }

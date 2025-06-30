@@ -28,29 +28,18 @@ class PanelController: NSWindowController, NSWindowDelegate {
     init(subject: PassthroughSubject<ControllerMessage, Never>) {
         self.subject = subject
         super.init(window: nil)
-
-        print("PanelController init 시작")
-        
         let hosting = makeHostingView()
-        print("HostingView 생성 완료")
-        
-        // fittingSize 대신 안전한 기본값 사용
-        let contentHeight: CGFloat = 264 // 기본 높이
-        print("높이 설정: \(contentHeight)")
-        
+        let contentHeight: CGFloat = 264
         let initialFrame = PanelController.makeInitialFrame(height: contentHeight)
-        print("초기 프레임: \(initialFrame)")
-        
+        let initialWidth: CGFloat = initialFrame.width
         let panel = PanelController.makePanel(with: hosting, frame: initialFrame)
-        print("패널 생성 완료")
-
+        subject.send(.switchPanelWidth(initialWidth))
+        
         self.window = panel
         panel.delegate = self
         configurePanel(panel)
         setupBindings()
         setupDockObserver()
-        
-        print("PanelController init 완료")
     }
 
     required init?(coder: NSCoder) {

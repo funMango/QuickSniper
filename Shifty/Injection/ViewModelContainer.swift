@@ -224,6 +224,11 @@ final class ViewModelContainer {
             selectedFolderSubject: selectedFolderSubject
         )
     }
+    
+    //MARK: - CoreModel
+    lazy var coreModelScrollViewModel = CoreModelScrollViewModel(
+        controllSubject: controllerSubject
+    )
             
     //MARK: - else
     lazy var appMenuBarViewModel = AppMenuBarViewModel(

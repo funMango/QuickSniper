@@ -21,9 +21,13 @@ struct PanelHeaderView: View {
             
     var body: some View {
         HStack {
-            FolderScrollView(viewModel: viewModelContainer.folderViewModel)
+            FolderScrollView(
+                viewModel: viewModelContainer.folderViewModel
+            )
                                         
-            FolderCreateButtonView(viewModel: viewModelContainer.folderCreateButtonViewModel)
+            FolderCreateButtonView(
+                viewModel: viewModelContainer.folderCreateButtonViewModel
+            )
             
             Spacer()
             
