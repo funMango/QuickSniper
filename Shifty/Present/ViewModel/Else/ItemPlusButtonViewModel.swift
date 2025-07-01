@@ -23,6 +23,10 @@ final class ItemPlusButtonViewModel: ObservableObject, FolderSubjectBindable {
         self.selectedFolderSubject = selectedFolderSubject
         setupSelectedFolderBindings()
     }
+    
+    func openItemSelectionView() {
+        controllSubject.send(.openCreateFolderView)
+    }
             
     func openItemEditor() {
         guard let selectedFolder = self.selectedFolder else { return }

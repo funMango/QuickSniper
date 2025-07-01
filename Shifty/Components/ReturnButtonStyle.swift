@@ -10,6 +10,7 @@ import SwiftUI
 enum ReturnButtonType {
     case cancel
     case save
+    case next
     
     func localized() -> String {
         switch self {
@@ -17,6 +18,8 @@ enum ReturnButtonType {
             return String(localized: "cancel")
         case .save:
             return String(localized: "save")
+        case .next:
+            return String(localized: "next")
         }
     }
     
@@ -26,6 +29,8 @@ enum ReturnButtonType {
             return .mainText
         case .save:
             return .white
+        case .next:
+            return .white
         }
     }
     
@@ -34,6 +39,8 @@ enum ReturnButtonType {
         case .cancel:
             return .background
         case .save:
+            return .accentColor
+        case .next:
             return .accentColor
         }
     }

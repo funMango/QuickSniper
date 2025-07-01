@@ -24,7 +24,7 @@ extension CoreModelScrollViewModel {
         controllMessageBindings{ message in
             switch message {
             case .switchPanelWidth(let width):
-                self.panelWidth = width
+                self.panelWidth = width - 96
             default:
                 break
             }

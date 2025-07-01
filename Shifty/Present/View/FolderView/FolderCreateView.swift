@@ -31,32 +31,14 @@ struct FolderCreateView: View {
                     }
                 }
             }
-                        
-            HStack {
-                Text(String(localized: "folderName"))
-                
-                Spacer()
-                
-                TextField(String(localized: "enterFolderName"), text: $viewModel.folderName)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .onChange(of: viewModel.folderName) { oldValue, newValue in
-                        if newValue.count > 20 {
-                            viewModel.folderName = String(newValue.prefix(20))
-                        }
-                    }
-                    .onSubmit {
-                        viewModel.createFolder()
-                    }
-            }
-            
+                                    
             HStack {
                 Spacer()
                 
                 HStack {
                     ReturnButton(type: .cancel, action: viewModel.hide)
                     
-                    ReturnButton(type: .save, action: viewModel.createFolder)
-                        .disabled(viewModel.folderName.isEmpty)
+                    ReturnButton(type: .next, action: viewModel.createFolder)
                 }
             }
         }
@@ -71,6 +53,6 @@ struct FolderCreateView: View {
     FolderCreateView(
         viewModel: viewModelcontainer.createFolderViewModel,
         width: 400,
-        height: 300
+        height: 200
     )
 }

@@ -22,6 +22,8 @@ struct ItemScrollView: View {
                 viewModel: viewModelContainer.coreModelScrollViewModel
             )
             
+            Spacer()
+            
             VStack {
                 Spacer()
                 ItemPlusButtonView(
@@ -31,11 +33,9 @@ struct ItemScrollView: View {
                 )
                 Spacer()
             }
-            .padding(.trailing)
-            
-            Spacer()
         }        
         .frame(height: 150)
+        .padding(.horizontal)
     }
 }
 

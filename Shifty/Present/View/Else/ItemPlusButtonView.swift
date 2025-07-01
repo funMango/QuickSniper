@@ -26,7 +26,7 @@ struct ItemPlusButtonView: View {
     
     var body: some View {
         Button {
-            viewModel.openItemEditor()
+            viewModel.openItemSelectionView()
         } label: {
             Image(systemName: systemName)
                 .font(.system(size: size, weight: .medium))

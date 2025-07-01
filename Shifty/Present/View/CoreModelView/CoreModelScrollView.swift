@@ -16,10 +16,10 @@ struct CoreModelScrollView: View {
         self._viewModel = StateObject(wrappedValue: viewModel)
     }
     
-    var body: some View {
-        ScrollView(.horizontal) {
+    var body: some View {        
+        HorizontalScrollViewWithVerticalWheel {
             HStack {
-                ForEach (0..<13) { index in
+                ForEach (0..<23) { index in
                     Button {
                         
                     } label: {
@@ -32,14 +32,10 @@ struct CoreModelScrollView: View {
                 }
             }
         }
-        .padding()
-        .frame(maxWidth: viewModel.panelWidth)
-        .fixedSize(horizontal: true, vertical: false)        
 //        .overlay(
 //            RoundedRectangle(cornerRadius: 10)
 //                .stroke(Color.blue, lineWidth: 1)
 //        )
-        
     }
 }
 
