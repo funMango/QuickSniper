@@ -11,6 +11,7 @@ enum ReturnButtonType {
     case cancel
     case save
     case next
+    case prev
     
     func localized() -> String {
         switch self {
@@ -20,6 +21,8 @@ enum ReturnButtonType {
             return String(localized: "save")
         case .next:
             return String(localized: "next")
+        case .prev:
+            return String(localized: "prev")
         }
     }
     
@@ -31,6 +34,8 @@ enum ReturnButtonType {
             return .white
         case .next:
             return .white
+        case .prev:
+            return .mainText
         }
     }
     
@@ -42,6 +47,8 @@ enum ReturnButtonType {
             return .accentColor
         case .next:
             return .accentColor
+        case .prev:
+            return .background
         }
     }
 }

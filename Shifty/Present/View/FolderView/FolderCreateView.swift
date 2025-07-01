@@ -19,14 +19,16 @@ struct FolderCreateView: View {
             ScrollView {
                 LazyVGrid(columns: columns, spacing: 20) {
                     ForEach(FolderType.allCases, id: \.self) { type in
-                        FolderTypeCardView(
-                            folderType: type,
-                            isSelected: viewModel.selectedFolderType == type,
-                            action: {
-                                viewModel.selectFolderType(type)
-                            }
-                        )
-                        .padding(.vertical)
+                        if type != .all {
+                            FolderTypeCardView(
+                                folderType: type,
+                                isSelected: viewModel.selectedFolderType == type,
+                                action: {
+                                    viewModel.selectFolderType(type)
+                                }
+                            )
+                            .padding(.vertical)
+                        }
                     }
                 }
                 .padding(.horizontal)
@@ -38,7 +40,7 @@ struct FolderCreateView: View {
                 HStack {
                     ReturnButton(type: .cancel, action: viewModel.hide)
                     
-                    ReturnButton(type: .next, action: viewModel.createFolder)
+                    ReturnButton(type: .next, action: viewModel.goNextPage)
                 }
             }
         }
@@ -48,6 +50,7 @@ struct FolderCreateView: View {
         .frame(width: width, height: height)
     }
 }
+
 #Preview {
     @Injected var viewModelcontainer: ViewModelContainer
     FolderCreateView(

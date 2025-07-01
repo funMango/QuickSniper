@@ -11,6 +11,7 @@ import Combine
 class SnippetEditorViewModel: ObservableObject {
     @Published var title: String = ""
     @Published var content: String = ""
+    @Published var isEditing = false
     private var controllSubject: PassthroughSubject<ControllerMessage, Never>
     private var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     private var useCase: SnippetUseCase
@@ -26,6 +27,7 @@ class SnippetEditorViewModel: ObservableObject {
         useCase: SnippetUseCase,
         snippet: Snippet? = nil
     ) {
+        
         self.title = title
         self.content = content
         self.controllSubject = subject
@@ -33,6 +35,7 @@ class SnippetEditorViewModel: ObservableObject {
         self.useCase = useCase
         self.snippet = snippet
         
+        resetSnippet()
         setupSelectedFolderBindings()
         setupInitialSnippet()
     }
@@ -55,8 +58,7 @@ class SnippetEditorViewModel: ObservableObject {
                 title: title,
                 body: content
             )
-        }
-        resetSnippet()
+        }        
         hide()
     }
     
@@ -70,6 +72,10 @@ class SnippetEditorViewModel: ObservableObject {
         )
     }
     
+    func prev() {
+        controllSubject.send(.openCreateFolderView)
+    }
+    
     func hide() {
         controllSubject.send(.escapePressed)        
     }
@@ -77,11 +83,13 @@ class SnippetEditorViewModel: ObservableObject {
     private func resetSnippet() {
         self.title = ""
         self.content = ""
+        self.isEditing = false
         self.snippet = nil
     }
     
     private func setupInitialSnippet() {
         if let snippet = snippet {
+            self.isEditing = true
             self.title = snippet.title
             self.content = snippet.body
         }

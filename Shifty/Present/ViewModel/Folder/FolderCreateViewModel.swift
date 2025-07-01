@@ -31,6 +31,17 @@ final class FolderCreateViewModel: ObservableObject {
         self.selectedFolderType = type
     }
     
+    func goNextPage() {        
+        switch selectedFolderType {
+        case .snippet:
+            controllSubject.send(.openSnippetEditor)
+        case .fileBookmark:
+            controllSubject.send(.openFileBookmarkCreateView)
+        default:
+            break
+        }
+    }
+    
     func createFolder() {
         do {
             let newFolder = Folder(

@@ -23,14 +23,18 @@ final class FileBookmarkCreateViewModel: ObservableObject, ControllSubjectBindab
         self.vmPassSubject = vmPassSubject
     }
     
-    func closeView() {
+    func prev() {
+        controllSubject.send(.openCreateFolderView)
+    }
+    
+    func close() {
         controllSubject.send(.escapePressed)
     }
     
     func save() {
         vmPassSubject.send(.saveBookmarkItems)
         DispatchQueue.main.async { [weak self] in
-            self?.closeView()
+            self?.close()
         }
     }
 }

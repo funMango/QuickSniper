@@ -55,7 +55,7 @@ enum FolderType: String, CaseIterable, Identifiable, Codable {
         case .fileBookmark:
             return "folder"
         case .all:
-            return ""
+            return "link"
         }
     }
     

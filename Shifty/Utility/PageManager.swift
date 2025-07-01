@@ -21,6 +21,12 @@ final class PageManager {
             
     private func savePage(_ page: Page) {
         if pages.contains(page) { return }
+        
+        if pages.count > 1 {
+            pages.removeLast()
+            notifyDidHideMessage(from: page)
+        }
+        
         self.pages.append(page)
         self.controllSubject.send(page.getShowMessage())
     }

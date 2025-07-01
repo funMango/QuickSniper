@@ -25,9 +25,14 @@ struct FileBookmarkCreateView: View {
             Spacer()
             
             HStack {
+                ReturnButton(type: .prev) {
+                    viewModel.prev()
+                }
+                
                 Spacer()
+                
                 ReturnButton(type: .cancel) {
-                    viewModel.closeView()
+                    viewModel.close()
                 }
                 ReturnButton(type: .save) {
                     viewModel.save()
