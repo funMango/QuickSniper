@@ -33,6 +33,10 @@ final class ViewModelContainer {
     private lazy var snippetUseCase = DefaultSnippetUseCase(repository: snippetRepository)
     private lazy var userUseCase = DefaultUserUserCase(repository: userRepository)
     private lazy var fileBookmarkUseCase = DefaultFileBookmarkUseCase(repository: fileBookmarkRepository)
+    private lazy var coreModelUseCase = DefaultCoreModelUseCase(
+        snippetUsecase: snippetUseCase,
+        fileBookmarkUsecase: fileBookmarkUseCase
+    )
             
     init(
         modelContext: ModelContext,
@@ -64,7 +68,8 @@ final class ViewModelContainer {
     lazy var snippetEditorViewModel = SnippetEditorViewModel(
         subject: controllerSubject,
         selectedFolderSubject: selectedFolderSubject,
-        useCase: snippetUseCase
+        snippetUseCase: snippetUseCase,
+        coreModelUseCase: coreModelUseCase,
     )
             
     lazy var itemPlusButtonViewModel = ItemPlusButtonViewModel(
@@ -99,7 +104,8 @@ final class ViewModelContainer {
         return SnippetEditorViewModel(
             subject: controllerSubject,
             selectedFolderSubject: selectedFolderSubject,
-            useCase: snippetUseCase,
+            snippetUseCase: snippetUseCase,
+            coreModelUseCase: coreModelUseCase,
             snippet: snippet
         )
     }

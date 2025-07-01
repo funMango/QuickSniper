@@ -8,11 +8,13 @@
 import Foundation
 
 protocol SnippetUseCase {
+    func save(_ snippet: Snippet) throws
     func createSnippet(folderId: String, title: String, body: String)
     func updateSnippet(_ snippet: Snippet) throws
     func updateSnippetFolder(_ snippet: Snippet) throws
     func updateAllSnippets(_ snippets: [Snippet]) throws
     func deleteSnippet(_ snippet: Snippet) throws
+    func fetchAll() throws -> [Snippet]
 }
 
 final class DefaultSnippetUseCase: SnippetUseCase {
@@ -20,6 +22,10 @@ final class DefaultSnippetUseCase: SnippetUseCase {
     
     init(repository: SnippetRepository) {
         self.repository = repository
+    }
+    
+    func save(_ snippet: Snippet) throws {
+        try repository.save(snippet)
     }
     
     func createSnippet(folderId: String, title: String, body: String) {
@@ -55,5 +61,9 @@ final class DefaultSnippetUseCase: SnippetUseCase {
 
     func deleteSnippet(_ snippet: Snippet) throws {
         try repository.delete(snippet)
+    }
+    
+    func fetchAll() throws -> [Snippet] {
+        try repository.fetchAll()
     }
 }

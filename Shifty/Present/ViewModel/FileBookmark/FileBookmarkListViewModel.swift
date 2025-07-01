@@ -63,7 +63,7 @@ extension FileBookmarkListViewModel {
     
     private func saveBookmarkItems() {
         do {
-            try usecase.saveItems(items)
+            try usecase.saveAll(items)
         } catch {
             print("FileBookmarkListViewModel-saveBookmarkItems: \(error)")
         }

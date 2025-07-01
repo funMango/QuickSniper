@@ -10,12 +10,13 @@ import SwiftData
 
 protocol FileBookmarkUseCase {
     func save(_ item: FileBookmarkItem) throws
-    func saveItems(_ items: [FileBookmarkItem]) throws
+    func saveAll(_ items: [FileBookmarkItem]) throws
     func update(_ item: FileBookmarkItem) throws
     func updateFolder(_ item: FileBookmarkItem) throws
     func updateAll(_ items: [FileBookmarkItem]) throws
     func delete(_ item: FileBookmarkItem) throws
     func deleteAll() throws
+    func fetchAll() throws -> [FileBookmarkItem]
 }
 
 final class DefaultFileBookmarkUseCase: FileBookmarkUseCase {
@@ -35,7 +36,7 @@ final class DefaultFileBookmarkUseCase: FileBookmarkUseCase {
         }
     }
     
-    func saveItems(_ items: [FileBookmarkItem]) throws {
+    func saveAll(_ items: [FileBookmarkItem]) throws {
         let original = items
         
         do {
@@ -89,5 +90,9 @@ final class DefaultFileBookmarkUseCase: FileBookmarkUseCase {
     
     func deleteAll() throws {
         try repository.deleteAll()
+    }
+    
+    func fetchAll() throws -> [FileBookmarkItem] {
+        return try repository.fetchAll()
     }
 }

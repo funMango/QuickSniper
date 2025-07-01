@@ -14,7 +14,8 @@ class SnippetEditorViewModel: ObservableObject {
     @Published var isEditing = false
     private var controllSubject: PassthroughSubject<ControllerMessage, Never>
     private var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
-    private var useCase: SnippetUseCase
+    private var snippetUseCase: SnippetUseCase
+    private var coreModelUseCase: CoreModelUseCase
     private var selectedFolder: Folder?
     private var cancellables: Set<AnyCancellable> = []
     private var snippet: Snippet?
@@ -24,7 +25,8 @@ class SnippetEditorViewModel: ObservableObject {
         content: String = "",
         subject: PassthroughSubject<ControllerMessage, Never>,
         selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
-        useCase: SnippetUseCase,
+        snippetUseCase: SnippetUseCase,
+        coreModelUseCase: CoreModelUseCase,
         snippet: Snippet? = nil
     ) {
         
@@ -32,7 +34,8 @@ class SnippetEditorViewModel: ObservableObject {
         self.content = content
         self.controllSubject = subject
         self.selectedFolderSubject = selectedFolderSubject
-        self.useCase = useCase
+        self.snippetUseCase = snippetUseCase
+        self.coreModelUseCase = coreModelUseCase
         self.snippet = snippet
         
         resetSnippet()
@@ -40,6 +43,7 @@ class SnippetEditorViewModel: ObservableObject {
         setupInitialSnippet()
     }
     
+    // MARK: - Main Function
     func save() {
         guard let selectedFolder = selectedFolder else {
             print("[ERROR]: NoteEditorViewModel - save")
@@ -48,18 +52,39 @@ class SnippetEditorViewModel: ObservableObject {
         
         if let snippet = snippet  {
             do {
-                try useCase.updateSnippet(getUpdateSnippet(from: snippet))
+                try snippetUseCase.updateSnippet(getUpdateSnippet(from: snippet))
             } catch {
                 print()
             }
         } else {
-            useCase.createSnippet(
-                folderId: selectedFolder.id,
-                title: title,
-                body: content
-            )
-        }        
+            if let snippet = getSnippet() {
+                coreModelUseCase.save(snippet)
+            }
+        }
         hide()
+    }
+    
+    func prev() {
+        controllSubject.send(.openCreateFolderView)
+    }
+    
+    func hide() {
+        controllSubject.send(.escapePressed)
+    }
+    
+    // MARK: - Sub Function
+    private func getSnippet() -> Snippet? {
+        guard let selectedFolder = selectedFolder else {
+            print("[ERROR]: NoteEditorViewModel - save")
+            return nil
+        }
+        
+        return Snippet(
+            folderId: selectedFolder.id,
+            title: title,
+            body: content,
+            order: 0
+        )
     }
     
     private func getUpdateSnippet(from snippet: Snippet) -> Snippet {
@@ -70,14 +95,6 @@ class SnippetEditorViewModel: ObservableObject {
             body: content,
             order: snippet.order
         )
-    }
-    
-    func prev() {
-        controllSubject.send(.openCreateFolderView)
-    }
-    
-    func hide() {
-        controllSubject.send(.escapePressed)        
     }
     
     private func resetSnippet() {
