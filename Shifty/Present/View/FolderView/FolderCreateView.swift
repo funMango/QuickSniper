@@ -17,7 +17,7 @@ struct FolderCreateView: View {
     var body: some View {
         VStack(spacing: 20) {
             ScrollView {
-                LazyVGrid(columns: columns, spacing: 12) {
+                LazyVGrid(columns: columns, spacing: 20) {
                     ForEach(FolderType.allCases, id: \.self) { type in
                         FolderTypeCardView(
                             folderType: type,
@@ -26,10 +26,10 @@ struct FolderCreateView: View {
                                 viewModel.selectFolderType(type)
                             }
                         )
-                        .padding(.vertical, 3)
-                        .padding(.horizontal, 5)
+                        .padding(.vertical)
                     }
                 }
+                .padding(.horizontal)
             }
                                     
             HStack {
@@ -53,6 +53,6 @@ struct FolderCreateView: View {
     FolderCreateView(
         viewModel: viewModelcontainer.createFolderViewModel,
         width: 400,
-        height: 200
+        height: 300
     )
 }

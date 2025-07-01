@@ -20,7 +20,7 @@ enum FolderType: String, CaseIterable, Identifiable, Codable {
         case .snippet:
             String(localized: "snippet")
         case .fileBookmark:
-            String(localized: "fileBookmark")
+            String(localized: "file")
         case .all:
             ""
         }

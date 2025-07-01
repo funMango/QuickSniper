@@ -16,39 +16,9 @@ struct FolderTypeCardView: View {
         Button{
             action()
         } label: {
-            VStack(spacing: 8) {
-                Spacer()
-                Image(systemName: folderType.icon)
-                    .font(.system(size: 24, weight: .regular))
-                    .frame(width: 24, height: 24)
-                    .foregroundColor(.primary)
-                    .frame(maxWidth: .infinity, maxHeight: 30)
-                
-                Spacer()
-                
-                Text(folderType.name)
-                    .font(.system(size: 12, weight: .medium))
-                    .foregroundColor(.primary)
-                    .multilineTextAlignment(.center)
-                    .lineLimit(2)
-                    .frame(maxWidth: .infinity, maxHeight: 32, alignment: .center)
-                Spacer()
-            }
-            .frame(height: 70)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 8)
-            .background(
-                VisualEffectView.panelWithOverlay
-            )
-            .overlay(
-                RoundedRectangle(cornerRadius: 8)
-                    .stroke(
-                        isSelected ? Color.accentColor : Color.clear,
-                        lineWidth: 2
-                    )
-            )
+            TypeStyleBackground(title: folderType.name, image: folderType.getSymbol(), isSelected: isSelected)
         }
-        .buttonStyle(PlainButtonStyle())        
+        .buttonStyle(.plain)
         .animation(.easeInOut(duration: 0.2), value: isSelected)
     }
 }
@@ -64,7 +34,7 @@ struct FolderTypeCardView: View {
             )
             
             FolderTypeCardView(
-                folderType: .snippet,
+                folderType: .fileBookmark,
                 isSelected: true,
                 action: {}
             )
@@ -72,3 +42,5 @@ struct FolderTypeCardView: View {
     }
     .padding()
 }
+
+

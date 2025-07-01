@@ -17,7 +17,7 @@ final class FolderCreateController: ViewWindowControllable {
     let hideMessage: ControllerMessage = .hideCreateFolderView
     var windowController: BasePanelController<FolderCreateView>?
     var cancellables = Set<AnyCancellable>()
-    private var width: CGFloat = 400, height: CGFloat =  200
+    private var width: CGFloat = 400, height: CGFloat = 250
                 
 
     init(subject: PassthroughSubject<ControllerMessage, Never>) {
