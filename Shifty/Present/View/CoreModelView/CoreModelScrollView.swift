@@ -9,6 +9,7 @@ import SwiftUI
 import Resolver
 
 struct CoreModelScrollView: View {
+    @Injected var viewModelContainer: ViewModelContainer
     @State var isSelected: Bool = false
     @StateObject var viewModel: CoreModelScrollViewModel
     
@@ -21,13 +22,9 @@ struct CoreModelScrollView: View {
             HStack {
                 ForEach(viewModel.coreModels, id: \.id) { coreModel in
                     if let snippet = coreModel as? Snippet {
-                        Button {
-                            
-                        } label: {
-                            Text(snippet.title)
-                        }
-                        .buttonStyle(.plain)
-                        .cardBackground(isSelected: $isSelected, color: .white)
+                        SnippetCardView(
+                            viewModel: viewModelContainer.getSnippetCardViewModel(snippet: snippet)
+                        )
                         .padding(.horizontal, 4)
                         .padding(.vertical, 4)
                     }

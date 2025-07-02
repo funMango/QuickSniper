@@ -12,6 +12,7 @@ import UniformTypeIdentifiers
 struct SnippetCardView: View {
     @Injected var viewModelContainer: ViewModelContainer
     @StateObject var viewModel: SnippetCardViewModel
+    @State var isHover = false
     
     init(viewModel: SnippetCardViewModel){
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -37,24 +38,42 @@ struct SnippetCardView: View {
     }
     
     private var card: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 10) {
             HStack {
                 Text(viewModel.snippet.title)
-                    .font(.title3)
+                    .font(.title2)
                     .foregroundStyle(.mainText)
-                    .padding(.bottom, 7)
-                Spacer()
-            }
+                    .lineLimit(1)
+                    .frame(height: 20)
             
-            HStack {
-                Text(viewModel.snippet.body)
-                    .foregroundColor(.subText)
                 Spacer()
+                
+                HoverMenuButton {
+                    SnippetOptionMenuView()
+                }
+                .opacity(isHover ? 1.0 : 0.0)
             }
+                                                                            
+            Text(viewModel.snippet.body)
+                .lineLimit(3)
+                .foregroundColor(.gray)
             
             Spacer()
+            
+            HStack {
+                Spacer()
+                
+                Image(systemName: "text.page")
+                    .foregroundColor(.gray)
+            }
+            
         }
-        .cardBackground(isSelected: $viewModel.isSelected, color: Color.block)                      
+        .cardBackground(isSelected: $viewModel.isSelected, color: Color.block)
+        .onHover { hovering in
+            withAnimation {
+                self.isHover = hovering
+            }
+        }
     }
 }
     
@@ -64,8 +83,8 @@ struct SnippetCardView: View {
     @Injected var viewModelContainer: ViewModelContainer
     SnippetCardView(
         viewModel: viewModelContainer.getSnippetCardViewModel(
-            snippet: Snippet(folderId: "", title: "", body: "", order: 1),
-        )        
+            snippet: Snippet(folderId: "dsfa", title: "dfasdfasdfasdfasdfsadasdf", body: "dasfjklsadfjlksadfasdlkdfasdfasdfsadfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfasdfsadfsaffjsalksd", order: 1),
+        )
     )
     .frame(width: 400, height: 400)
 }

@@ -9,7 +9,6 @@ import Foundation
 import Combine
 
 final class CoreModelScrollViewModel: ObservableObject, ControllSubjectBindable, CoreModelSubjectBindable, FolderSubjectBindable {
-    
     @Published var coreModels: [any CoreModel] = []
     @Published var selectedFolder: Folder?
                     
@@ -31,7 +30,8 @@ final class CoreModelScrollViewModel: ObservableObject, ControllSubjectBindable,
         self.coreModelUseCase = coreModelUseCase
         
         setupControllMessageBinding()
-        setupSelectedFolderBindings()        
+        setupCoreModelMessageBinding()
+        setupSelectedFolderBindings()
         setupCoreModels()                       
     }
 }
@@ -50,7 +50,7 @@ extension CoreModelScrollViewModel {
     func setupCoreModelMessageBinding() {
         coreModelMessageBindings() { [weak self] message in
             switch message {
-            case .updated:
+            case .updated:                
                 self?.setupCoreModels()
             default:
                 break
@@ -59,18 +59,17 @@ extension CoreModelScrollViewModel {
     }
     
     func setupCoreModels() {
-        print("setupCoreModels")
+        
         $selectedFolder
             .compactMap { $0 }
             .receive(on: DispatchQueue.main)
             .sink { [weak self] folder in
                 guard let self = self else { return }
-                
-                self.coreModels = self.coreModelUseCase.fetch()
-                    .filter { $0.folderId == folder.id }
-                    .sorted { $0.id < $1.id }
-                
-                print("coreModels count: \(self.coreModels.count)")
+                                
+                    self.coreModels = self.coreModelUseCase.fetch()
+                        .filter { $0.folderId == folder.id }
+                        .sorted { $0.id < $1.id }
+                                                
             }
             .store(in: &cancellables)
     }

@@ -24,7 +24,8 @@ final class DefaultCoreModelUseCase: CoreModelUseCase {
         self.snippetUseCase = snippetUsecase
         self.fileBookmarkUseCase = fileBookmarkUsecase
     }
-    
+
+    // MARK: - Main Function
     func fetch() -> [any CoreModel] {
         let snippets = fetchSnippets()
         let fileBookmarks = fetchFileBookmarks()
@@ -36,17 +37,18 @@ final class DefaultCoreModelUseCase: CoreModelUseCase {
         return allCoreModels.sorted{ $0.order < $1.order }
     }
     
-    private func mergeCoreModels(snippets: [any CoreModel]?, fileBookmarks: [any CoreModel]?) -> [any CoreModel] {
+    func fetchByFolder(id: String) -> [any CoreModel] {
+        let snippets = fetchSnippets()?.filter { $0.folderId == id }
+        let fileBookmarks = fetchFileBookmarks()?.filter { $0.folderId == id }
+        let allCoreModels = mergeCoreModels(snippets: snippets, fileBookmarks: fileBookmarks)
         
-        let unwrappedSnippets: [any CoreModel] = snippets ?? []
-        let unwrappedFileBookmarks: [any CoreModel] = fileBookmarks ?? []
-
-        
-        return unwrappedSnippets + unwrappedFileBookmarks
+        return allCoreModels.sorted{ $0.order < $1.order }
     }
     
+    
+    
     func save(_ item: any CoreModel) {
-        let order = self.fetch().count + 1
+        let order = self.fetchByFolder(id: item.folderId).count + 1
         item.updateOrder(order)
         
         if let snippet = item as? Snippet {
@@ -60,7 +62,7 @@ final class DefaultCoreModelUseCase: CoreModelUseCase {
     
     func saveAll(_ items: [any CoreModel]) {
         for item in items {
-            let order = self.fetch().count + 1
+            let order = self.fetchByFolder(id: item.folderId).count + 1
             item.updateOrder(order)
             
             DispatchQueue.main.async { [weak self] in
@@ -74,6 +76,14 @@ final class DefaultCoreModelUseCase: CoreModelUseCase {
                 }
             }
         }
+    }
+    
+    // MARK: - Sub Function
+    private func mergeCoreModels(snippets: [any CoreModel]?, fileBookmarks: [any CoreModel]?) -> [any CoreModel] {
+        let unwrappedSnippets: [any CoreModel] = snippets ?? []
+        let unwrappedFileBookmarks: [any CoreModel] = fileBookmarks ?? []
+        
+        return unwrappedSnippets + unwrappedFileBookmarks
     }
     
     private func fetchSnippets() -> [any CoreModel]? {

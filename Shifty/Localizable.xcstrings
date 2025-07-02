@@ -302,9 +302,15 @@
     "deleteSnippet" : {
       "extractionState" : "manual",
       "localizations" : {
-        "ko" : {
+        "en" : {
           "stringUnit" : {
             "state" : "translated",
+            "value" : "Delete Snippet"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "needs_review",
             "value" : "스니펫 삭제"
           }
         }

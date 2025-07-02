@@ -83,7 +83,8 @@ final class ViewModelContainer {
     
     lazy var snippetDeleteButtonViewModel = SnippetDeleteButtonViewModel(
         snippetUseCase: snippetUseCase,
-        snippetSubject: snippetSubject
+        snippetSubject: snippetSubject,
+        coreModelSubject: coreModelSubject
     )
     
     lazy var snippetMoveButtonViewModel = SnippetMoveButtonViewModel(
@@ -194,7 +195,7 @@ final class ViewModelContainer {
         coreModelUseCase: coreModelUseCase,
         controllSubject: controllerSubject,
         coreModelSubject: coreModelSubject,
-        vmPassSubject: vmPassSubject,        
+        vmPassSubject: vmPassSubject,
         selectedFolderSubject: selectedFolderSubject
     )
     

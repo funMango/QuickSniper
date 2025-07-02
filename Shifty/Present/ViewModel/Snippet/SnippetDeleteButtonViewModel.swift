@@ -11,15 +11,18 @@ import Combine
 final class SnippetDeleteButtonViewModel: ObservableObject {
     private let snippetUseCase: SnippetUseCase
     private let snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
+    private let coreModelSubject: CurrentValueSubject<CoreModelMessage?, Never>
     private var snippet: Snippet? = nil
     private var cancellables: Set<AnyCancellable> = []
     
     init(
         snippetUseCase: SnippetUseCase,
-        snippetSubject: CurrentValueSubject<SnippetMessage?, Never>
+        snippetSubject: CurrentValueSubject<SnippetMessage?, Never>,
+        coreModelSubject: CurrentValueSubject<CoreModelMessage?, Never>
     ) {
         self.snippetUseCase = snippetUseCase
         self.snippetSubject = snippetSubject
+        self.coreModelSubject = coreModelSubject
         setUpSelectedSnippet()
     }
     
@@ -32,6 +35,9 @@ final class SnippetDeleteButtonViewModel: ObservableObject {
         
         do {
             try snippetUseCase.deleteSnippet(snippet)
+            DispatchQueue.main.async { [weak self] in
+                self?.coreModelSubject.send(.updated)
+            }
         } catch {
             print("[ERROR]: SnippetDeleteButtonViewModel-deleteSnippet error: \(error)")
         }        

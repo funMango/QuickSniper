@@ -17,7 +17,8 @@ struct SnippetDeleteButtonView: View {
     var body: some View {
         Button {
             viewModel.deleteSnippet()
-        } label: {
+        } label: {            
+            // Label(String(localized: "deleteSnippet"), systemImage: "trash")
             OptionButtonStyle(systemName: "trash", title: "deleteSnippet")
         }
     }
