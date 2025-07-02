@@ -40,7 +40,7 @@ struct PanelView: View {
                 ItemScrollView(
                     viewModel: viewModelContainer.itemScrollViewModel
                 )
-                                                
+                                                                                
                 PanelFooterView(
                     viewModel: viewModelContainer.panelFooterViewModel
                 )                                

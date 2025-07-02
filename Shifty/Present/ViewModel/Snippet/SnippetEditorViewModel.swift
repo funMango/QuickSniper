@@ -14,6 +14,7 @@ class SnippetEditorViewModel: ObservableObject {
     @Published var isEditing = false
     private var controllSubject: PassthroughSubject<ControllerMessage, Never>
     private var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
+    private var coreModelSubject: CurrentValueSubject<CoreModelMessage?, Never>
     private var snippetUseCase: SnippetUseCase
     private var coreModelUseCase: CoreModelUseCase
     private var selectedFolder: Folder?
@@ -25,6 +26,7 @@ class SnippetEditorViewModel: ObservableObject {
         content: String = "",
         subject: PassthroughSubject<ControllerMessage, Never>,
         selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
+        coreModelSubject: CurrentValueSubject<CoreModelMessage?, Never>,
         snippetUseCase: SnippetUseCase,
         coreModelUseCase: CoreModelUseCase,
         snippet: Snippet? = nil
@@ -34,6 +36,7 @@ class SnippetEditorViewModel: ObservableObject {
         self.content = content
         self.controllSubject = subject
         self.selectedFolderSubject = selectedFolderSubject
+        self.coreModelSubject = coreModelSubject
         self.snippetUseCase = snippetUseCase
         self.coreModelUseCase = coreModelUseCase
         self.snippet = snippet
@@ -44,24 +47,28 @@ class SnippetEditorViewModel: ObservableObject {
     }
     
     // MARK: - Main Function
-    func save() {
-        guard let selectedFolder = selectedFolder else {
-            print("[ERROR]: NoteEditorViewModel - save")
-            return
-        }
-        
+    func save() {                
         if let snippet = snippet  {
             do {
                 try snippetUseCase.updateSnippet(getUpdateSnippet(from: snippet))
+                DispatchQueue.main.async { [weak self] in
+                    self?.coreModelSubject.send(.updated)
+                }
             } catch {
                 print()
             }
         } else {
             if let snippet = getSnippet() {
                 coreModelUseCase.save(snippet)
+                DispatchQueue.main.async { [weak self] in
+                    self?.coreModelSubject.send(.updated)
+                }
             }
         }
-        hide()
+        
+        DispatchQueue.main.async { [weak self] in            
+            self?.hide()
+        }
     }
     
     func prev() {

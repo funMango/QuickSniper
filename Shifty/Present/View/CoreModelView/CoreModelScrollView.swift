@@ -19,16 +19,29 @@ struct CoreModelScrollView: View {
     var body: some View {        
         HorizontalScrollViewWithVerticalWheel {
             HStack {
-                ForEach (0..<23) { index in
-                    Button {
-                        
-                    } label: {
-                        
+                ForEach(viewModel.coreModels, id: \.id) { coreModel in
+                    if let snippet = coreModel as? Snippet {
+                        Button {
+                            
+                        } label: {
+                            Text(snippet.title)
+                        }
+                        .buttonStyle(.plain)
+                        .cardBackground(isSelected: $isSelected, color: .white)
+                        .padding(.horizontal, 4)
+                        .padding(.vertical, 4)
                     }
-                    .buttonStyle(.plain)
-                    .cardBackground(isSelected: $isSelected, color: .white)
-                    .padding(.horizontal, 4)
-                    .padding(.vertical, 4)
+                    else if let fileBookmark = coreModel as? FileBookmarkItem {
+                        Button {
+                            
+                        } label: {
+                            Text(fileBookmark.name)
+                        }
+                        .buttonStyle(.plain)
+                        .cardBackground(isSelected: $isSelected, color: .white)
+                        .padding(.horizontal, 4)
+                        .padding(.vertical, 4)
+                    }
                 }
             }
         }

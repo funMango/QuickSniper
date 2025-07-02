@@ -10,8 +10,10 @@ import AppKit
 import Combine
 
 final class FileBookmarkListViewModel: ObservableObject, ControllSubjectBindable, VmPassSubjectBindable, FolderSubjectBindable {    
-    var usecase: FileBookmarkUseCase
+    var fileBookmarkUseCase: FileBookmarkUseCase
+    var coreModelUseCase: CoreModelUseCase
     var controllSubject: PassthroughSubject<ControllerMessage, Never>
+    var coreModelSubject: CurrentValueSubject<CoreModelMessage?, Never>
     var vmPassSubject: PassthroughSubject<VmPassMessage, Never>
     var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     var cancellables: Set<AnyCancellable> = []
@@ -21,14 +23,18 @@ final class FileBookmarkListViewModel: ObservableObject, ControllSubjectBindable
     
     init(
         items: [FileBookmarkItem] = [],
-        usecase: FileBookmarkUseCase,
+        fileBookmarkUseCase: FileBookmarkUseCase,
+        coreModelUseCase: CoreModelUseCase,
         controllSubject: PassthroughSubject<ControllerMessage, Never>,
+        coreModelSubject: CurrentValueSubject<CoreModelMessage?, Never>,
         vmPassSubject: PassthroughSubject<VmPassMessage, Never>,
         selectedFolderSubject:CurrentValueSubject<Folder?, Never>
     ) {
         self.items = items
-        self.usecase = usecase
+        self.fileBookmarkUseCase = fileBookmarkUseCase
+        self.coreModelUseCase = coreModelUseCase
         self.controllSubject = controllSubject
+        self.coreModelSubject = coreModelSubject
         self.vmPassSubject = vmPassSubject
         self.selectedFolderSubject = selectedFolderSubject
         
@@ -61,11 +67,10 @@ extension FileBookmarkListViewModel {
         self.items = items.filter { $0.id != item.id }
     }
     
-    private func saveBookmarkItems() {
-        do {
-            try usecase.saveAll(items)
-        } catch {
-            print("FileBookmarkListViewModel-saveBookmarkItems: \(error)")
+    private func saveBookmarkItems() {        
+        coreModelUseCase.saveAll(items)
+        DispatchQueue.main.async { [weak self] in
+            self?.coreModelSubject.send(.updated)
         }
     }
 }

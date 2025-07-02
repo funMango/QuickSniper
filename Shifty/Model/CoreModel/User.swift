@@ -14,6 +14,7 @@ class User: Equatable, Codable, Identifiable, CoreModel {
     var id: String
     var hotCornerPosition: HotCornerPosition
     var order = 0
+    var folderId = ""
     
     init (
         id: String = UUID().uuidString,

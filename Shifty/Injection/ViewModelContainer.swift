@@ -21,6 +21,7 @@ final class ViewModelContainer {
     private let serviceSubject: CurrentValueSubject<ServiceMessage?, Never>
     private let hotCornerSubject: CurrentValueSubject<HotCornerMessage?, Never>
     private let fileBookmarkSubject: CurrentValueSubject<FileBookmarkMessage?, Never>
+    private let coreModelSubject: CurrentValueSubject<CoreModelMessage?, Never>
     
     private var snippetCardViewModelCache: [String: SnippetCardViewModel] = [:]
     
@@ -49,7 +50,8 @@ final class ViewModelContainer {
         snippetSubject: CurrentValueSubject<SnippetMessage?, Never>,
         serviceSubject: CurrentValueSubject<ServiceMessage?, Never>,
         hotCornerSubject: CurrentValueSubject<HotCornerMessage?, Never>,
-        fileBookmarkSubject: CurrentValueSubject<FileBookmarkMessage?, Never>
+        fileBookmarkSubject: CurrentValueSubject<FileBookmarkMessage?, Never>,
+        coreModelSubject: CurrentValueSubject<CoreModelMessage?, Never>
     ){
         self.modelContext = modelContext
         self.controllerSubject = controllerSubject
@@ -62,12 +64,14 @@ final class ViewModelContainer {
         self.serviceSubject = serviceSubject
         self.hotCornerSubject = hotCornerSubject
         self.fileBookmarkSubject = fileBookmarkSubject
+        self.coreModelSubject = coreModelSubject
     }
     
     //MARK: - Snippet
     lazy var snippetEditorViewModel = SnippetEditorViewModel(
         subject: controllerSubject,
         selectedFolderSubject: selectedFolderSubject,
+        coreModelSubject: coreModelSubject,
         snippetUseCase: snippetUseCase,
         coreModelUseCase: coreModelUseCase,
     )
@@ -104,6 +108,7 @@ final class ViewModelContainer {
         return SnippetEditorViewModel(
             subject: controllerSubject,
             selectedFolderSubject: selectedFolderSubject,
+            coreModelSubject: coreModelSubject,
             snippetUseCase: snippetUseCase,
             coreModelUseCase: coreModelUseCase,
             snippet: snippet
@@ -185,9 +190,11 @@ final class ViewModelContainer {
     
     //MARK: FileBookmark
     lazy var fileBookmarkListViewModel = FileBookmarkListViewModel(
-        usecase: fileBookmarkUseCase,
+        fileBookmarkUseCase: fileBookmarkUseCase,
+        coreModelUseCase: coreModelUseCase,
         controllSubject: controllerSubject,
-        vmPassSubject: vmPassSubject,
+        coreModelSubject: coreModelSubject,
+        vmPassSubject: vmPassSubject,        
         selectedFolderSubject: selectedFolderSubject
     )
     
@@ -233,7 +240,10 @@ final class ViewModelContainer {
     
     //MARK: - CoreModel
     lazy var coreModelScrollViewModel = CoreModelScrollViewModel(
-        controllSubject: controllerSubject
+        controllSubject: controllerSubject,
+         coreModelSubject: coreModelSubject,
+         selectedFolderSubject: selectedFolderSubject,
+         coreModelUseCase: coreModelUseCase
     )
             
     //MARK: - else

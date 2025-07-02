@@ -11,6 +11,7 @@ import CoreTransferable
 protocol CoreModel: Equatable, Transferable, Identifiable {
     var id: String { get set }
     var order: Int { get set }
+    var folderId: String { get set }
     
     func updateOrder(_ newOrder: Int)
 }

@@ -85,6 +85,7 @@ struct ShiftyApp: App {
             let serviceSubject = CurrentValueSubject<ServiceMessage?, Never>(nil)
             let hotCornerSubject = CurrentValueSubject<HotCornerMessage?, Never>(nil)
             let fileBookmarkSubject = CurrentValueSubject<FileBookmarkMessage?, Never>(nil)
+            let coreModelSubject = CurrentValueSubject<CoreModelMessage?, Never>(nil)
                         
             let viewModelContainer = ViewModelContainer(
                 modelContext: context,
@@ -97,7 +98,8 @@ struct ShiftyApp: App {
                 snippetSubject: snippetSubject,
                 serviceSubject: serviceSubject,
                 hotCornerSubject: hotCornerSubject,
-                fileBookmarkSubject: fileBookmarkSubject
+                fileBookmarkSubject: fileBookmarkSubject,
+                coreModelSubject: coreModelSubject
             )
             
             let controllerConntainer = ControllerContainer(

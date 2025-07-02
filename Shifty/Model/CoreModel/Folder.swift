@@ -15,17 +15,20 @@ class Folder: Equatable, Codable, Identifiable, CoreModel {
     var name: String
     var type: FolderType
     var order: Int
+    var folderId: String
     
     init(
         id: String = UUID().uuidString,
         name: String,
         type: FolderType,
-        order: Int
+        order: Int,
+        folderId: String = ""
     ) {
         self.id = id
         self.name = name
         self.type = type
         self.order = order
+        self.folderId = folderId
     }
     
     func changeName(_ name: String) {
@@ -42,6 +45,7 @@ class Folder: Equatable, Codable, Identifiable, CoreModel {
         case name
         case type
         case order
+        case folderId
     }
     
     required init(from decoder: Decoder) throws {
@@ -51,6 +55,7 @@ class Folder: Equatable, Codable, Identifiable, CoreModel {
         name = try container.decode(String.self, forKey: .name)
         type = try container.decode(FolderType.self, forKey: .type)
         order = try container.decode(Int.self, forKey: .order)
+        folderId = try container.decode(String.self, forKey: .name)
     }
     
     func encode(to encoder: Encoder) throws {
@@ -60,6 +65,7 @@ class Folder: Equatable, Codable, Identifiable, CoreModel {
         try container.encode(name, forKey: .name)
         try container.encode(type, forKey: .type)
         try container.encode(order, forKey: .order)
+        try container.encode(folderId, forKey: .folderId)
     }
 }
 
