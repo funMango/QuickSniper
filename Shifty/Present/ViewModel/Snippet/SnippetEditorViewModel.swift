@@ -31,7 +31,6 @@ class SnippetEditorViewModel: ObservableObject {
         coreModelUseCase: CoreModelUseCase,
         snippet: Snippet? = nil
     ) {
-        
         self.title = title
         self.content = content
         self.controllSubject = subject
@@ -39,9 +38,11 @@ class SnippetEditorViewModel: ObservableObject {
         self.coreModelSubject = coreModelSubject
         self.snippetUseCase = snippetUseCase
         self.coreModelUseCase = coreModelUseCase
-        self.snippet = snippet
         
+        /// snippet이 할당되기전에 reset되어야 함
         resetSnippet()
+        
+        self.snippet = snippet
         setupSelectedFolderBindings()
         setupInitialSnippet()
     }
@@ -112,7 +113,7 @@ class SnippetEditorViewModel: ObservableObject {
     }
     
     private func setupInitialSnippet() {
-        if let snippet = snippet {
+        if let snippet = self.snippet {
             self.isEditing = true
             self.title = snippet.title
             self.content = snippet.body

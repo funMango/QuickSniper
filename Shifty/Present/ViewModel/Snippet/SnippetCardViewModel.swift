@@ -48,7 +48,7 @@ final class SnippetCardViewModel: ObservableObject, ItemSelectionResettable {
             guard let self = self else { return }
             
             switch message {
-            case .snippetSelected(let snippet):
+            case .snippetSelected(let snippet):                
                 isSelected = snippet.id == self.snippet.id
             default: return
             }
