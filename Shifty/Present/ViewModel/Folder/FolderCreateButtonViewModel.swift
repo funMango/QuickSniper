@@ -9,40 +9,36 @@ import Foundation
 import Combine
 import Resolver
 
-final class FolderCreateButtonViewModel: ObservableObject, FolderSubjectBindable, QuerySyncableObject {
+final class FolderCreateButtonViewModel: ObservableObject  {
     @Injected var subscriptionManager: SubscriptionManager
-    typealias Item = Folder
-    var allItems: [Folder] = []
+    @Injected var controllerSubject: PassthroughSubject<ControllerMessage, Never>
+    @Injected var folderSubject: CurrentValueSubject<FolderMessage?, Never>
+    
+    
     var folderUsecase: FolderUseCase
-    var controllerSubject: PassthroughSubject<ControllerMessage, Never>
-    var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     var folderEditSubject: CurrentValueSubject<Folder?, Never>
-    var selectedFolder: Folder?
     var cancellables: Set<AnyCancellable> = []
     
-    init(controllerSubject: PassthroughSubject<ControllerMessage, Never>,
-         selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
-         folderEditSubject: CurrentValueSubject<Folder?, Never>,
+    init(folderEditSubject: CurrentValueSubject<Folder?, Never>,
          folderUsecase: FolderUseCase) {
-        self.controllerSubject = controllerSubject
-        self.selectedFolderSubject = selectedFolderSubject
+        
         self.folderEditSubject = folderEditSubject
         self.folderUsecase = folderUsecase
     }
     
-    func getItems(_ items: [Folder]) {
-        self.allItems = items
-    }        
-    
     @MainActor
     func validFolderCount() {
-        if allItems.count >= StoreKitConfig.freeFolderLimit {
-            if !subscriptionManager.isPro {
-                // controllerSubject.send(.openSubscriptionView)
-                showLimitFolderAlert()
+        do {
+            if try folderUsecase.getFolderCount() >= StoreKitConfig.freeFolderLimit {
+                if !subscriptionManager.isPro {
+                    // controllerSubject.send(.openSubscriptionView)
+                    showLimitFolderAlert()
+                }
+            } else {
+                createFolder()
             }
-        } else {
-            createFolder()
+        } catch {
+            print("[Error]: Folder의 개수를 새는데 실패했습니다. : \(error)")
         }
     }
     
@@ -57,7 +53,7 @@ final class FolderCreateButtonViewModel: ObservableObject, FolderSubjectBindable
             try folderUsecase.createFolder(newFolder)
             
             DispatchQueue.main.async { [weak self] in
-                self?.selectedFolderSubject.send(newFolder)
+                self?.folderSubject.send(.switchCurrentFolder(newFolder))
                 self?.folderEditSubject.send(newFolder)
             }
         } catch {

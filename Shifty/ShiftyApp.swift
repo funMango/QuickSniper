@@ -20,9 +20,10 @@ struct ShiftyApp: App {
     private let modelContext: ModelContext
     private let viewModelContainer: ViewModelContainer
     private let keyboardShortcutManager: KeyboardShortcutManager
-    private let pageManager: PageManager
+    private let pageManager: PageManager = PageManager()
     private let serviceContainer: ServiceContainer
     @Injected private var resolverModelContext: ModelContext
+    @Injected private var controllerSubject: PassthroughSubject<ControllerMessage, Never>
         
     init() {
         if let (
@@ -30,8 +31,7 @@ struct ShiftyApp: App {
             modelContext,
             viewModelContainer,
             controllerContainer,
-            keyboardShortcutManager,
-            pageManger,
+            keyboardShortcutManager,            
             serviceContainer
         ) = ShiftyApp.configureDependencies() {
             self.modelContainer = modelContainer
@@ -39,13 +39,13 @@ struct ShiftyApp: App {
             self.viewModelContainer = viewModelContainer
             self.controllerContainer = controllerContainer
             self.keyboardShortcutManager = keyboardShortcutManager
-            self.pageManager = pageManger
             self.serviceContainer = serviceContainer
         } else {
             fatalError("[Error]: QuickSniperApp: 의존성 구성 실패")
         }
         
         Resolver.register()
+        controllerSubject.send(.openPanel)
     }
 
     var body: some Scene {
@@ -67,7 +67,6 @@ struct ShiftyApp: App {
         viewModelContainer: ViewModelContainer,
         controllerContainer: ControllerContainer,
         keyboardShortcutManager: KeyboardShortcutManager,
-        pageManager: PageManager,
         serviceContainer: ServiceContainer
     )? {
         do {
@@ -106,7 +105,6 @@ struct ShiftyApp: App {
             )
             
             let controllerConntainer = ControllerContainer(
-                controllSubject: controllerSubject,
                 hotCornerSubject: hotCornerSubject
             )
             
@@ -114,7 +112,7 @@ struct ShiftyApp: App {
                 controllerSubject: controllerSubject
             )
             
-            let pageManager = PageManager(controllSubject: controllerSubject)
+            
             let subscriptionManager = SubscriptionManager()
             
             let serviceContainer = ServiceContainer(
@@ -128,16 +126,16 @@ struct ShiftyApp: App {
             Resolver.register { context }.scope(.application)
             Resolver.register { viewModelContainer }.scope(.application)
             Resolver.register { keyboardShortcutManager }.scope(.application)
-            Resolver.register { pageManager }.scope(.application)
+            
             Resolver.register { subscriptionManager }.scope(.application)
             Resolver.register { serviceContainer }.scope(.application)
             
             /// System init function
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                controllerSubject.send(.openPanel)                
+                controllerSubject.send(.openPanel)
             }
 
-            return (container, context, viewModelContainer, controllerConntainer, keyboardShortcutManager, pageManager, serviceContainer)
+            return (container, context, viewModelContainer, controllerConntainer, keyboardShortcutManager, serviceContainer)
         } catch {
             print("❌ ModelContainer 생성 실패: \(error)")
             return nil

@@ -133,41 +133,29 @@ final class ViewModelContainer {
     
     //MARK: - Folder
     lazy var createFolderViewModel = FolderCreateViewModel(
-        useCase: folderUseCase,
-        controllSubject: controllerSubject,
-        selectedFolderSubject: selectedFolderSubject
+        useCase: folderUseCase
     )
     
-    lazy var folderCreateButtonViewModel = FolderCreateButtonViewModel(
-        controllerSubject: controllerSubject,
-        selectedFolderSubject: selectedFolderSubject,
+    lazy var folderCreateButtonViewModel = FolderCreateButtonViewModel(        
         folderEditSubject: folderEditSubject,
         folderUsecase: folderUseCase
     )
     
     lazy var folderDeleteButtonViewModel = FolderDeleteButtonViewModel(
-        selectedFolderSubject: selectedFolderSubject,
-        folderMessageSubject: folderMessageSubject,
-        controllSubject: controllerSubject,
-        folderUseCase: folderUseCase,
+        folderUseCase: folderUseCase
     )
     
-    lazy var editFolderViewModel = FolderEditViewModel(
-        selectedFolderSubject: selectedFolderSubject,
+    lazy var editFolderViewModel = FolderEditViewModel(        
         folderEditSubject: folderEditSubject
     )
     
     lazy var folderViewModel = FolderScrollViewModel(
-        folderUsecase: folderUseCase,
-        selectedFolderSubject: selectedFolderSubject,
-        folderMessageSubject: folderMessageSubject
+        folderUsecase: folderUseCase        
     )
     
     func getFolderButtonViewModel(folder: Folder) -> FolderButtonViewModel {
         return FolderButtonViewModel(
-            folder: folder,
-            selectedFolderSubject: selectedFolderSubject,
-            folderEditSubject: folderEditSubject
+            folder: folder
         )
     }
     
@@ -175,8 +163,7 @@ final class ViewModelContainer {
         return FolderButtonContentViewModel(
             folder: folder,
             folderUseCase: folderUseCase,
-            folderEditSubject: folderEditSubject,
-            selectedFolderSubject: selectedFolderSubject
+            folderEditSubject: folderEditSubject            
         )
     }
     
@@ -241,9 +228,6 @@ final class ViewModelContainer {
     
     //MARK: - CoreModel
     lazy var coreModelScrollViewModel = CoreModelScrollViewModel(
-        controllSubject: controllerSubject,
-         coreModelSubject: coreModelSubject,
-         selectedFolderSubject: selectedFolderSubject,
          coreModelUseCase: coreModelUseCase
     )
             

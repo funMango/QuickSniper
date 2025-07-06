@@ -10,4 +10,5 @@ import Foundation
 enum FolderMessage {
     case deleteFolderItems(String)
     case switchFirstFolder
+    case switchCurrentFolder(Folder)
 }

@@ -11,7 +11,6 @@ import SwiftData
 
 struct FolderCreateButtonView: View {
     @StateObject var viewModel: FolderCreateButtonViewModel
-    @Query var folders: [Folder]
     
     init(viewModel: FolderCreateButtonViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel)
@@ -24,7 +23,6 @@ struct FolderCreateButtonView: View {
             },
             systemName: "plus"
         )
-        .syncQuery(viewModel: viewModel, items: folders)
     }
 }
 

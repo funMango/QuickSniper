@@ -7,29 +7,18 @@
 
 import Foundation
 import Combine
+import Resolver
 
-final class FolderDeleteButtonViewModel: ObservableObject, FolderSubjectBindable, ControllSubjectBindable {
-    
-    
+final class FolderDeleteButtonViewModel: ObservableObject, ControllSubjectBindable {
+    @Injected var controllSubject: PassthroughSubject<ControllerMessage, Never>
+    @Injected var folderSubject: CurrentValueSubject<FolderMessage?, Never>
     var selectedFolder: Folder?
-    var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
-    var folderMessageSubject: CurrentValueSubject<FolderMessage?, Never>
-    var controllSubject: PassthroughSubject<ControllerMessage, Never>
     var folderUseCase: FolderUseCase
     var cancellables: Set<AnyCancellable> = []
     
-    init(
-        
-        selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
-        folderMessageSubject: CurrentValueSubject<FolderMessage?, Never>,
-        controllSubject: PassthroughSubject<ControllerMessage, Never>,
-        folderUseCase: FolderUseCase,
-    ) {
-        self.selectedFolderSubject = selectedFolderSubject
-        self.folderMessageSubject = folderMessageSubject
-        self.controllSubject = controllSubject
+    init(folderUseCase: FolderUseCase) {
         self.folderUseCase = folderUseCase
-        setupSelectedFolderBindings()
+        folderMessageBindings()
     }
     
     func deleteFolder() {
@@ -44,9 +33,21 @@ final class FolderDeleteButtonViewModel: ObservableObject, FolderSubjectBindable
         }
                 
         DispatchQueue.main.async { [weak self] in
-            self?.folderMessageSubject.send(.deleteFolderItems(selectedfolder.id))
+            self?.folderSubject.send(.deleteFolderItems(selectedfolder.id))
         }
-    }   
+    }
+    
+    func folderMessageBindings() {
+        folderSubject.sink { [weak self] message in
+            switch message {
+            case .switchCurrentFolder(let folder):
+                self?.selectedFolder = folder
+            default:
+                break
+            }
+        }
+        .store(in: &cancellables)
+    }
 }
 
 extension FolderDeleteButtonViewModel {

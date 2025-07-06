@@ -12,8 +12,7 @@ import Resolver
 struct FolderScrollView: View, DraggableView {
     @Injected var viewModelContainer: ViewModelContainer
     @StateObject var viewModel: FolderScrollViewModel
-    @State var draggingItem: String?
-    @Query var folders: [Folder]
+    @State var draggingItem: String?    
     
     init(viewModel: FolderScrollViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -42,10 +41,6 @@ struct FolderScrollView: View, DraggableView {
         .fixedSize()
         .frame(height: 40)
         .background(Color.clear)
-        .syncQuery(
-            viewModel: viewModel,
-            items: folders
-        )
     }
 }
 

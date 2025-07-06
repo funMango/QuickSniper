@@ -8,11 +8,13 @@
 import Foundation
 
 protocol FolderUseCase {
+    func getFolderCount() throws -> Int
     func createFolder(_ folder: Folder) throws
     func updateFolder(_ folder: Folder) throws
     func updateAllFolders(_ folders: [Folder]) throws
     func deleteFolder(_ folder: Folder) throws
-    func getFirstFolder() throws -> Folder? 
+    func getFirstFolder() throws -> Folder?
+    func fetchAll() throws -> [Folder]
 }
 
 final class DefaultFolderUseCase: FolderUseCase {
@@ -20,6 +22,14 @@ final class DefaultFolderUseCase: FolderUseCase {
 
     init(repository: FolderRepository) {
         self.repository = repository
+    }
+    
+    func fetchAll() throws -> [Folder] {
+        return try repository.fetchAll()
+    }
+    
+    func getFolderCount() throws -> Int {
+        return try repository.fetchAll().count
     }
 
     func createFolder(_ folder: Folder) throws {

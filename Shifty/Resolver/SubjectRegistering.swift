@@ -29,5 +29,10 @@ extension Resolver: SubjectRegistering {
             CurrentValueSubject<Folder?, Never>(nil)
         }
         .scope(.application)
+        
+        register {
+            CurrentValueSubject<FolderMessage?, Never>(nil)
+        }
+        .scope(.application)
     }
 }

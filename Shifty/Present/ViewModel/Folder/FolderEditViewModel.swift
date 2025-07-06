@@ -7,20 +7,20 @@
 
 import Foundation
 import Combine
+import Resolver
 
-class FolderEditViewModel: ObservableObject, FolderSubjectBindable {
+class FolderEditViewModel: ObservableObject {
     var selectedFolder: Folder?
-    var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
+    @Injected var folderSubject: CurrentValueSubject<FolderMessage?, Never>
+    
     var folderEditSubject: CurrentValueSubject<Folder?, Never>
     var cancellables = Set<AnyCancellable>()
         
     init(
-        selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
         folderEditSubject: CurrentValueSubject<Folder?, Never>
     ) {
-        self.selectedFolderSubject = selectedFolderSubject
-        self.folderEditSubject = folderEditSubject
-        setupSelectedFolderBindings()
+        self.folderEditSubject = folderEditSubject        
+        folderMessageBindings()
     }
     
     func folderEdit() {
@@ -30,5 +30,18 @@ class FolderEditViewModel: ObservableObject, FolderSubjectBindable {
         }
         
         folderEditSubject.send(selectedFolder)
-    }    
+    }
+    
+    func folderMessageBindings() {
+        folderSubject
+            .sink { [weak self] message in
+                switch message {
+                case .switchCurrentFolder(let folder):
+                    self?.selectedFolder = folder
+                default:
+                    break
+                }
+            }
+            .store(in: &cancellables)
+    }
 }

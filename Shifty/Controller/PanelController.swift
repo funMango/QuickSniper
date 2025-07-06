@@ -6,13 +6,13 @@ import SwiftData
 
 class PanelController: NSWindowController, NSWindowDelegate {
     @Injected var viewModelContainer: ViewModelContainer
+    @Injected var subject: PassthroughSubject<ControllerMessage, Never>
+    
     private var allowAutoHide: Bool = true
     private var isPanelVisible = false
-    private var subject: PassthroughSubject<ControllerMessage, Never>
-    private var cancellables = Set<AnyCancellable>()
     private var isManualHide: Bool = false
-
     private var dockObserver: NSObjectProtocol?
+    private var cancellables = Set<AnyCancellable>()
     
     // 캐시된 프레임 정보
     private var calculatedFrame: NSRect?
@@ -25,8 +25,7 @@ class PanelController: NSWindowController, NSWindowDelegate {
     // 간단한 디바운싱 (타이머 없이)
     private var lastActionTime: Date = Date.distantPast
 
-    init(subject: PassthroughSubject<ControllerMessage, Never>) {
-        self.subject = subject
+    init() {
         super.init(window: nil)
         let hosting = makeHostingView()
         let contentHeight: CGFloat = 264

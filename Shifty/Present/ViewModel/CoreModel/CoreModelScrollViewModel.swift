@@ -14,10 +14,9 @@ final class CoreModelScrollViewModel: ObservableObject, ControllSubjectBindable,
     @Published var selectedFolder: Folder?
                     
     @Injected var controllSubject: PassthroughSubject<ControllerMessage, Never>
-    @Injected var  coreModelSubject: CurrentValueSubject<CoreModelMessage?, Never>
+    @Injected var coreModelSubject: CurrentValueSubject<CoreModelMessage?, Never>
     @Injected var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
-    var coreModelUseCase: CoreModelUseCase
-    
+    var coreModelUseCase: CoreModelUseCase    
     var cancellables: Set<AnyCancellable> = []
     
     init(coreModelUseCase: CoreModelUseCase) {
@@ -53,7 +52,6 @@ extension CoreModelScrollViewModel {
     }
     
     func setupCoreModels() {
-        
         $selectedFolder
             .compactMap { $0 }
             .receive(on: DispatchQueue.main)

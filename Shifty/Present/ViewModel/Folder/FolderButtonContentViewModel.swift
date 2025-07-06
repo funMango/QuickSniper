@@ -7,28 +7,28 @@
 
 import Foundation
 import Combine
+import Resolver
 
-final class FolderButtonContentViewModel: ObservableObject {
-    @Published var hoverFolder: Folder?
+final class FolderButtonContentViewModel: ObservableObject {    
     @Published var buttonText: String = ""
     @Published var isRenaming: Bool = false
+    @Injected var folderSubject: CurrentValueSubject<FolderMessage?, Never>
+    
     var folder: Folder
     private var folderUseCase: FolderUseCase
     private var folderEditSubject: CurrentValueSubject<Folder?, Never>
-    private var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     private var cancellables = Set<AnyCancellable>()
         
     init(
         folder: Folder,
         folderUseCase: FolderUseCase,
         folderEditSubject: CurrentValueSubject<Folder?, Never>,
-        selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     ) {
         self.folder = folder
         self.buttonText = folder.name
         self.folderUseCase = folderUseCase
         self.folderEditSubject = folderEditSubject
-        self.selectedFolderSubject = selectedFolderSubject
+        
         setupBindings()
     }
     
@@ -37,7 +37,7 @@ final class FolderButtonContentViewModel: ObservableObject {
     }
     
     func selectFolder() {
-        selectedFolderSubject.send(folder)
+        folderSubject.send(.switchCurrentFolder(folder))
     }
     
     /// 메인 스레드에서 update해야 UI충돌이 나지 않음

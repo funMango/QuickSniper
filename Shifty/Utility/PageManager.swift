@@ -5,17 +5,17 @@
 //  Created by 이민호 on 6/7/25.
 //
 
-import Foundation
-import Combine
 import AppKit
+import Combine
+import Resolver
+
 
 final class PageManager {
+    @Injected var controllSubject: PassthroughSubject<ControllerMessage, Never>
     private var pages: [Page] = []
-    private let controllSubject: PassthroughSubject<ControllerMessage, Never>
     private var cancellables = Set<AnyCancellable>()
     
-    init(controllSubject: PassthroughSubject<ControllerMessage, Never>) {
-        self.controllSubject = controllSubject
+    init() {
         controllMessageBindings()
     }
             

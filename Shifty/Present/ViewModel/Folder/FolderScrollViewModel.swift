@@ -7,31 +7,34 @@
 
 import Foundation
 import Combine
+import Resolver
 
-final class FolderScrollViewModel: FolderSubjectBindable, DragabbleObject, QuerySyncableObject, FolderMessageSubjectBindable {
+final class FolderScrollViewModel: DragabbleObject {
         
     typealias Item = Folder
     @Published var items: [Folder] = []
     @Published var allItems: [Folder] = []
     @Published var selectedFolder: Folder?
+    @Injected var folderSubject: CurrentValueSubject<FolderMessage?, Never>
+    
     var folderUsecase: FolderUseCase
-    var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
-    var folderMessageSubject: CurrentValueSubject<FolderMessage?, Never>
     var cancellables: Set<AnyCancellable> = []
     private var itemsById: [String: Folder] = [:]
     
-    init(
-        folderUsecase: FolderUseCase,
-        selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
-        folderMessageSubject: CurrentValueSubject<FolderMessage?, Never>
-    ){
+    init(folderUsecase: FolderUseCase){
         self.folderUsecase = folderUsecase
-        self.selectedFolderSubject = selectedFolderSubject
-        self.folderMessageSubject = folderMessageSubject
-        
-        setupSelectedFolderBindings()
-        setupFolderMessageBindings()
+                
+        fetchFolders()
+        folderMessageBindings()
         setSelectedFolder()
+    }
+    
+    func fetchFolders() {
+        do {
+            self.items = try folderUsecase.fetchAll()
+        } catch {
+            print("[ERROR] Folder Fetch Error: \(error.localizedDescription)")
+        }
     }
     
     func getItems(_ items: [Folder]) {
@@ -49,11 +52,13 @@ final class FolderScrollViewModel: FolderSubjectBindable, DragabbleObject, Query
     }
     
     func selectItem(_ itemId: String) {
-        guard let item = itemsById[itemId],
-              selectedFolderSubject.value?.id != itemId else {
-            return // 중복 선택 방지
+        let item =  self.items.filter { $0.id == itemId }.first
+        
+        guard let item = item  else {
+            return
         }
-        selectedFolderSubject.send(item)
+        
+        folderSubject.send(.switchCurrentFolder(item))
     }
     
     func updateItems() {
@@ -66,22 +71,27 @@ final class FolderScrollViewModel: FolderSubjectBindable, DragabbleObject, Query
         }                                                       
     }
     
-    private func setupFolderMessageBindings() {
-        folderMessageBindings{ [weak self] message in
+    private func folderMessageBindings() {
+        folderSubject.sink { [weak self] message in
             switch message {
             case .switchFirstFolder:
                 self?.setSelectedFolder()
+            case .switchCurrentFolder(let folder):
+                self?.selectedFolder = folder
             default:
                 break
             }
         }
+        .store(in: &cancellables)
     }
     
     private func setSelectedFolder() {
         do {
-            let folder = try folderUsecase.getFirstFolder()            
-            DispatchQueue.main.async { [weak self] in
-                self?.selectedFolderSubject.send(folder)
+            let folder = try folderUsecase.getFirstFolder()
+            if let folder = folder {
+                DispatchQueue.main.async { [weak self] in
+                    self?.folderSubject.send(.switchCurrentFolder(folder))
+                }
             }
         } catch {
             print("[ERROR]: FolderViewModel-setSelectedFolder: \(error)")

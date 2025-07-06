@@ -7,9 +7,10 @@
 
 import Foundation
 import Combine
+import Resolver
 
 final class ControllerContainer {
-    let controllSubject: PassthroughSubject<ControllerMessage, Never>
+    @Injected var controllSubject: PassthroughSubject<ControllerMessage, Never>
     private let hotCornerSubject: CurrentValueSubject<HotCornerMessage?, Never>
     private var cancellables = Set<AnyCancellable>()
     
@@ -25,10 +26,8 @@ final class ControllerContainer {
     private var panelStatus = false
                 
     init(
-        controllSubject: PassthroughSubject<ControllerMessage, Never>,
         hotCornerSubject: CurrentValueSubject<HotCornerMessage?, Never>,
-    ) {
-        self.controllSubject = controllSubject
+    ) {        
         self.hotCornerSubject = hotCornerSubject        
         controllMesaageBindings()
     }
@@ -125,9 +124,7 @@ extension ControllerContainer {
     
     private func panelControllerInit() {
         if panelController == nil {
-            self.panelController = PanelController(
-                subject: controllSubject
-            )
+            self.panelController = PanelController()                            
         }
     }
     

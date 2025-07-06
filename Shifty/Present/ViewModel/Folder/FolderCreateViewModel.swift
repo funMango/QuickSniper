@@ -7,24 +7,21 @@
 
 import Foundation
 import Combine
+import Resolver
 
 final class FolderCreateViewModel: ObservableObject {
     @Published var folderName: String    
     @Published var selectedFolderType: FolderType = .snippet
     private var useCase: FolderUseCase
-    private var controllSubject: PassthroughSubject<ControllerMessage, Never>
-    private var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
+    @Injected var controllSubject: PassthroughSubject<ControllerMessage, Never>
+    @Injected var folderSubject: CurrentValueSubject<FolderMessage?, Never>
     
     init(
         folderName: String = "",
         useCase: FolderUseCase,
-        controllSubject:PassthroughSubject<ControllerMessage, Never>,
-        selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     ) {
         self.folderName = folderName
         self.useCase = useCase
-        self.controllSubject = controllSubject
-        self.selectedFolderSubject = selectedFolderSubject
     }
         
     func selectFolderType(_ type: FolderType) {
@@ -54,7 +51,7 @@ final class FolderCreateViewModel: ObservableObject {
             hide()
             
             DispatchQueue.main.async { [weak self] in
-                self?.selectedFolderSubject.send(newFolder)
+                self?.folderSubject.send(.switchCurrentFolder(newFolder))
             }
         } catch {
             print("[Error]: \(error)")

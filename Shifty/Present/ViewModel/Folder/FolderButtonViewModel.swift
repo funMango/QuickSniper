@@ -7,37 +7,39 @@
 
 import Foundation
 import Combine
+import Resolver
 
-final class FolderButtonViewModel: ObservableObject, FolderSubjectBindable {
+final class FolderButtonViewModel: ObservableObject {
     @Published var selectedFolder: Folder?
     @Published var isSelected: Bool = false
+    @Injected var folderSubject: CurrentValueSubject<FolderMessage?, Never>
+    
     var folder: Folder
-    var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
-    var folderEditSubject: CurrentValueSubject<Folder?, Never>
     var cancellables: Set<AnyCancellable> = []
     
-    init(
-        folder: Folder,
-        selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
-        folderEditSubject: CurrentValueSubject<Folder?, Never>
-    ) {
+    init(folder: Folder) {
         self.folder = folder
-        self.selectedFolderSubject = selectedFolderSubject
-        self.folderEditSubject = folderEditSubject
+               
         setupSelectedFolderBindings()
     }        
     
     func setupSelectedFolderBindings() {
-        selectedFolderSubject
-            .sink { [weak self] folder in
+        folderSubject
+            .sink { [weak self] message in
                 guard let self = self else { return }
-                self.selectedFolder = folder
-                self.isSelected = self.selectedFolder?.id == self.folder.id
+                
+                switch message {
+                case .switchCurrentFolder(let folder):
+                    self.selectedFolder = folder
+                    self.isSelected = self.selectedFolder?.id == self.folder.id
+                default:
+                    break
+                }
             }
             .store(in: &cancellables)
     }
             
     func changeSelectedFolder() {
-        selectedFolderSubject.send(folder)
+        folderSubject.send(.switchCurrentFolder(folder))
     }
 }
