@@ -7,26 +7,20 @@
 
 import Foundation
 import Combine
+import Resolver
 
 final class CoreModelScrollViewModel: ObservableObject, ControllSubjectBindable, CoreModelSubjectBindable, FolderSubjectBindable {
     @Published var coreModels: [any CoreModel] = []
     @Published var selectedFolder: Folder?
                     
-    var controllSubject: PassthroughSubject<ControllerMessage, Never>
-    var coreModelSubject: CurrentValueSubject<CoreModelMessage?, Never>
-    var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
+    @Injected var controllSubject: PassthroughSubject<ControllerMessage, Never>
+    @Injected var  coreModelSubject: CurrentValueSubject<CoreModelMessage?, Never>
+    @Injected var selectedFolderSubject: CurrentValueSubject<Folder?, Never>
     var coreModelUseCase: CoreModelUseCase
     
     var cancellables: Set<AnyCancellable> = []
     
-    init(controllSubject: PassthroughSubject<ControllerMessage, Never>,
-         coreModelSubject: CurrentValueSubject<CoreModelMessage?, Never>,
-         selectedFolderSubject: CurrentValueSubject<Folder?, Never>,
-         coreModelUseCase: CoreModelUseCase
-    ) {
-        self.controllSubject = controllSubject
-        self.coreModelSubject = coreModelSubject
-        self.selectedFolderSubject = selectedFolderSubject
+    init(coreModelUseCase: CoreModelUseCase) {
         self.coreModelUseCase = coreModelUseCase
         
         setupControllMessageBinding()

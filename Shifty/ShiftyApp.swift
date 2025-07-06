@@ -22,6 +22,7 @@ struct ShiftyApp: App {
     private let keyboardShortcutManager: KeyboardShortcutManager
     private let pageManager: PageManager
     private let serviceContainer: ServiceContainer
+    @Injected private var resolverModelContext: ModelContext
         
     init() {
         if let (
@@ -43,6 +44,8 @@ struct ShiftyApp: App {
         } else {
             fatalError("[Error]: QuickSniperApp: 의존성 구성 실패")
         }
+        
+        Resolver.register()
     }
 
     var body: some Scene {
@@ -53,7 +56,7 @@ struct ShiftyApp: App {
             AppMenuBarView(
                 viewModel: viewModelContainer.appMenuBarViewModel
             )
-            .environment(\.modelContext, modelContext)
+            .environment(\.modelContext, resolverModelContext)
         }
         .menuBarExtraStyle(.menu)
     }
